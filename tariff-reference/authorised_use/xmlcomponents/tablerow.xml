@@ -1,0 +1,72 @@
+      <w:tr>
+        <w:trPr>
+          <w:cantSplit/>
+        </w:trPr>
+		<!-- BEGIN COMMODITY CODE CELL //-->
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:right w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+            </w:tcBorders>
+            <w:noWrap/>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="NormalinTable"/>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>[COMMODITY_CODE]</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+		<!-- END COMMODITY CODE CELL //-->
+		<!-- BEGIN DESCRIPTION CELL //-->
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="3000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+            </w:tcBorders>
+          </w:tcPr>
+[DESCRIPTION]
+        </w:tc>
+		<!-- END DESCRIPTION CELL //-->
+		<!-- BEGIN DUTY_EXPRESSION CELL //-->
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:left w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:right w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+            </w:tcBorders>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="NormalinTable"/>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>[DUTY_EXPRESSION]</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+		<!-- END DUTY_EXPRESSION CELL //-->
+
+      </w:tr>

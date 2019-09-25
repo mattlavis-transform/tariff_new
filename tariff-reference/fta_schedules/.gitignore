@@ -1,0 +1,9 @@
+__pycache__/
+output/
+unused/
+output/*
+!output/README.md
+output_March/*
+!output_March/README.md
+csv/*
+!csv/README.md

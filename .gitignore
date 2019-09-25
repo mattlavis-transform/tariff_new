@@ -1,0 +1,11 @@
+*.log
+.orig
+__pycache__/
+.vscode/
+intellij/
+.idea/
+create-edifact.zip
+backup/
+.DS_Store
+create-data/_documentation
+create-data/convert_and_import_taric/documentation

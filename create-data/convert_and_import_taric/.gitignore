@@ -1,0 +1,12 @@
+log/
+import/
+xml_in/
+xml_out/
+__pycache__/
+csv/
+temp/
+moved/
+xml_documentation/
+HMRC transaction logs/
+HMRC XML loading reports/
+.vscode/

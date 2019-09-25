@@ -1,0 +1,25 @@
+"goods_nomenclature_item_id","producline_suffix","number_indents","significant_digits","leaf","nice_description"
+"1704000000","80",0,4,"0"," Sugar confectionery (including white chocolate), not containing cocoa"
+"1704100000","80",1,6,"0"," - Chewing gum, whether or not sugar-coated"
+"1704101000","80",2,8,"1", - - Containing less than 60|% by weight of sucrose (including invert sugar expressed as sucrose)
+"1704109000","80",2,8,"1", - - Containing 60|% or more by weight of sucrose (including invert sugar expressed as sucrose)
+"1704900000","80",1,6,"0", - Other
+"1704901000","80",2,8,"1", - - Liquorice extract containing more than 10|% by weight of sucrose but not containing other added substances
+"1704903000","80",2,8,"1", - - White chocolate
+"1704905100","10",2,8,"0", - - Other
+"1704905100","80",3,8,"1"," - - - Pastes, including marzipan, in immediate packings of a net content of 1|kg or more"
+"1704905500","80",3,8,"1", - - - Throat pastilles and cough drops
+"1704906100","80",3,8,"1", - - - Sugar-coated (panned) goods
+"1704906500","10",3,8,"0", - - - Other
+"1704906500","80",4,8,"1"," - - - - Gum confectionery and jelly confectionery, including fruit pastes in the form of sugar confectionery"
+"1704907100","80",4,8,"1"," - - - - Boiled sweets, whether or not filled"
+"1704907500","80",4,8,"1"," - - - - Toffees, caramels and similar sweets"
+"1704908100","10",4,8,"0", - - - - Other
+"1704908100","80",5,8,"1", - - - - - Compressed tablets
+"1704909900","80",5,8,"0", - - - - - Other
+"1704909911","10",6,10,"0", - - - - - - Containing less than 70|% by weight of sucrose (including invert sugar expressed as sucrose)
+"1704909911","80",7,10,"1"," - - - - - - - Marshmallows, containing 45 % or less by weight of sugar (including invert sugar expressed as sucrose)"
+"1704909919","80",7,10,"1", - - - - - - - Other
+"1704909991","10",6,10,"0", - - - - - - Containing|70|% or more by weight of sucrose (including invert sugar expressed as sucrose)
+"1704909991","80",7,10,"1", - - - - - - - Halva and Loukhum
+"1704909999","80",7,10,"1", - - - - - - - Other

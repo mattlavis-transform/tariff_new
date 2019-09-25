@@ -1,0 +1,34 @@
+	<env:transaction id="[TRANSACTION_ID]">
+		<env:app.message id="[MESSAGE_ID1]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>150</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER1]</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:regulation.group>
+						<oub:regulation.group.id>[REGULATION_GROUP_ID]</oub:regulation.group.id>
+						<oub:validity.start.date>[VALIDITY_START_DATE]</oub:validity.start.date>
+						<oub:validity.end.date>[VALIDITY_END_DATE]</oub:validity.end.date>
+					</oub:regulation.group>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+		<env:app.message id="[MESSAGE_ID2]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>150</oub:record.code>
+					<oub:subrecord.code>05</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER2]</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:regulation.group.description>
+						<oub:regulation.group.id>[REGULATION_GROUP_ID]</oub:regulation.group.id>
+						<oub:language.id>EN</oub:language.id>
+						<oub:description>[DESCRIPTION]</oub:description>
+					</oub:regulation.group.description>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>

@@ -1,0 +1,14 @@
+envelope id = [ID]
+
+OVERALL STATS
+=============
+Transaction count = 364
+Record count = 546
+Measure count = 364
+Measure component count = 182
+Measure condition count = 0
+Measure condition component count = 0
+
+INSERTS
+=======
+Inserted measure count = 2184

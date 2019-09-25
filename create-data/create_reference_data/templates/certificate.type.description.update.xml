@@ -1,0 +1,18 @@
+  <env:transaction id="{TRANSACTION_ID}">
+    <env:app.message id="{MESSAGE_ID1}">
+      <oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+        <oub:record>
+          <oub:transaction.id>{TRANSACTION_ID}</oub:transaction.id>
+          <oub:record.code>110</oub:record.code>
+          <oub:subrecord.code>05</oub:subrecord.code>
+          <oub:record.sequence.number>{RECORD_SEQUENCE_NUMBER1}</oub:record.sequence.number>
+          <oub:update.type>1</oub:update.type>
+          <oub:certificate.type.description>
+            <oub:certificate.type.code>{CERTIFICATE_TYPE_CODE}</oub:certificate.type.code>
+            <oub:language.id>{LANGUAGE_ID}</oub:language.id>
+            <oub:description>{DESCRIPTION}</oub:description>
+          </oub:certificate.type.description>
+        </oub:record>
+      </oub:transmission>
+    </env:app.message>
+  </env:transaction>

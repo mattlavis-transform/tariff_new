@@ -1,0 +1,18 @@
+		<env:app.message id="[MESSAGE_ID]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>15</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER]</oub:record.sequence.number>
+					<oub:update.type>[UPDATE_TYPE]</oub:update.type>
+					<oub:quota.suspension.period>
+						<oub:quota.suspension.period.sid>[QUOTA_SUSPENSION_PERIOD_SID]</oub:quota.suspension.period.sid>
+						<oub:quota.definition.sid>[QUOTA_DEFINITION_SID]</oub:quota.definition.sid>
+						<oub:suspension.start.date>[SUSPENSION_START_DATE]</oub:suspension.start.date>
+						<oub:suspension.end.date>[SUSPENSION_END_DATE]</oub:suspension.end.date>
+						<oub:description>[DESCRIPTION]</oub:description>
+					</oub:quota.suspension.period>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>

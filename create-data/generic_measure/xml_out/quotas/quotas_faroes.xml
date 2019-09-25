@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:envelope xmlns="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0" id="ENV">
+	<env:transaction id="100000">
+		<env:app.message id="1">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100000</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>1</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20036</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090671</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>174</oub:quota.order.number.sid>
+						<oub:volume>72000.00</oub:volume>
+						<oub:initial.volume>72000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090671 for geography FO : Faroe Islands on trouts from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100001">
+		<env:app.message id="2">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100001</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>2</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20037</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090671</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>174</oub:quota.order.number.sid>
+						<oub:volume>95000.00</oub:volume>
+						<oub:initial.volume>95000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090671 for geography FO : Faroe Islands on trouts from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100002">
+		<env:app.message id="3">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100002</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>3</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20038</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090672</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2452</oub:quota.order.number.sid>
+						<oub:volume>78000.00</oub:volume>
+						<oub:initial.volume>78000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090672 for geography FO : Faroe Islands on coalfish (pollachius virens), salted and dried from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100003">
+		<env:app.message id="4">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100003</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>4</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20039</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090672</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2452</oub:quota.order.number.sid>
+						<oub:volume>102000.00</oub:volume>
+						<oub:initial.volume>102000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090672 for geography FO : Faroe Islands on coalfish (pollachius virens), salted and dried from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100004">
+		<env:app.message id="5">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100004</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>5</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20040</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090674</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2453</oub:quota.order.number.sid>
+						<oub:volume>124000.00</oub:volume>
+						<oub:initial.volume>124000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090674 for geography FO : Faroe Islands on common whelk (buccinum undatum), live, fresh or chilled, frozen, prepared or preserved from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100005">
+		<env:app.message id="6">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100005</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>6</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20041</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090674</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2453</oub:quota.order.number.sid>
+						<oub:volume>163000.00</oub:volume>
+						<oub:initial.volume>163000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090674 for geography FO : Faroe Islands on common whelk (buccinum undatum), live, fresh or chilled, frozen, prepared or preserved from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100006">
+		<env:app.message id="7">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100006</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>7</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20042</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090675</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>176</oub:quota.order.number.sid>
+						<oub:volume>41000.00</oub:volume>
+						<oub:initial.volume>41000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090675 for geography FO : Faroe Islands on salmon and trout from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100007">
+		<env:app.message id="8">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100007</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>8</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20043</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090675</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>176</oub:quota.order.number.sid>
+						<oub:volume>54000.00</oub:volume>
+						<oub:initial.volume>54000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090675 for geography FO : Faroe Islands on salmon and trout from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100008">
+		<env:app.message id="9">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100008</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>9</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20044</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090676</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2454</oub:quota.order.number.sid>
+						<oub:volume>78000.00</oub:volume>
+						<oub:initial.volume>78000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090676 for geography FO : Faroe Islands on crab of the species geryon affinis, frozen from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100009">
+		<env:app.message id="10">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100009</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>10</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20045</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090676</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>2454</oub:quota.order.number.sid>
+						<oub:volume>102000.00</oub:volume>
+						<oub:initial.volume>102000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090676 for geography FO : Faroe Islands on crab of the species geryon affinis, frozen from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100010">
+		<env:app.message id="11">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100010</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>11</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20046</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090679</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>178</oub:quota.order.number.sid>
+						<oub:volume>413000.00</oub:volume>
+						<oub:initial.volume>413000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090679 for geography FO : Faroe Islands on conserves de crevettes from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100011">
+		<env:app.message id="12">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100011</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>12</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20047</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090679</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>178</oub:quota.order.number.sid>
+						<oub:volume>545000.00</oub:volume>
+						<oub:initial.volume>545000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090679 for geography FO : Faroe Islands on conserves de crevettes from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100012">
+		<env:app.message id="13">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100012</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>13</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20048</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090681</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>180</oub:quota.order.number.sid>
+						<oub:volume>124000.00</oub:volume>
+						<oub:initial.volume>124000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090681 for geography FO : Faroe Islands on prepared or preserved fish; caviar and caviar substitutes prepared from fish eggs from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100013">
+		<env:app.message id="14">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100013</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>14</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20049</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090681</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>180</oub:quota.order.number.sid>
+						<oub:volume>163000.00</oub:volume>
+						<oub:initial.volume>163000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090681 for geography FO : Faroe Islands on prepared or preserved fish; caviar and caviar substitutes prepared from fish eggs from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100014">
+		<env:app.message id="15">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100014</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>15</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20050</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090689</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>182</oub:quota.order.number.sid>
+						<oub:volume>2067000.00</oub:volume>
+						<oub:initial.volume>2067000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090689 for geography FO : Faroe Islands on feedstuffs for fish from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100015">
+		<env:app.message id="16">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100015</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>16</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20051</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090689</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>182</oub:quota.order.number.sid>
+						<oub:volume>2724000.00</oub:volume>
+						<oub:initial.volume>2724000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090689 for geography FO : Faroe Islands on feedstuffs for fish from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100016">
+		<env:app.message id="17">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100016</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>17</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20052</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090690</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>184</oub:quota.order.number.sid>
+						<oub:volume>2000.00</oub:volume>
+						<oub:initial.volume>2000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090690 for geography FO : Faroe Islands on bone-in and carcass lamb from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100017">
+		<env:app.message id="18">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100017</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>18</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20053</oub:quota.definition.sid>
+						<oub:quota.order.number.id>090690</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>184</oub:quota.order.number.sid>
+						<oub:volume>3000.00</oub:volume>
+						<oub:initial.volume>3000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 090690 for geography FO : Faroe Islands on bone-in and carcass lamb from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100018">
+		<env:app.message id="19">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100018</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>19</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20054</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092129</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1448</oub:quota.order.number.sid>
+						<oub:volume>2000.00</oub:volume>
+						<oub:initial.volume>2000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092129 for geography FO : Faroe Islands on boneless lamb from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100019">
+		<env:app.message id="20">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100019</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>20</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20055</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092129</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1448</oub:quota.order.number.sid>
+						<oub:volume>3000.00</oub:volume>
+						<oub:initial.volume>3000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092129 for geography FO : Faroe Islands on boneless lamb from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100020">
+		<env:app.message id="21">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100020</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>21</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20056</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092130</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1450</oub:quota.order.number.sid>
+						<oub:volume>2000.00</oub:volume>
+						<oub:initial.volume>2000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092130 for geography FO : Faroe Islands on boneless mutton/sheep from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100021">
+		<env:app.message id="22">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100021</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>22</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20057</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092130</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1450</oub:quota.order.number.sid>
+						<oub:volume>3000.00</oub:volume>
+						<oub:initial.volume>3000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092130 for geography FO : Faroe Islands on boneless mutton/sheep from 2019-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+</env:envelope>

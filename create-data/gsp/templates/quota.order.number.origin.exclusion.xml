@@ -1,0 +1,15 @@
+		<env:app.message id="[MESSAGE_ID]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>360</oub:record.code>
+					<oub:subrecord.code>15</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER]</oub:record.sequence.number>
+					<oub:update.type>[UPDATE_TYPE]</oub:update.type>
+					<oub:quota.order.number.origin.exclusions>
+						<oub:quota.order.number.origin.sid>[QUOTA_ORDER_NUMBER_ORIGIN_SID]</oub:quota.order.number.origin.sid>
+						<oub:excluded.geographical.area.sid>[EXCLUDED_GEOGRAPHICAL_AREA_SID]</oub:excluded.geographical.area.sid>
+					</oub:quota.order.number.origin.exclusions>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>

@@ -1,0 +1,8 @@
+			<w:p>
+				<w:pPr><w:pStyle w:val="Tier3Bullet"/></w:pPr>
+				<w:r><w:tab/></w:r>
+				<w:r><w:tab/></w:r>
+				<w:r><w:t>-</w:t></w:r>
+				<w:r><w:tab/></w:r>
+				<w:r><w:t>[DESCRIPTION]</w:t></w:r>
+			</w:p>

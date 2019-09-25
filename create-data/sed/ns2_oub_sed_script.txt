@@ -1,0 +1,2 @@
+s/ns2:/oub:/g
+s/:ns2/:oub/g

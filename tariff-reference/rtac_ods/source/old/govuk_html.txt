@@ -1,0 +1,866 @@
+1. Aluminium foil
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+76071111 	Aluminium foil, not backed, rolled but not further worked, of a thickness of < 0,021 mm, in rolls of a weight of <= 10 kg (excluding stamping foils of heading 3212, and foil made up as Christmas tree decorating material) 	* 	N/A 	N/A
+76071910 	Aluminium foil, not backed, rolled and further worked, of a thickness of < 0,021 mm (excluding stamping foils of heading 3212, and foil made up as Christmas tree decorating material) 	* 	N/A 	N/A
+2. Automotive vehicles
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+87012010 	Road tractors for semi-trailers, new 	16.0% 	N/A 	N/A
+87012090 	Road tractors for semi-trailers, used 	16.0% 	N/A 	N/A
+87021011 	Motor vehicles for the transport of >= 10 persons, including driver, with only diesel engine, of a cylinder capacity of > 2.500 cm³, new 	16.0% 	N/A 	N/A
+87021019 	Motor vehicles for the transport of >= 10 persons, including driver, with only diesel engine, of a cylinder capacity of > 2.500 cm³, used 	16.0% 	N/A 	N/A
+87021091 	Motor vehicles for the transport of >= 10 persons, including driver, with only diesel engine, of a cylinder capacity of <= 2.500 cm³, new 	10.0% 	N/A 	N/A
+87021099 	Motor vehicles for the transport of >= 10 persons, including driver, with only diesel engine, of a cylinder capacity of <= 2.500 cm³, used 	10.0% 	N/A 	N/A
+87022010 	Motor vehicles for the transport of >= 10 persons, including driver, with both diesel engine and electric motor as motors for propulsion, of a cylinder capacity of > 2.500 cm³ 	16.0% 	N/A 	N/A
+87022090 	Motor vehicles for the transport of >= 10 persons, including driver, with both diesel engine and electric motor as motors for propulsion, of a cylinder capacity of <= 2.500 cm³ 	10.0% 	N/A 	N/A
+87023010 	Motor vehicles for the transport of >= 10 persons, including driver, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, of a cylinder capacity of > 2.800 cm³ 	16.0% 	N/A 	N/A
+87023090 	Motor vehicles for the transport of >= 10 persons, including driver, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, of a cylinder capacity of <= 2.800 cm³ 	10.0% 	N/A 	N/A
+87024000 	Motor vehicles for the transport of >= 10 persons, including driver, with only electric motor for propulsion 	10.0% 	N/A 	N/A
+87029011 	Motor vehicles for the transport of >= 10 persons, including driver, with spark-ignition internal combustion piston engine, of a cylinder capacity of > 2.800 cm³, new (excluding with electric motor for propulsion) 	16.0% 	N/A 	N/A
+87029019 	Motor vehicles for the transport of >= 10 persons, including driver, with spark-ignition internal combustion piston engine, of a cylinder capacity of > 2.800 cm³, used (excluding with electric motor for propulsion) 	16.0% 	N/A 	N/A
+87029031 	Motor vehicles for the transport of >= 10 persons, including driver, with spark-ignition internal combustion piston engine, of a cylinder capacity of <= 2.800 cm³, new (excluding with electric motor for propulsion) 	10.0% 	N/A 	N/A
+87029039 	Motor vehicles for the transport of >= 10 persons, including driver, with spark-ignition internal combustion piston engine, of a cylinder capacity of <= 2.800 cm³, used (excluding with electric motor for propulsion) 	10.0% 	N/A 	N/A
+87029090 	Motor vehicles for the transport of >= 10 persons, including driver, not with internal combustion piston engine or electric motor for propulsion 	10.0% 	N/A 	N/A
+87032110 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity <= 1.000 cm³, new (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032190 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity <= 1.000 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032210 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine, of a cylinder capacity > 1.000 cm³ but <= 1.500 cm³, new (excluding vehicles for travelling on snow and similar vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032290 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity > 1.000 cm³ but <= 1.500 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032311 	Motor caravans with only spark-ignition internal combustion reciprocating piston engine, of a cylinder capacity > 1.500 cm³ but <= 3.000 cm³, new 	10.0% 	N/A 	N/A
+87032319 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine, of a cylinder capacity > 1.500 cm³ but <= 3.000 cm³, new (excluding those of subheading 8703.10 and motor caravans) 	10.0% 	N/A 	N/A
+87032390 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity > 1.500 cm³ but <= 3.000 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032410 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity > 3.000 cm³, new (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87032490 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only spark-ignition internal combustion reciprocating piston engine of a cylinder capacity > 3.000 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033110 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only diesel engine of a cylinder capacity <= 1.500 cm³, new (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033190 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only diesel engine of a cylinder capacity <= 1.500 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033211 	Motor caravans with only diesel engine of a cylinder capacity > 1.500 cm³ but <= 2.500 cm³, new 	10.0% 	N/A 	N/A
+87033219 	Motor cars and other motor vehicles, principally designed for the transport of <10 persons, including station wagons, with only diesel engine of a cylinder capacity > 1.500 cm³ but <= 2.500 cm³, new (excluding motor caravans and vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033290 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only diesel engine of a cylinder capacity > 1.500 cm³ but <= 2.500 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033311 	Motor caravans with only diesel engine of a cylinder capacity > 2.500 cm³, new 	10.0% 	N/A 	N/A
+87033319 	Motor cars and other motor vehicles, principally designed for the transport of <10 persons, including station wagons, with only diesel engine of a cylinder capacity > 2.500 cm³, new (excluding motor caravans and vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87033390 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only diesel engine of a cylinder capacity > 2.500 cm³, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87034010 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, new (excluding vehicles for travelling on snow, other specially designed vehicles of subheading 8703.10 and plug-in hybrids) 	10.0% 	N/A 	N/A
+87034090 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, used (excluding vehicles for travelling on snow, other specially designed vehicles of subheading 8703.10 and plug-in hybrids) 	10.0% 	N/A 	N/A
+87035000 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both diesel engine and electric motor as motors for propulsion (excluding vehicles for travelling on snow, other specially designed vehicles of subheading 8703.10 and plug-in hybrids) 	10.0% 	N/A 	N/A
+87036010 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, capable of being charged by plugging to external source of electric power, new (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87036090 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both spark-ignition internal combustion reciprocating piston engine and electric motor as motors for propulsion, capable of being charged by plugging to external source of electric power, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87037000 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with both diesel engine and electric motor as motors for propulsion, capable of being charged by plugging to external source of electric power (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87038010 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only electric motor for propulsion, new (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87038090 	Motor cars and other motor vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with only electric motor for propulsion, used (excluding vehicles for travelling on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87039000 	Motor cars and other vehicles principally designed for the transport of <10 persons, including station wagons and racing cars, with engines other than internal combustion piston engine or electric motor (excluding vehicles for the transport of persons on snow and other specially designed vehicles of subheading 8703.10) 	10.0% 	N/A 	N/A
+87042131 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight <= 5 t, of a cylinder capacity > 2.500 cm³, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87042139 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight <= 5 t, of a cylinder capacity > 2.500 cm³, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87042191 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight <= 5 t, of a cylinder capacity <= 2.500 cm³, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	10.0% 	N/A 	N/A
+87042199 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight <= 5 t, of a cylinder capacity <= 2.500 cm³, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	10.0% 	N/A 	N/A
+87042291 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight > 5 t but <= 20 t, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87042299 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight > 5 t but <= 20 t, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87042391 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight > 20 t, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87042399 	Motor vehicles for the transport of goods, with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ of a gross vehicle weight > 20 t, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87043131 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight <= 5 t, of a cylinder capacity > 2.800 cm³, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87043139 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight <= 5 t, of a cylinder capacity > 2.800 cm³, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87043191 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight <= 5 t, of a cylinder capacity <= 2.800 cm³, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	10.0% 	N/A 	N/A
+87043199 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight <= 5 t, of a cylinder capacity <= 2.800 cm³, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	10.0% 	N/A 	N/A
+87043291 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight > 5 t, new (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87043299 	Motor vehicles for the transport of goods, with spark-ignition internal combustion piston engine, of a gross vehicle weight > 5 t, used (excluding dumpers for off-highway use of subheading 8704.10, special purpose motor vehicles of heading 8705 and special motor vehicles for the transport of highly radioactive materials) 	22.0% 	N/A 	N/A
+87049000 	Motor vehicles for the transport of goods, with engines other than internal combustion piston engine (excluding dumpers for off-highway use of subheading 8704.10 and special purpose motor vehicles of heading 8705) 	10.0% 	N/A 	N/A
+87111000 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity <= 50 cm³ 	8.0% 	N/A 	N/A
+87112010 	Scooters of cylinder capacity > 50 cm³ but <= 250 cm³ 	8.0% 	N/A 	N/A
+87112092 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 50 cm³ but <= 125 cm³ (excluding scooters) 	8.0% 	N/A 	N/A
+87112098 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 125 cm³ to 250 cm³ (excluding scooters) 	8.0% 	N/A 	N/A
+87113010 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 250 cm³ to 380 cm³ 	6.0% 	N/A 	N/A
+87113090 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 380 cm³ to 500 cm³ 	6.0% 	N/A 	N/A
+87114000 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 500 cm³ but <= 800 cm³ 	6.0% 	N/A 	N/A
+87115000 	Motorcycles, including mopeds, with reciprocating internal combustion piston engine of a cylinder capacity > 800 cm³ 	6.0% 	N/A 	N/A
+87116010 	Bicycles, tricycles and quadricycles, with pedal assistance, with an auxiliary electric motor with a continuous rated power <= 250 w 	6.0% 	N/A 	N/A
+87116090 	Motorcycles, including mopeds, and cycles fitted with an auxiliary motor, with electric motor for propulsion (excluding bicycles, tricycles and quadricycles, with pedal assistance, with a continuous rated power <= 250 w) 	6.0% 	N/A 	N/A
+87119000 	Motorcycles, including mopeds, and cycles fitted with an auxiliary motor and side cars for motorcycles (excluding electric or with reciprocating internal combustion piston engine) 	6.0% 	N/A 	N/A
+3. Bananas
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+08039010 	Bananas, fresh (excluding plantains) 	114 euros /1000kg 	N/A 	N/A
+08039090 	Bananas, dried (excluding plantains) 	16.0% 	N/A 	N/A
+4. Bioethanol and motor spirit
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+22071000 	Undenatured ethyl alcohol, of actual alcoholic strength of >= 80% 	* 	N/A 	N/A
+22072000 	Denatured ethyl alcohol and other spirits of any strength 	* 	N/A 	N/A
+22089099 	Undenatured ethyl alcohol, of an alcoholic strength of < 80% vol, in containers holding > 2 l 	* 	N/A 	N/A
+27101221 	White spirit 	* 	N/A 	N/A
+27101225 	Special spirits (excluding white spirit) of petroleum or bituminous minerals 	* 	N/A 	N/A
+27101231 	Aviation spirit 	* 	N/A 	N/A
+27101241 	Motor spirit, with a lead content <= 0,013 g/l, with a research octane number ‘ron’ of < 95 (excluding containing biodiesel) 	* 	N/A 	N/A
+27101245 	Motor spirit, with a lead content <= 0,013 g/l, with a research octane number ‘ron’ of >= 95 but < 98 (excluding containing biodiesel) 	* 	N/A 	N/A
+27101249 	Motor spirit, with a lead content <= 0,013 g/l, with a research octane number ‘ron’ of >= 98 (excluding containing biodiesel) 	* 	N/A 	N/A
+27101250 	Motor spirit, with a lead content > 0,013 g/l (excluding containing biodiesel, and aviation spirit) 	* 	N/A 	N/A
+27101270 	Jet fuel, spirit type (excluding aviation spirit) 	* 	N/A 	N/A
+27101290 	Light oils and preparations, of petroleum or bituminous minerals, N.E.S. (excluding containing biodiesel, for undergoing chemical transformation, and special spirits, motor spirit and spirit type jet fuel) 	* 	N/A 	N/A
+38140010 	Organic composite solvents and thinners and prepared paint or varnish removers, based on butyl acetate (excluding nail varnish remover) 	* 	N/A 	N/A
+38140090 	Organic composite solvents and thinners and prepared paint or varnish removers (excluding those based on butyl acetate and nail varnish remover) 	* 	N/A 	N/A
+38200000 	Anti-freezing preparations and prepared de-icing fluids (excluding prepared additives for mineral oils or other liquids used for the same purposes as mineral oils) 	6.5% 	N/A 	N/A
+38249992 	Chemical products or preparations, predominantly composed of organic compounds, in liquid form at 20°c, N.E.S.) 	* 	N/A 	N/A
+5. Bovine meat (Beef)
+
+Where there is a TRQ volume amount for a commodity, the in-quota tariff rate is 0%.
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+02011000 	Carcases or half-carcases of bovine animals, fresh or chilled 	6.8 + 93.3 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02012020 	‘Compensated’ quarters of bovine animals with bone in, fresh or chilled 	6.8 + 93.3 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02012030 	Unseparated or separated forequarters of bovine animals, with bone in, fresh or chilled 	6.8 + 74.6 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02012050 	Unseparated or separated hindquarters of bovine animals, with bone in, fresh or chilled 	6.8 + 112 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02012090 	Fresh or chilled bovine cuts, with bone in (excluding carcases and half-carcases, ‘compensated quarters’, forequarters and hindquarters) 	6.8 + 140 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02013000 	Fresh or chilled bovine meat, boneless 	6.8 + 160.1 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02021000 	Frozen bovine carcases and half-carcases 	6.8 + 93.3 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02022010 	Frozen ‘compensated’ bovine quarters, with bone in 	6.8 + 93.3 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02022030 	Frozen unseparated or separated bovine forequarters, with bone in 	6.8 + 74.6 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02022050 	Frozen unseparated or separated bovine hindquarters, with bone in 	6.8 + 116.7 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02022090 	Frozen bovine cuts, with bone in (excluding carcases and half-carcases, ‘compensated’ quarters, forequarters and hindquarters) 	6.8 + 140 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02023010 	Frozen bovine boneless forequarters, whole or cut in max. 5 pieces, each quarter in 1 block; ‘compensated’ quarters in 2 blocks, one containing the forequarter, whole or cut in max. 5 pieces, and the other the whole hindquarter, excluding the tenderloin, in one piece 	6.8 + 116.7 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02023050 	Frozen bovine boneless crop, chuck and blade and brisket cuts 	6.8 + 116.7 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02023090 	Frozen bovine boneless meat (excluding forequarters, whole or cut into a maximum of five pieces, each quarter being in a single block ‘compensated’ quarters in two blocks, one of which contains the forequarter, whole or cut into a maximum of five pieces, and the other, the hindquarter, excluding the tenderloin, in one piece, crop, chuck and blade and brisket cuts) 	6.8 + 160.5 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02061095 	Fresh or chilled edible bovine thick and thin skirt (excluding for manufacture of pharmaceutical products) 	6.8 + 160.1 euros/100kg 	097701 	Q1: 28,964,400 (kg)
+Q2: 29,690,900 (kg)
+Q3: 36,146,100 (kg)
+Q4: 29,600,100 (kg)
+02062991 	Frozen edible bovine thick and thin skirt (excluding for manufacture of pharmaceutical products) 	6.8 + 160.5 euros/100kg 	097702 	Q1: 13,641,400 (kg)
+Q2: 14,671,500 (kg)
+Q3: 15,548,700 (kg)
+Q4: 12,356,300 (kg)
+02102010 	Meat of bovine animals, salted, in brine, dried or smoked, with bone in 	8.1 + 140 euros/100kg 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+02102090 	Boneless meat of bovine animals, salted, in brine, dried or smoked 	8.1 + 160.1 euros/100kg 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+02109951 	Edible thick skirt and thin skirt of bovine animals, salted, in brine, dried or smoked 	8.1 + 160.1 euros/100kg 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+02109959 	Edible offal of bovine animals, salted, in brine, dried or smoked (excluding thick skirt and thin skirt) 	6.8% 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+16025010 	Prepared or preserved meat or offal of bovine animals, uncooked, including mixtures of cooked meat or offal and uncooked meat or offal (excluding sausages and similar products, and preparations of liver) 	160.1 euros/100kg 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+16025031 	Corned beef, in airtight containers 	8.8% 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+16025095 	Meat or offal of bovine animals, prepared or preserved, cooked (excluding corned beef in airtight containers, sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts and juices) 	8.8% 	097703 	Q1: 12,621,400 (kg)
+Q2: 13,318,600 (kg)
+Q3: 13,031,400 (kg)
+Q4: 11,072,000 (kg)
+6. Butter
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+04051011 	Natural butter of a fat content, by weight, of >= 80% but <= 85%, in immediate packings of a net content of <= 1 kg (excluding dehydrated butter and ghee) 	60.5 euros /100kg 	N/A 	N/A
+04051019 	Natural butter of a fat content, by weight, of >= 80% but <= 85% (excluding in immediate packings of a net content of <= 1 kg, and dehydrated butter and ghee) 	60.5 euros /100kg 	N/A 	N/A
+04051030 	Recombined butter of a fat content, by weight, of >= 80% but <= 85% (excluding dehydrated butter and ghee) 	60.5 euros /100kg 	N/A 	N/A
+04051050 	Whey butter of a fat content, by weight, of >= 80% but <= 85% (excluding dehydrated butter and ghee) 	60.5 euros /100kg 	N/A 	N/A
+04051090 	Butter of a fat content, by weight, of > 85% but <= 95% (excluding dehydrated butter and ghee) 	73.8 euros /100kg 	N/A 	N/A
+7. Ceramics and related items
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+69072100 	Ceramic flags and paving, hearth or wall tiles, of a water absorption coefficient by weight <= 0,5 % (excluding refractory, mosaic cubes and finishing ceramics) 	5.0% 	N/A 	N/A
+69072200 	Ceramic flags and paving, hearth or wall tiles, of a water absorption coefficient by weight > 0,5 % but <= 10 % (excluding refractory, mosaic cubes and finishing ceramics) 	5.0% 	N/A 	N/A
+69072300 	Ceramic flags and paving, hearth or wall tiles, of a water absorption coefficient by weight > 10 % (excluding refractory, mosaic cubes and finishing ceramics) 	5.0% 	N/A 	N/A
+69073000 	Ceramic mosaic cubes and the like, whether or not on a backing (excluding refractory and finishing ceramics) 	5.0% 	N/A 	N/A
+69074000 	Finishing ceramics (excluding refractory) 	5.0% 	N/A 	N/A
+69111000 	Tableware and kitchenware, of porcelain or china (excluding ornamental articles, pots, jars, carboys and similar receptacles for the conveyance or packing of goods, and coffee grinders and spice mills with receptacles made of ceramics and working parts of metal) 	12.0% 	N/A 	N/A
+69120021 	Tableware and kitchenware, of common pottery (excluding statuettes and other ornamental articles, pots, jars, carboys and similar receptacles for the conveyance or packing of goods, and coffee grinders and spice mills with receptacles made of ceramics and working parts of metal) 	* 	N/A 	N/A
+69120023 	Tableware and kitchenware, of stoneware (excluding statuettes and other ornamental articles, pots, jars, carboys and similar receptacles for the conveyance or packing of goods, and coffee grinders and spice mills with receptacles made of ceramics and working parts of metal) 	* 	N/A 	N/A
+69120025 	Tableware and kitchenware, of earthenware or fine pottery (excluding statuettes and other ornamental articles, pots, jars, carboys and similar receptacles for the conveyance or packing of goods, and coffee grinders and spice mills with receptacles made of ceramics and working parts of metal) 	9.0% 	N/A 	N/A
+69120029 	Tableware and kitchenware, of ceramics other than porcelain, china, common pottery, stoneware, earthenware or fine pottery (excluding statuettes and other ornamental articles, pots, jars, carboys and similar receptacles for the conveyance or packing of goods, and coffee grinders and spice mills with receptacles made of ceramics and working parts of metal) 	7.0% 	N/A 	N/A
+8. Cheese
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+04062000 	Grated or powdered cheese, of all kinds 	24.9 euros /100kg 	N/A 	N/A
+04063010 	Processed cheese, not grated or powdered, in the manufacture of which no cheeses other than emmentaler, gruyère and appenzell have been used and which may contain, as an addition, glarus herb cheese ‘known as schabziger’; put up for retail sale, of a fat content by weight in the dry matter of <= 56%. 	19.1 euros /100kg 	N/A 	N/A
+04063031 	Processed cheese, not grated or powdered, of a fat content, by weight, of <= 36% and of a fat content, by weight, in the dry matter of <= 48% (excluding processed cheese mixtures made from emmentaler, gruyère and appenzell, with or without the addition of glarus herb cheese known as schabziger, put up for retail sale) 	18.4 euros /100kg 	N/A 	N/A
+04063039 	Processed cheese, not grated or powdered, of a fat content, by weight, of <= 36% and of a fat content, by weight, in the dry matter of > 48% (excluding processed cheese mixtures made from emmentaler, gruyère and appenzell, with or without the addition of glarus herb cheese known as schabziger, put up for retail sale, of a fat content by weight in the dry matter of <= 56%) 	19.1 euros /100kg 	N/A 	N/A
+04063090 	Processed cheese not grated or powdered of a fat content by weight of >36% (excluding processed cheese mixtures made from Emmentaler, Gruyère and Appenzell with or without the addition of Glarus herb cheese known as ‘Schabziger’ put up for retail sale of a fat content by weight in the dry matter of <=56%) 	28.4 euros /100kg 	N/A 	N/A
+04064090 	Blue-veined cheese and other cheese containing veins produced by ‘penicillium roqueforti’ (excluding Roquefort and Gorgonzola) 	18.6 euros /100kg 	N/A 	N/A
+04069001 	Cheese for processing (excluding fresh cheese, including whey cheese, curd, processed cheese, blue-veined cheese and other cheese containing veins produced by ‘penicillium roqueforti’, and grated or powdered cheese) 	22.1 euros /100kg 	N/A 	N/A
+04069021 	Cheddar (excluding grated or powdered and for processing) 	22.1 euros /100kg 	N/A 	N/A
+9. Cloves and vanilla
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+09051000 	Vanilla, neither crushed nor ground 	6.0% 	N/A 	N/A
+09071000 	Cloves, whole fruit, cloves and stems, neither crushed nor ground 	8.0% 	N/A 	N/A
+10. Cocoa
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+18031000 	Cocoa paste (excluding defatted) 	9.6% 	N/A 	N/A
+18040000 	Cocoa butter, fat and oil 	7.7% 	N/A 	N/A
+11. Fats and oils
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+15111090 	Crude palm oil (excluding for technical or industrial uses) 	3.8% 	N/A 	N/A
+15131191 	Crude coconut oil, in immediate packings of <= 1 kg (excluding for technical or industrial uses) 	12.8% 	N/A 	N/A
+15131199 	Crude coconut oil, in immediate packings of > 1 kg or put up otherwise (excluding for technical or industrial uses) 	12.8% 	N/A 	N/A
+15132190 	Raw palm kernel oil and babassu oil in immediate packings of a net content of > 1 kg or put up otherwise (excluding oils for technical or industrial uses) 	6.4% 	N/A 	N/A
+15162098 	Vegetable fats and oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, in immediate packings of > 1 kg or in another form (excluding fats and oils and their fractions, further prepared, hydrogenated castor oil and subheading 1516.20.95 and 1516.20.96) 	* 	N/A 	N/A
+15180091 	Animal or vegetable fats and oils and their fractions, boiled, oxidised, dehydrated, sulphurised, blown, polymerised by heat in vacuum or in inert gas or otherwise chemically modified (excluding those of heading 1516 and linoxyn [oxidised linseed oil]) 	* 	N/A 	N/A
+15180095 	Inedible mixtures or preparations ‘yellow grease’ of animal or of animal and vegetable fats and oils and their fractions 	* 	N/A 	N/A
+15180099 	Mixtures and preparations of animal or vegetable fats and oils and of fractions of various fats and oils, inedible, N.E.S., in chapter 15 	* 	N/A 	N/A
+38260010 	Fatty-acid mono-alkyl esters, containing by weight => 96,5 % of esters ‘famae’ 	* 	N/A 	N/A
+38260090 	Biodiesel and mixtures thereof, not containing or containing < 70 % by weight of petroleum oils or oils obtained from bituminous minerals (excluding fatty-acid mono-alkyl esters containing by weight >= 96,5 % of esters ‘famae’) 	* 	N/A 	N/A
+12. Fertiliser
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+31022900 	Double salts and mixtures of ammonium sulphate and ammonium nitrate (excluding goods of this chapter in tablets or similar forms or in packages of a gross weight of <= 10 kg) 	* 	N/A 	N/A
+31023090 	Ammonium nitrate (excluding that in aqueous solution, in pellet or similar forms, or in packages with a gross weight of <= 10 kg) 	6.5% 	N/A 	N/A
+31024090 	Mixtures of ammonium nitrate with calcium carbonate or other inorganic non-fertilising substances, for use as fertilisers, containing > 28% nitrogen by weight (excluding those in pellet or similar forms, or in packages with a gross weight of <= 10 kg) 	6.5% 	N/A 	N/A
+31026000 	Double salts and mixtures of calcium nitrate and ammonium nitrate (excluding those in pellet or similar forms, or in packages with a gross weight of <= 10 kg) 	* 	N/A 	N/A
+31029000 	Mineral or chemical nitrogen fertilisers (excluding urea; ammonium sulphate; ammonium nitrate; sodium nitrate; double salts and mixtures of ammonium nitrate with ammonium sulphate or calcium; mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution; mixtures of ammonium nitrate and calcium carbonate or other non-fertilising inorganic elements; in tablets or similar in packages <= 10 kg) 	* 	N/A 	N/A
+31051000 	Mineral or chemical fertilisers of animal or vegetable origin, in tablets or similar forms, or in packages with a gross weight of <= 10 kg 	* 	N/A 	N/A
+31052010 	Mineral or chemical fertilisers containing phosphorus and potassium, with a nitrogen content > 10 % by weight on the dry anhydrous product (excluding those in tablets or similar forms, or in packages with a gross weight of <= 10 kg) 	* 	N/A 	N/A
+31055100 	Mineral or chemical fertilisers containing nitrates and phosphates (excluding ammonium dihydrogenorthophosphate ‘monoammonium phosphate’, diammonium hydrogenorthophosphate ‘diammonium phosphate’, and those in tablets or similar forms, or in packages with a gross weight of <= 10 kg) 	* 	N/A 	N/A
+31055900 	Mineral or chemical fertilisers containing the two fertilising elements nitrogen (excluding nitrate) and phosphorus but not nitrates (excluding ammonium dihydrogenorthophosphate ‘monoammonium phosphate’, diammonium hydrogenorthophosphate ‘diammonium phosphate’ in tablets or similar forms, or in packages with a gross weight of <= 10 kg) 	* 	N/A 	N/A
+31059020 	Mineral or chemical fertilisers containing the two fertilising elements nitrogen and potassium, or one principal fertilising substance only, including mixtures of animal or vegetable fertilisers with chemical or mineral fertilisers, containing > 10% nitrogen by weight (excluding in tablets or similar forms, or in packages with a gross weight of <= 10 kg) 	* 	N/A 	N/A
+13. Fish
+
+Where there is a TRQ volume amount for a commodity, the in-quota tariff rate is 0%.
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+03038910 	Frozen freshwater fish, N.E.S. 	8.0% 	N/A 	N/A
+03038990 	Frozen fish, N.E.S. 	15% 	098707 	Annual: 516,727 (kg) (net)
+03048910 	Frozen fillets of freshwater fish, N.E.S. 	9.0% 	N/A 	N/A
+03048990 	Frozen fish fillets, N.E.S. 	15% 	098703 	Annual: 2,130,240 (kg) (net)
+03049965 	Frozen meat ‘whether or not minced’ of monkfish ‘lophius spp.’ (excluding fillets) 	7.5% 	N/A 	N/A
+03061792 	Frozen shrimps of the genus ‘penaeus’, even smoked, whether in shell or not, including shrimps in shell, cooked by steaming or by boiling in water 	12.0% 	098704 	Annual: 7,855,157 (kg) (net)
+03061799 	Frozen shrimps and prawns, even smoked, whether in shell or not, including shrimps and prawns in shell, cooked by steaming or by boiling in water (excluding ‘pandalidae’, ‘crangon’, deepwater rose shrimps ‘parapenaeus longirostris’ and ‘penaeus’) 	12.0% 	098705 	Annual: 1,411,556 (kg) (net)
+03061990 	Frozen crustaceans, fit for human consumption, even smoked, whether in shell or not, including crustaceans in shell, cooked by steaming or by boiling in water (excluding rock lobster and other sea crawfish, lobsters, shrimps, prawns, crabs, freshwater crayfish and Norway lobsters ‘nephrops norvegicus’); frozen flours, meals, and pellets of crustaceans, fit for human consumption 	12% 	N/A 	N/A
+16041421 	Prepared or preserved skipjack, whole or in pieces, in vegetable oil (excluding minced) 	24.0% 	098701 	Annual: 6,005,093 (kg) (net)
+16041426 	Fillets known as ‘loins’ of skipjack, prepared or preserved, whole or in pieces (excluding such products in vegetable oil or minced) 	24% 	N/A 	N/A
+16041428 	Prepared or preserved skipjack, whole or in pieces (excluding minced, fillets known as ‘loins’ and such products in vegetable oil) 	24.0% 	098700 	Annual: 42,453,793 (kg) (net)
+16041431 	Prepared or preserved yellowfin tuna ‘thunnus albacares’, whole or in pieces, in vegetable oil (excluding minced) 	24% 	098708 	Annual: 229,131 (kg) (net)
+16041438 	Prepared or preserved yellowfin tuna ‘thunnus albacares’, whole or in pieces (excluding minced, fillets known as ‘loins’ and such products in vegetable oil) 	24.0% 	098702 	Annual: 1,050,237 (kg) (net)
+16041441 	Prepared or preserved tunas, whole or in pieces, in vegetable oil (excluding minced, skipjack and yellowfin tuna ‘thunnus albacares’) 	24.0% 	098706 	Annual: 457,931 (kg) (net)
+16041448 	Prepared or preserved tuna, whole or in pieces (excluding minced, fillets known as ‘loins’ and such products in vegetable oil, skipjack and yellowfin tuna ‘thunnus albacares’) 	24.0% 	098709 	Annual: 126,646 (kg) (net)
+14. Fresh beans
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+07082000 	Fresh or chilled beans ‘vigna spp., phaseolus spp.’, shelled or unshelled 	10.4% + 1.6 euros/100kg 	N/A 	N/A
+15. Glass fibres
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+70191100 	Glass fibre threads ‘chopped strands’, cut into lengths <= 50 mm 	7.0% 	N/A 	N/A
+70191200 	Rovings of glass fibres 	* 	N/A 	N/A
+70193100 	Mats of irregularly laminated glass fibres 	* 	N/A 	N/A
+70194000 	Woven fabrics of glass fibres made from rovings 	* 	N/A 	N/A
+16. Other household items
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+39249000 	Household articles and toilet articles, of plastics (excluding tableware, kitchenware, baths, shower-baths, washbasins, bidets, lavatory pans, seats and covers, flushing cisterns and similar sanitary ware) 	* 	N/A 	N/A
+73239300 	Table, kitchen or other household articles, and parts thereof, of stainless steel (excluding cans, boxes and similar containers of heading 7310; waste baskets; shovels, corkscrews and other articles of the nature of a work implement; articles of cutlery, spoons, ladles, forks etc. Of heading 8211 to 8215; ornamental articles; sanitary ware) 	* 	N/A 	N/A
+73239900 	Table, kitchen or other household articles, and parts thereof, of iron other than cast iron or steel other than stainless (excluding enamelled articles; cans, boxes and similar containers of heading 7310; waste baskets; shovels and other articles of the nature of a work implement; cutlery, spoons, ladles etc. Of heading 8211 to 8215; ornamental articles; sanitary ware) 	* 	N/A 	N/A
+73251000 	Articles of non-malleable cast iron, N.E.S. 	* 	N/A 	N/A
+73259910 	Articles of malleable cast iron, N.E.S. (excluding grinding balls and similar articles for mills) 	* 	N/A 	N/A
+85167970 	Electro-thermic appliances, for domestic use (excluding hairdressing appliances and hand dryers, space-heating and soil-heating apparatus, water heaters, immersion heaters, smoothing irons, microwave ovens, ovens, cookers, cooking plates, boiling rings, grillers, roasters, coffee makers, tea makers, toasters and deep fat fryers) 	* 	N/A 	N/A
+85169000 	Parts of electric water heaters, immersion heaters, space-heating apparatus and soil-heating apparatus, hairdressing apparatus and hand dryers, electro-thermic appliances of a kind used for domestic purposes and electric heating resistors, N.E.S. 	* 	N/A 	N/A
+17. Polyethylene
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+39076100 	Poly’ethylene terephthalate’, in primary forms, having a viscosity number of >= 78 ml/g 	6.5% 	N/A 	N/A
+18. Poultry meat
+
+Where there is a TRQ volume amount for a commodity, the in-quota tariff rate is 0%.
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+02071110 	Fresh or chilled, plucked and gutted fowls of species gallus domesticus, with heads and feet, known as ‘83% chickens’ 	15.8 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071130 	Fresh or chilled, plucked and drawn fowls of species gallus domesticus, without heads and feet but with necks, hearts, livers and gizzards, known as ‘70% chickens’ 	18 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071190 	Fresh or chilled, plucked and drawn fowls of species gallus domesticus, without heads, feet, necks, hearts, livers and gizzards, known as ‘65% chickens’, and other forms of fresh or chilled fowl, not cut in pieces (excluding ‘83% and 70% chickens’) 	19.6 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071210 	Frozen fowls of species gallus domesticus, plucked and drawn, without heads and feet but with necks, hearts, livers and gizzards, known as ‘70% chickens’ 	18 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071290 	Frozen fowls of species gallus domesticus, plucked and drawn, without heads, feet, necks, hearts, livers and gizzards, known as ‘65% chickens’, and other forms of fowl, not cut in pieces (excluding ‘70% chickens’) 	19.6 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071310 	Fresh or chilled boneless cuts of fowls of the species gallus domesticus 	61.8 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071320 	Fresh or chilled halves or quarters of fowls of the species gallus domesticus 	21.6 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071330 	Fresh or chilled whole wings, with or without tips, of fowls of the species gallus domesticus 	16.2 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071340 	Fresh or chilled backs, necks, backs with necks attached, rumps and wing-tips of fowls of the species gallus domesticus 	11.3 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071350 	Fresh or chilled breasts and cuts thereof of fowls of the species gallus domesticus, with bone in 	36.3 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071360 	Fresh or chilled legs and cuts thereof of fowls of the species gallus domesticus, with bone in (excluding halves and quarters, whole wings, with or without tips, backs, necks, backs with necks attached, rumps and wing-tips, breasts, legs and parts thereof) 	27.9 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071370 	Fresh or chilled cuts of fowls of the species gallus domesticus, with bone in (excluding halves and quarters, whole wings, with or without tips, backs, necks, backs with necks attached, rumps and wing-tips, breasts, legs and parts thereof) (excluding halves and quarters whole wings with or without tips, backs, necks, backs with necks attached rumps and wing-tips, breasts legs and parts thereof) 	60.8 euros /100kg 	097704 	Q1: 39,307,400 (kg)
+Q2: 42,682,700 (kg)
+Q3: 42,966,400 (kg)
+Q4: 41,240,300 (kg)
+02071410 	Frozen boneless cuts of fowls of the species gallus domesticus 	61.8 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071420 	Frozen halves or quarters of fowls of the species gallus domesticus 	21.6 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071430 	Frozen whole wings, with or without tips, of fowls of the species gallus domesticus 	16.2 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071440 	Frozen backs, necks, backs with necks attached, rumps and wing-tips of fowls of the species gallus domesticus 	11.3 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071450 	Frozen breasts and cuts thereof of fowls of the species gallus domesticus, with bone in 	36.3 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071460 	Frozen legs and cuts thereof of fowls of the species gallus domesticus, with bone in 	27.9 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02071470 	Frozen cuts of fowls of the species gallus domesticus, with bone in (excluding halves or quarters, whole wings, with or without tips, backs, necks, backs with necks attached, rumps and wing-tips, breasts, legs and cuts thereof) 	60.8 euros /100kg 	097705 	Q1: 19,086,900 (kg)
+Q2: 19,806,700 (kg)
+Q3: 21,090,100 (kg)
+Q4: 19,526,600 (kg)
+02072410 	Fresh or chilled, plucked and drawn turkeys of the species domesticus, without heads and feet but with necks, hearts, livers and gizzards, known as ‘80% turkeys’ 	20.5 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072490 	Fresh or chilled, plucked and drawn turkeys of the species domesticus, without heads, feet, necks, hearts, livers and gizzards, known as ‘73% turkeys’, and other forms of fresh or chilled turkeys, not cut in pieces (excluding ‘80% turkeys’) 	22.5 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072510 	Frozen turkeys of the species domesticus, plucked and drawn, without heads and feet but with necks, hearts, livers and gizzards, known as ‘80% turkeys’ 	20.5 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072590 	Frozen turkeys of the species domesticus, plucked and drawn, without heads, feet, necks, hearts, livers and gizzards, known as ‘73% turkeys’, and other forms of turkeys, not cut in pieces (excluding ‘80% turkeys’) 	22.5 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072610 	Fresh or chilled boneless cuts of turkeys of the species domesticus 	51.4 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072620 	Fresh or chilled halves or quarters of turkeys of the species domesticus 	24.7 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072630 	Fresh or chilled whole wings, with or without tips, of turkeys of the species domesticus 	16.2 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072640 	Fresh or chilled backs, necks, backs with necks attached, rumps and wing-tips of turkeys of the species domesticus 	11.3 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072650 	Fresh or chilled breasts and cuts thereof of turkeys of the species domesticus, with bone in 	41 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072660 	Fresh or chilled drumsticks and cuts thereof of turkeys of the species domesticus, with bone in 	15.4 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072670 	Fresh or chilled legs and cuts thereof of turkeys of the species domesticus, with bone in (excluding drumsticks) 	27.8 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072680 	Fresh or chilled cuts of turkeys of the species domesticus, with bone in (excluding halves or quarters, whole wings, with or without tips, backs, necks, backs with necks attached, rumps and wing-tips, breasts, legs and cuts thereof) 	50.1 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072691 	Fresh or chilled edible livers of turkeys of the species domesticus 	3.8% 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072699 	Fresh or chilled edible offal of turkeys of the species domesticus (excluding livers) 	11.3 euros /100kg 	097709 	Q1: 2,650,400 (kg)
+Q2: 2,500,600 (kg)
+Q3: 8,800,100 (kg)
+Q4: 2,057,800 (kg)
+02072710 	Frozen boneless cuts of turkeys of the species domesticus 	51.4 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072720 	Frozen halves and quarters of turkeys of the species domesticus 	24.7 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072730 	Frozen whole wings, with or without tips, of turkeys of the species domesticus 	16.2 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072740 	Frozen backs, necks, backs with necks attached, rumps and wing-tips of turkeys of the species domesticus 	11.3 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072750 	Frozen breasts and cuts thereof of turkeys of the species domesticus, with bone in 	41 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072760 	Frozen drumsticks and cuts thereof of turkeys of the species domesticus, with bone in 	15.4 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072770 	Frozen legs and cuts thereof of turkeys of the species domesticus, with bone in (excluding drumsticks) 	27.8 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02072780 	Frozen cuts of turkeys of the species domesticus, with bone in (excluding halves or quarters, whole wings, with or without tips, backs, necks, backs with necks attached, rumps and wing-tips, breasts, legs and cuts thereof) 	50.1 euros /100kg 	097710 	Q1: 945,500 (kg)
+Q2: 664,500 (kg)
+Q3: 1,805,500 (kg)
+Q4: 782,700 (kg)
+02074120 	Fresh or chilled domestic ducks, not cut in pieces, plucked, bled, gutted but not drawn, with heads and feet ‘85 % ducks’ 	22.9 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074130 	Fresh or chilled domestic ducks, not cut in pieces, plucked and drawn, without heads and feet but with necks, hearts, livers and gizzard ‘70 % ducks’ 	27.9 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074180 	Fresh or chilled domestic ducks, not cut in pieces, plucked and drawn, without heads and feet and without necks, hearts, livers and gizzards, ‘63 % ducks’ or otherwise presented 	31 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074230 	Frozen domestic ducks, not cut in pieces, plucked and drawn, without heads and feet but with necks, hearts, livers and gizzards ‘70 % ducks’ 	27.9 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074280 	Frozen domestic ducks, not cut in pieces, plucked and drawn, without heads and feet and without necks, hearts, livers and gizzards, ‘63 % ducks’ or otherwise presented 	31 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074410 	Fresh or chilled cuts of domestic ducks, boneless 	77.4 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074421 	Fresh or chilled halves or quarters of domestic ducks 	34 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074451 	Fresh or chilled breasts and cuts thereof, of domestic ducks, with bone inn 	69.7 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074461 	Fresh or chilled legs and cuts thereof, of domestic ducks, with bone in 	27.9 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074471 	Fresh or chilled paletots of domestic ducks, with bone in 	39.8 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074481 	Fresh or chilled cuts of domestic ducks, with bone in, N.E.S. 	74.3 euros /100kg 	097707 	Q1: 420,900 (kg)
+Q2: 425,100 (kg)
+Q3: 572,900 (kg)
+Q4: 469,500 (kg)
+02074510 	Frozen cuts of domestic ducks, boneless 	77.4 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074521 	Frozen halves or quarters of domestic ducks 	34 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074531 	Frozen whole wings of domestic ducks 	16.2 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074541 	Frozen backs, necks, backs with necks attached, rumps and wing-tips of domestic ducks 	11.3 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074551 	Frozen breasts and cuts thereof, of domestic ducks, with bone in 	69.7 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074561 	Frozen legs and cuts thereof, of domestic ducks, with bone in 	27.9 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074571 	Frozen paletots of domestic ducks, with bone in 	39.8 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02074581 	Frozen cuts of domestic ducks, with bone in, N.E.S. 	74.3 euros /100kg 	097708 	Q1: 1,529,400 (kg)
+Q2: 1,164,700 (kg)
+Q3: 1,822,700 (kg);
+Q4: 1,635,200 (kg)
+02109939 	Meat, salted, in brine, dried or smoked (excluding of swine, bovine animals, reindeer, sheep or goats, primates, whales, dolphins and porpoises ‘mammals of the order cetacea’, manatees and dugongs ‘mammals of the order sirenia’, seals, sea lions and walruses, reptiles, and meat, salted, in brine or dried, of horses) 	78.4 euros /100kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023111 	Preparations containing exclusively uncooked turkey meat (excluding sausages and similar products) 	617.9 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023119 	Meat or offal of turkeys ‘poultry’, prepared or preserved, containing >= 57% by weight of meat or offal of poultry (excluding containing exclusively uncooked turkey meat, sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	617.9 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023180 	Meat or offal of domestic turkeys, prepared or preserved, containing < 57% by weight ‘excluding bones’ of meat or offal of poultry (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	617.9 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023211 	Uncooked, prepared or preserved meat or meat offal of fowls of the species gallus domesticus containing >= 57% meat or offal of poultry (excluding sausages and similar products, and preparations of liver) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023219 	Cooked, prepared or preserved meat or meat offal of fowls of the species gallus domesticus containing >= 57% meat or offal of poultry (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	617.9 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023230 	Prepared or preserved meat or meat offal of fowls of the species gallus domesticus containing >= 25% but < 57% of poultry meat or offal (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023290 	Prepared or preserved meat or meat offal of fowls of the species gallus domesticus (excluding that containing >= 25% meat or offal of poultry, meat or offal of turkeys or guinea fowl, sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts and juices) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023921 	Uncooked, prepared or preserved meat or meat offal of ducks, geese and guinea fowl of the species domesticus, containing >= 57% meat or offal of poultry (excluding sausages and similar products, and preparations of liver) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023929 	Cooked, prepared or preserved meat or meat offal of ducks, geese and guinea fowl of the species domesticus, containing >= 57% meat or offal of poultry (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+16023985 	Prepared or preserved meat or meat offal of domestic ducks, geese and guinea fowls, containing < 57% by weight ‘excluding bones’ meat or offal of poultry (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	1668.5 euros /1000kg 	097706 	Q1: 36,946,300 (kg)
+Q2: 37,890,100 (kg)
+Q3: 36,580,600 (kg)
+Q4: 30,565,500 (kg)
+19. Rainbow trout
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+03019190 	Live trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita, oncorhynchus gilae’ 	* 	N/A 	N/A
+03021180 	Fresh or chilled trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita, oncorhynchus gilae’ (excluding of the species ‘oncorhynchus mykiss’, with heads on and gills on, gutted, weighing > 1,2 kg each, or with heads off, gilled and gutted, weighing > 1 kg each) 	* 	N/A 	N/A
+03031490 	Frozen trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita and oncorhynchus gilae’ (excluding oncorhynchus mykiss with heads and gills on, gutted, weighing more than 1,2 kg each, or with heads off, gilled and gutted, weighing more than 1 kg each) 	* 	N/A 	N/A
+03044290 	Fresh or chilled fillets of trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita and oncorhynchus gilae’ (excluding of oncorhynchus mykiss weighing > 400 g each) 	* 	N/A 	N/A
+03048290 	Frozen fillets of trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita and oncorhynchus gilae’ (excluding of oncorhynchus mykiss weighing > 400 g each) 	* 	N/A 	N/A
+03054300 	Smoked trout ‘salmo trutta, oncorhynchus mykiss, oncorhynchus clarki, oncorhynchus aguabonita, oncorhynchus gilae, oncorhynchus apache and oncorhynchus chrysogaster’, including fillets (excluding offal) 	14.0% 	N/A 	N/A
+20. Rice
+
+Where there is a TRQ volume amount for a commodity, the in-quota tariff rate is 0%.
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+10063021 	Semi-milled round grain rice, parboiled 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063023 	Semi-milled medium grain rice, parboiled 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063025 	Semi-milled long grain rice, length-width ratio > 2 but < 3, parboiled 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063027 	Semi-milled long grain rice, length-width ratio >= 3, parboiled 	145 euros /1000kg 	097712 	Annual: 50,000,000 (kg)
+10063042 	Semi-milled round grain rice (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063044 	Semi-milled medium grain rice (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063046 	Semi-milled long grain rice, length-width ratio > 2 but < 3 (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063048 	Semi-milled long grain rice, length-width ratio >= 3 (excluding parboiled) 	145 euros /1000kg 	097712 	Annual: 50,000,000 (kg)
+10063061 	Wholly milled round grain rice, parboiled, whether or not polished or glazed 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063063 	Wholly milled medium grain rice, parboiled, whether or not polished or glazed 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063065 	Wholly milled long grain rice, length-width ratio > 2 but < 3, parboiled, whether or not polished or glazed 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063067 	Wholly milled long grain rice, length-width ratio >= 3, parboiled, whether or not polished or glazed 	145 euros /1000kg 	097712 	Annual: 50,000,000 (kg)
+10063092 	Wholly milled round grain rice, whether or not polished or glazed (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063094 	Wholly milled medium grain rice, whether or not polished or glazed (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063096 	Wholly milled long grain rice, length-width > 2 but < 3, whether or not polished or glazed (excluding parboiled) 	145 euros /1000kg 	097711 	Annual: 75,000,000 (kg)
+10063098 	Wholly milled long grain rice, length-width ratio >= 3, whether or not polished or glazed (excluding parboiled) 	145 euros /1000kg 	097712 	Annual: 50,000,000 (kg)
+10064000 	Broken rice 	65 euros /1000kg 	N/A 	N/A
+21. Rum
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+22084011 	Rum with a content of volatile substances (other than ethyl and methyl alcohol) of >= 225 g/hl of pure alcohol ‘with a 10% tolerance’, in containers holding <= 2 l 	0.6 EUR/% vol/hl + 3.2 EUR/hl 	N/A 	N/A
+22084039 	Rum and other spirits obtained by distilling fermented sugar-cane products, of a value <= 7,9 €/l of pure alcohol, in containers holding <= 2 l (excluding rum with a content of volatile substances [other than ethyl and methyl alcohol] of >= 225 g/hl of pure alcohol ‘with a 10% tolerance’) 	0.6 EUR/% vol/hl + 3.2 EUR/hl 	N/A 	N/A
+22084051 	Rum with a content of volatile substances (other than ethyl and methyl alcohol) of >= 225 g/hl of pure alcohol ‘with a 10% tolerance’, in containers holding > 2 l 	0.6 EUR/% vol/hl 	N/A 	N/A
+22084099 	Rum and other spirits obtained by distilling fermented sugar-cane products, of a value <= 2 €/l of pure alcohol, in containers holding > 2 l (excluding rum with a content of volatile substances [other than ethyl and methyl alcohol] of >= 225 g/hl of pure alcohol ‘with a 10% tolerance’) 	0.6 EUR/% vol/hl 	N/A 	N/A
+22. Sheep meat
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+02041000 	Fresh or chilled lamb carcases and half-carcases 	12.8% + 171.3 euros /100kg 	N/A 	N/A
+02042100 	Fresh or chilled sheep carcases and half-carcases (excluding lambs) 	12.8% + 171.3 euros /100kg 	N/A 	N/A
+02042210 	Fresh or chilled sheep short forequarters 	12.8% + 119.9 euros /100kg 	N/A 	N/A
+02042230 	Fresh or chilled sheep chines and/or best ends 	12.8% + 188.5 euros /100kg 	N/A 	N/A
+02042250 	Fresh or chilled sheep legs 	12.8% + 222.7 euros /100kg 	N/A 	N/A
+02042290 	Fresh or chilled boneless cuts of sheep, with bone in (excluding carcases and half-carcases, short forequarters, chines and/or best ends, and legs) 	12.8% + 222.7 euros /100kg 	N/A 	N/A
+02042300 	Fresh or chilled boneless cuts of sheep 	12.8% + 311.8 euros /100kg 	N/A 	N/A
+02043000 	Frozen lamb carcases and half-carcases 	12.8% + 128.8 euros /100kg 	N/A 	N/A
+02044100 	Frozen sheep carcases and half-carcases (excluding lambs) 	12.8% + 128.8 euros /100kg 	N/A 	N/A
+02044210 	Frozen sheep short forequarters 	12.8% + 90.2 euros /100kg 	N/A 	N/A
+02044230 	Frozen sheep chines and/or best ends 	12.8% + 141.7 euros /100kg 	N/A 	N/A
+02044250 	Frozen sheep legs 	12.8% + 167.5 euros /100kg 	N/A 	N/A
+02044290 	Frozen cuts of sheep, with bone in (excluding carcases and half-carcases, short forequarters, chines and/or best ends, and legs) 	12.8% + 167.5 euros /100kg 	N/A 	N/A
+02044310 	Frozen meat of lambs, boneless, frozen 	12.8% + 234.5 euros /100kg 	N/A 	N/A
+02044390 	Frozen meat of sheep, boneless (excluding lamb) 	12.8% + 234.5 euros /100kg 	N/A 	N/A
+02045011 	Fresh or chilled goat carcases and half-carcases 	12.8% + 171.3 euros /100kg 	N/A 	N/A
+02045013 	Fresh or chilled goat short forequarters 	12.8% + 119.9 euros /100kg 	N/A 	N/A
+02045015 	Fresh or chilled goat chines and/or best ends 	12.8% + 188.5 euros /100kg 	N/A 	N/A
+02045019 	Fresh or chilled legs of goat 	12.8% + 222.7 euros /100kg 	N/A 	N/A
+02045031 	Fresh or chilled cuts of goat, with bone in (excluding carcases and half-carcases, short forequarters, chines and/or best ends, and legs) 	12.8% + 222.7 euros /100kg 	N/A 	N/A
+02045039 	Fresh or chilled boneless cuts of goat 	12.8% + 311.8 euros /100kg 	N/A 	N/A
+02045051 	Frozen goat carcases and half-carcases 	12.8% + 128.8 euros /100kg 	N/A 	N/A
+02045053 	Frozen goat short forequarters 	12.8% + 90.2 euros /100kg 	N/A 	N/A
+02045055 	Frozen goat chines and/or best ends 	12.8% + 141.7 euros /100kg 	N/A 	N/A
+02045059 	Frozen goat legs 	12.8% + 167.5 euros /100kg 	N/A 	N/A
+02045071 	Frozen cuts of goat, with bone in (excluding carcases and half-carcases, short forequarters, chines and/or best ends, and legs) 	12.8% + 167.5 euros /100kg 	N/A 	N/A
+02045079 	Frozen boneless cuts of goat 	12.8% + 234.5 euros /100kg 	N/A 	N/A
+02109921 	Meat of sheep and goats, salted, in brine, dried or smoked, with bone in 	222.7 euros /100kg 	N/A 	N/A
+02109929 	Boneless meat of sheep and goats, salted, in brine, dried or smoked 	311.8 euros /100kg 	N/A 	N/A
+16029091 	Prepared or preserved meat or offal of sheep (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes in containers of a net weight of <= 250 g, preparations of liver, meat extracts, juices, and containing meat or offal of bovines or domestic swine) 	12.8% 	N/A 	N/A
+16029095 	Prepared or preserved meat or offal of goats (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes in containers of a net weight of <= 250 g, preparations of liver, meat extracts, juices, and containing meat or offal of bovines or domestic swine) 	16.6% 	N/A 	N/A
+23. Sugar
+
+Where there is a TRQ volume amount for a commodity, the in-quota tariff rate is 0%.
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+17011210 	Raw beet sugar, for refining (excluding added flavouring or colouring) 	33.9 euros /100kg 	097713 	Annual: 260,000,000 (kg)
+17011290 	Raw beet sugar (excluding for refining and added flavouring or colouring) 	15 euros /100kg 	N/A 	N/A
+17011310 	Raw cane sugar for refining, in solid form, not containing added flavouring or colouring matter, obtained without centrifugation, with sucrose content 69° to 93°, containing only natural anhedral microcrystals [see subheading note 2.] 	33.9 euros /100kg 	097713 	Annual: 260,000,000 (kg)
+17011390 	Raw cane sugar, in solid form, not containing added flavouring or colouring matter, obtained without centrifugation, with sucrose content 69° to 93°, containing only natural anhedral microcrystals [see subheading note 2.] (excluding for refining) 	41.9 euros /100kg 	N/A 	N/A
+17011410 	Raw cane sugar for refining, in solid form, not containing added flavouring or colouring matter (excluding cane sugar of 1701 13) 	33.9 euros /100kg 	097713 	Annual: 260,000,000 (kg)
+17011490 	Raw cane sugar, in solid form, not containing added flavouring or colouring matter (excluding for refining, and cane sugar of 1701 13) 	41.9 euros /100kg 	N/A 	N/A
+17019100 	Refined cane or beet sugar, containing added flavouring or colouring, in solid form 	15 euros /100kg 	N/A 	N/A
+17019910 	White sugar, containing in dry state>= 99,5% sucrose (excluding flavoured or coloured) 	15 euros /100kg 	N/A 	N/A
+17019990 	Cane or beet sugar and chemically pure sucrose, in solid form (excluding cane and beet sugar containing added flavouring or colouring, raw sugar and white sugar) 	15 euros /100kg 	N/A 	N/A
+24. Swine meat (Pork)
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+02031110 	Fresh or chilled domestic swine carcases and half-carcases 	7.1 euros /100kg 	N/A 	N/A
+02031211 	Fresh or chilled with bone in, domestic swine hams and cuts thereof 	10.2 euros /100kg 	N/A 	N/A
+02031219 	Fresh or chilled with bone in, domestic swine shoulders and cuts thereof 	7.9 euros /100kg 	N/A 	N/A
+02031911 	Fresh or chilled fore-ends and cuts thereof of domestic swine 	7.9 euros /100kg 	N/A 	N/A
+02031913 	Fresh or chilled loins and cuts thereof of domestic swine 	11.4 euros /100kg 	N/A 	N/A
+02031915 	Fresh or chilled bellies ‘streaky’ and cuts thereof of domestic swine 	6.1 euros /100kg 	N/A 	N/A
+02031955 	Fresh or chilled boneless meat of domestic swine (excluding bellies and cuts thereof) 	11.4 euros /100kg 	N/A 	N/A
+02031959 	Fresh or chilled meat of domestic swine, with bone in (excluding carcases and half-carcases, hams, shoulders and cuts thereof, and fore-ends, loins, bellies and cuts thereof) 	11.4 euros /100kg 	N/A 	N/A
+02032110 	Frozen domestic swine carcases and half-carcases 	7.1 euros /100kg 	N/A 	N/A
+02032211 	Frozen hams and cuts thereof of domestic swine, with bone in 	10.2 euros /100kg 	N/A 	N/A
+02032219 	Frozen shoulders and cuts thereof of domestic swine, with bone in 	7.9 euros /100kg 	N/A 	N/A
+02032911 	Frozen fore-ends and cuts thereof of domestic swine 	7.9 euros /100kg 	N/A 	N/A
+02032913 	Frozen loins and cuts thereof of domestic swine, with bone in 	11.4 euros /100kg 	N/A 	N/A
+02032915 	Frozen bellies ‘streaky’ and cuts thereof of domestic swine 	6.1 euros /100kg 	N/A 	N/A
+02032955 	Frozen boneless meat of domestic swine (excluding bellies and cuts thereof) 	11.4 euros /100kg 	N/A 	N/A
+02032959 	Frozen meat of domestic swine, with bone in (excluding carcases and half-carcases, hams, shoulders and cuts thereof, and fore-ends, loins, bellies and cuts thereof) 	11.4 euros /100kg 	N/A 	N/A
+02101111 	Domestic swine hams and cuts thereof, salted or in brine, with bone in 	10.2 euros /100kg 	N/A 	N/A
+02101119 	Domestic swine shoulders and cuts thereof, salted or in brine, with bone in 	7.9 euros /100kg 	N/A 	N/A
+02101131 	Domestic swine hams and cuts thereof, dried or smoked, with bone in 	19.9 euros /100kg 	N/A 	N/A
+02101139 	Domestic swine shoulders and cuts thereof, dried or smoked, with bone in 	15.7 euros /100kg 	N/A 	N/A
+02101190 	Hams, shoulders and cuts thereof of non-domestic swine, salted, in brine, dried or smoked, with bone in 	2.0% 	N/A 	N/A
+02101211 	Bellies ‘streaky’ and cuts thereof of domestic swine, salted or in brine 	6.1 euros /100kg 	N/A 	N/A
+02101219 	Bellies ‘streaky’ and cuts thereof of domestic swine, dried or smoked 	10.2 euros /100kg 	N/A 	N/A
+02101290 	Bellies ‘streaky’ and cuts thereof of non-domestic swine, salted, in brine, dried or smoked 	2.0% 	N/A 	N/A
+02101910 	Bacon sides or spencers of domestic swine, salted or in brine 	9 euros /100kg 	N/A 	N/A
+02101920 	Three-quarter-sides or middles of domestic swine, salted or in brine 	9.9 euros /100kg 	N/A 	N/A
+02101930 	Fore-ends and cuts thereof of domestic swine, salted or in brine 	7.9 euros /100kg 	N/A 	N/A
+02101940 	Loins and cuts thereof of domestic swine, salted or in brine 	11.4 euros /100kg 	N/A 	N/A
+02101950 	Meat of domestic swine, salted or in brine (excluding hams, shoulders and cuts thereof, bellies and cuts thereof, bacon sides or spencers, three-quarter sides or middles, and fore-ends, loins and cuts thereof) 	11.4 euros /100kg 	N/A 	N/A
+02101960 	Domestic swine fore-ends and cuts thereof, dried or smoked 	15.7 euros /100kg 	N/A 	N/A
+02101970 	Domestic swine loins and cuts thereof, dried or smoked 	19.7 euros /100kg 	N/A 	N/A
+02101981 	Dried or smoked boneless domestic swine meat (excluding bellies and cuts thereof) 	19.9 euros /100kg 	N/A 	N/A
+02101989 	Dried or smoked domestic swine meat, with bone in (excluding hams, shoulders and cuts thereof, bellies and cuts thereof, and fore-ends, loins and cuts thereof) 	19.9 euros /100kg 	N/A 	N/A
+02101990 	Meat of non-domestic swine, salted, in brine, dried or smoked (excluding hams, shoulders and cuts thereof, with bone in, and bellies and cuts thereof) 	2.0% 	N/A 	N/A
+16024110 	Hams and cuts thereof, of domestic swine, prepared or preserved 	20.6 euros /100kg 	N/A 	N/A
+16024190 	Prepared or preserved hams and cuts thereof, of swine (excluding domestic) 	1.4% 	N/A 	N/A
+16024210 	Prepared or preserved shoulders and cuts thereof, of domestic swine 	17 euros /100kg 	N/A 	N/A
+16024290 	Prepared or preserved shoulders and cuts thereof, of swine (excluding domestic) 	1.4% 	N/A 	N/A
+16024911 	Prepared or preserved domestic swine loins and parts thereof, including mixtures of loins or hams (excluding collars) 	20.6 euros /100kg 	N/A 	N/A
+16024913 	Prepared or preserved domestic swine collars and parts thereof, including mixtures of collars and shoulders 	17 euros /100kg 	N/A 	N/A
+16024915 	Prepared or preserved mixtures of domestic swine hams, shoulders, loins, collars and parts thereof (excluding mixtures of only loins and hams or only collars and shoulders) 	17 euros /100kg 	N/A 	N/A
+16024919 	Meat or offal, including mixtures, of domestic swine, prepared or preserved, containing, by weight, >= 80% of meat or offal of any kind, including pork fat and fats of any kind or origin (excluding hams, shoulders, loins, collars and parts thereof, sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of livers and meat extracts) 	11.3 euros /100kg 	N/A 	N/A
+16024930 	Prepared or preserved meat, offal and mixtures, of domestic swine, containing >= 40% but < 80% meat or offal of any kind and fats of any kind (excluding sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts) 	9.9 euros /100kg 	N/A 	N/A
+16024950 	Prepared or preserved meat, offal and mixtures of domestic swine containing < 40% meat or offal of any kind and fats of any kind (excluding sausages and similar products, homogenised preparations for put up retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts and juices) 	7.1 euros /100kg 	N/A 	N/A
+16024990 	Prepared or preserved meat, offal and mixtures of swine (excluding domestic, hams, shoulders and parts thereof, sausages and similar products, finely homogenised preparations put up for retail sale as infant food or for dietetic purposes, in containers of a net weight of <= 250 g, preparations of liver and meat extracts and juices) 	1.4% 	N/A 	N/A
+25. Textiles and clothing
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+41141010 	Chamois leather, including combination chamois leather, of sheep or lambs (excluding glacé-tanned leather subsequently treated with formaldehyde and leather stuffed with oil only after tanning) 	2.5% 	N/A 	N/A
+41141090 	Chamois leather, including combination chamois leather (excluding that of sheep or lambs, glacé-tanned leather subsequently treated with formaldehyde and leather stuffed with oil only after tanning) 	2.5% 	N/A 	N/A
+42032910 	Protective gloves of leather or composition leather, for all trades 	9.0% 	N/A 	N/A
+42032990 	Gloves, mittens and mitts, of leather or composition leather (excluding special sports gloves and protective gloves for all trades) 	7.0% 	N/A 	N/A
+61033100 	Men’s or boys’ jackets and blazers of wool or fine animal hair knitted or crocheted (excluding wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+61033200 	Men’s or boys’ jackets and blazers of cotton knitted or crocheted (excluding wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+61033300 	Men’s or boys’ jackets and blazers of synthetic fibres, knitted or crocheted (excluding wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+61033900 	Men’s or boys’ jackets and blazers of textile materials (excluding of wool, fine animal hair, cotton or synthetic fibres, wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+61034200 	Men’s or boys’ trousers, bib and brace overalls, breeches and shorts of cotton, knitted or crocheted (excluding swimwear and underpants) 	12.0% 	N/A 	N/A
+61034300 	Men’s or boys’ trousers, bib and brace overalls, breeches and shorts of synthetic fibres, knitted or crocheted (excluding swimwear and underpants) 	12.0% 	N/A 	N/A
+61034900 	Men’s or boys’ trousers, bib and brace overalls, breeches and shorts of textile materials, knitted or crocheted (excluding of wool, fine animal hair, cotton or synthetic fibres, swimwear and underpants) 	12.0% 	N/A 	N/A
+61051000 	Men’s or boys’ shirts of cotton, knitted or crocheted (excluding nightshirts, t-shirts, singlets and other vests) 	12.0% 	N/A 	N/A
+61052010 	Men’s or boys’ shirts of synthetic fibres, knitted or crocheted (excluding nightshirts, t-shirts, singlets and other vests) 	12.0% 	N/A 	N/A
+61052090 	Men’s or boys’ shirts of artificial fibres, knitted or crocheted (excluding nightshirts, t-shirts, singlets and other vests) 	12.0% 	N/A 	N/A
+61059010 	Men’s or boys’ shirts of wool or fine animal hair, knitted or crocheted (excluding nightshirts, t-shirts, singlets and other vests) 	12.0% 	N/A 	N/A
+61059090 	Men’s or boys’ shirts of textile materials, knitted or crocheted (excluding of cotton, man-made fibres, wool or fine animal hair, nightshirts, t-shirts, singlets and other vests) 	12.0% 	N/A 	N/A
+61071100 	Men’s or boys’ underpants and briefs of cotton, knitted or crocheted 	12.0% 	N/A 	N/A
+61071200 	Men’s or boys’ underpants and briefs of man-made fibres, knitted or crocheted 	12.0% 	N/A 	N/A
+61072100 	Men’s or boys’ nightshirts and pyjamas of cotton, knitted or crocheted (excluding vests and singlets) 	12.0% 	N/A 	N/A
+61072200 	Men’s or boys’ nightshirts and pyjamas of man-made fibres, knitted or crocheted (excluding vests and singlets) 	12.0% 	N/A 	N/A
+61082100 	Women’s or girls’ briefs and panties of cotton, knitted or crocheted 	12.0% 	N/A 	N/A
+61082200 	Women’s or girls’ briefs and panties of man-made fibres, knitted or crocheted 	12.0% 	N/A 	N/A
+61083100 	Women’s or girls’ nightdresses and pyjamas of cotton, knitted or crocheted (excluding t-shirts, vests and négligés) 	12.0% 	N/A 	N/A
+61083200 	Women’s or girls’ nightdresses and pyjamas of man-made fibres, knitted or crocheted (excluding t-shirts, vests and négligés) 	12.0% 	N/A 	N/A
+61089200 	Women’s or girls’ négligés, bathrobes, dressing gowns, housejackets and similar articles of man-made fibres, knitted or crocheted (excluding vests, slips, petticoats, briefs and panties, nightdresses, pyjamas, brassiéres, girdles, corsets and similar articles) 	12.0% 	N/A 	N/A
+61091000 	T-shirts, singlets and other vests of cotton, knitted or crocheted 	12.0% 	N/A 	N/A
+61102010 	Lightweight fine knit roll, polo or turtleneck jumpers and pullovers of cotton, knitted or crocheted 	12.0% 	N/A 	N/A
+61102091 	Men’s or boys’ jerseys, pullovers, cardigans, waistcoats and similar articles, of cotton, knitted or crocheted (excluding lightweight fine knit roll, polo or turtleneck jumpers and pullovers and wadded waistcoats) 	12.0% 	N/A 	N/A
+61102099 	Women’s or girls’ jerseys, pullovers, cardigans, waistcoats and similar articles, of cotton, knitted or crocheted (excluding lightweight fine knit roll, polo or turtleneck jumpers and pullovers and wadded waistcoats)) 	12.0% 	N/A 	N/A
+61103010 	Lightweight fine knit roll, polo or turtleneck jumpers and pullovers of man-made fibres, knitted or crocheted 	12.0% 	N/A 	N/A
+61103091 	Men’s or boys’ jerseys, pullovers, cardigans, waistcoats and similar articles, of man-made fibres, knitted or crocheted (excluding lightweight fine knit roll, polo or turtleneck jumpers and pullovers and wadded waistcoats) 	12.0% 	N/A 	N/A
+61103099 	Women’s or girls’ jerseys, pullovers, cardigans, waistcoats and similar articles, of man-made fibres, knitted or crocheted (excluding lightweight fine knit roll, polo or turtleneck jumpers and pullovers and wadded waistcoats) 	12.0% 	N/A 	N/A
+61112010 	Babies’ gloves, mittens and mitts, of cotton, knitted or crocheted 	8.9% 	N/A 	N/A
+61112090 	Babies’ garments and clothing accessories, of cotton, knitted or crocheted (excluding gloves, mittens, mitts and hats) 	12.0% 	N/A 	N/A
+61113010 	Babies’ gloves, mittens and mitts for babies, of synthetic fibres, knitted or crocheted 	8.9% 	N/A 	N/A
+61113090 	Babies’ garments and clothing accessories, of synthetic fibres, knitted or crocheted (excluding gloves, mittens, mitts and hats) 	12.0% 	N/A 	N/A
+61142000 	Special garments for professional, sporting or other purposes, N.E.S., of cotton, knitted or crocheted 	12.0% 	N/A 	N/A
+61161020 	Gloves, impregnated, coated or covered with rubber, knitted or crocheted 	8.0% 	N/A 	N/A
+61161080 	Mittens and mitts, impregnated, coated or covered with plastics or rubber, knitted or crocheted, and gloves, impregnated, coated or covered with plastics, knitted or crocheted 	8.9% 	N/A 	N/A
+62033100 	Men’s or boys’ jackets and blazers of wool or fine animal hair (excluding knitted or crocheted and wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+62033210 	Men’s or boys’ jackets and blazers of cotton, industrial and occupational (excluding knitted or crocheted, and wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+62033290 	Men’s or boys’ jackets and blazers of cotton (excluding knitted or crocheted industrial and occupational and wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+62033310 	Men’s or boys’ jackets and blazers of synthetic fibres, industrial and occupational (excluding knitted or crocheted, and wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+62033390 	Men’s or boys’ jackets and blazers of synthetic fibres (excluding knitted or crocheted, industrial and occupational, and wind-jackets and similar articles) 	12.0% 	N/A 	N/A
+62034211 	Men’s or boys’ industrial and occupational trousers and breeches of cotton (excluding knitted or crocheted and bib and brace overalls) 	12.0% 	N/A 	N/A
+62034231 	Men’s or boys’ trousers and breeches of cotton denim (excluding knitted or crocheted, industrial and occupational, bib and brace overalls and underpants) 	12.0% 	N/A 	N/A
+62034233 	Men’s or boys’ trousers and breeches of cotton cut corduroy (excluding knitted or crocheted, industrial and occupational, bib and brace overalls and underpants) 	12.0% 	N/A 	N/A
+62034235 	Men’s or boys’ trousers and breeches of cotton (excluding denim, cut corduroy, knitted or crocheted, industrial and occupational, bib and brace overalls and underpants) 	12.0% 	N/A 	N/A
+62034251 	Men’s or boys’ bib and brace overalls, of cotton, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62034259 	Men’s or boys’ bib and brace overalls, of cotton (excluding knitted or crocheted, industrial and occupational) 	12.0% 	N/A 	N/A
+62034290 	Men’s or boys’ shorts of cotton (excluding knitted or crocheted, swimwear and underpants) 	12.0% 	N/A 	N/A
+62034311 	Men’s or boys’ trousers and breeches of synthetic fibres, industrial and occupational (excluding knitted or crocheted and bib and brace overalls) 	12.0% 	N/A 	N/A
+62034319 	Men’s or boys’ trousers and breeches of synthetic fibres (excluding knitted or crocheted, industrial and occupational, bib and brace overalls and underpants) 	12.0% 	N/A 	N/A
+62034331 	Men’s or boys’ bib and brace overalls of synthetic fibres, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62034339 	Men’s or boys’ bib and brace overalls of synthetic fibres (excluding knitted or crocheted, and industrial and occupational) 	12.0% 	N/A 	N/A
+62034390 	Men’s or boys’ shorts of synthetic fibres (excluding knitted or crocheted, underpants and swimwear) 	12.0% 	N/A 	N/A
+62034911 	Men’s or boys’ trousers and breeches of artificial fibres, industrial and occupational (excluding knitted or crocheted and bib and brace overalls) 	12.0% 	N/A 	N/A
+62034919 	Men’s or boys’ trousers and breeches of artificial fibres (excluding knitted or crocheted, industrial and occupational, bib and brace overalls and underpants) 	12.0% 	N/A 	N/A
+62034931 	Men’s or boys’ bib and brace overalls of artificial fibres, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62034939 	Men’s or boys’ bib and brace overalls of artificial fibres (excluding knitted or crocheted, industrial and occupational) 	12.0% 	N/A 	N/A
+62034950 	Men’s or boys’ shorts of artificial fibres (excluding knitted or crocheted, underpants and swimwear) 	12.0% 	N/A 	N/A
+62034990 	Men’s or boys’ trousers, bib and brace overalls, breeches and shorts of textile materials (excluding of wool, fine animal hair, cotton or man-made fibres, knitted or crocheted, underpants and swimwear) 	12.0% 	N/A 	N/A
+62046211 	Women’s or girls’ trousers and breeches of cotton, industrial and occupational (excluding knitted or crocheted and bib and brace overalls) 	12.0% 	N/A 	N/A
+62046231 	Women’s or girls’ cotton denim trousers and breeches (excluding industrial and occupational, bib and brace overalls and panties) 	12.0% 	N/A 	N/A
+62046233 	Women’s or girls’ trousers and breeches of cotton cut corduroy (excluding industrial and occupational, bib and brace overalls and panties) 	12.0% 	N/A 	N/A
+62046239 	Women’s or girls’ trousers and breeches, of cotton (not of cut corduroy, of denim or knitted or crocheted and excluding industrial and occupational clothing, bib and brace overalls, briefs and tracksuit bottoms) 	12.0% 	N/A 	N/A
+62046251 	Women’s or girls’ bib and brace overalls, of cotton, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62046259 	Women’s or girls’ cotton bib and brace overalls (excluding knitted or crocheted, industrial and occupational) 	12.0% 	N/A 	N/A
+62046290 	Women’s or girls’ cotton shorts (excluding knitted or crocheted, panties and swimwear) 	12.0% 	N/A 	N/A
+62046311 	Women’s or girls’ trousers and breeches, of synthetic fibres, industrial and occupational (excluding knitted or crocheted and bib and brace overalls) 	12.0% 	N/A 	N/A
+62046318 	Women’s or girls’ trousers and breeches, of synthetic fibres (not of cut corduroy, of denim or knitted or crocheted and excluding industrial and occupational clothing, bib and brace overalls, briefs and tracksuit bottoms) 	12.0% 	N/A 	N/A
+62046331 	Women’s or girls’ bib and brace overalls, of synthetic fibres, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62046339 	Women’s or girls’ bib and brace overalls, of synthetic fibres (excluding knitted or crocheted, occupational and industrial) 	12.0% 	N/A 	N/A
+62046390 	Women’s or girls’ shorts of synthetic fibres (excluding knitted or crocheted, panties and swimwear) 	12.0% 	N/A 	N/A
+62046911 	Women’s or girls’ trousers and breeches, of artificial fibres, industrial and occupational (excluding knitted or crocheted, and bib and brace overalls) 	12.0% 	N/A 	N/A
+62046918 	Women’s or girls’ trousers and breeches, of artificial fibres (not of cut corduroy, of denim or knitted or crocheted and excluding industrial and occupational clothing, bib and brace overalls, briefs and tracksuit bottoms) 	12.0% 	N/A 	N/A
+62046931 	Women’s or girls’ bib and brace overalls, of artificial fibres, industrial and occupational (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62046939 	Women’s or girls’ bib and brace overalls of artificial fibres (excluding knitted or crocheted, industrial and occupational) 	12.0% 	N/A 	N/A
+62046950 	Women’s or girls’ shorts of artificial fibres (excluding knitted or crocheted, panties and swimwear) 	12.0% 	N/A 	N/A
+62046990 	Women’s or girls’ trousers, bib and brace overalls, breeches and shorts of textile materials (excluding of wool, fine animal hair, cotton or man-made fibres, knitted or crocheted, panties and swimwear) 	12.0% 	N/A 	N/A
+62052000 	Men’s or boys’ shirts of cotton (excluding knitted or crocheted, nightshirts, singlets and other vests) 	12.0% 	N/A 	N/A
+62053000 	Men’s or boys’ shirts of man-made fibres (excluding knitted or crocheted, nightshirts, singlets and other vests) 	12.0% 	N/A 	N/A
+62082100 	Women’s or girls’ nightdresses and pyjamas of cotton (excluding knitted or crocheted, vests and négligés) 	12.0% 	N/A 	N/A
+62082200 	Women’s or girls’ nightdresses and pyjamas of man-made fibres (excluding knitted or crocheted, vests and négligés) 	12.0% 	N/A 	N/A
+62092000 	Babies’ garments and clothing accessories of cotton (excluding knitted or crocheted and hats, napkins and napkin liners [see 9619]) 	10.5% 	N/A 	N/A
+62111100 	Men’s or boys’ swimwear (excluding knitted or crocheted) 	12.0% 	N/A 	N/A
+62121010 	Brassières of all types of textile materials, whether or not elasticated, including knitted or crocheted, in a set made up for retail sale containing a brassière and a brief 	6.5% 	N/A 	N/A
+62121090 	Brassieres of all types of textile materials, whether or not elasticated, including knitted or crocheted (excluding in a set made up for retail sale containing a brassière and a brief) 	6.5% 	N/A 	N/A
+63022210 	Printed bedlinen of non-wovens of man-made fibres 	6.9% 	N/A 	N/A
+63022290 	Printed bedlinen of man-made fibres (excluding non-wovens and knitted or crocheted) 	12.0% 	N/A 	N/A
+63023100 	Bedlinen of cotton (excluding printed, knitted or crocheted) 	12.0% 	N/A 	N/A
+63023210 	Bedlinen of non-wovens of man-made fibres (excluding printed) 	6.9% 	N/A 	N/A
+63023290 	Bedlinen of man-made fibres (excluding non-wovens, printed, knitted or crocheted) 	12.0% 	N/A 	N/A
+63023920 	Bedlinen of flax or ramie (excluding printed, knitted or crocheted) 	12.0% 	N/A 	N/A
+63023990 	Bedlinen of textile materials (excluding of cotton, man-made fibres, flax or ramie, printed, knitted or crocheted) 	12.0% 	N/A 	N/A
+63026000 	Toilet linen and kitchen linen, of terry towelling or similar terry fabrics of cotton (excluding floorcloths, polishing cloths, dishcloths and dusters) 	12.0% 	N/A 	N/A
+63029100 	Toilet linen and kitchen linen of cotton (excluding of terry fabrics, floorcloths, polishing cloths, dishcloths and dusters) 	12.0% 	N/A 	N/A
+26. Tyres and wheels
+Commodity code 	Commodity description 	Tariff rate 	TRQ order number 	TRQ volume amounts
+40112090 	Pneumatic tyres, new, of rubber, of a kind used for buses or lorries, with a load index of > 121 	4.5% 	N/A 	N/A
+40121200 	Retreaded pneumatic tyres, of rubber, of a kind used on buses or lorries 	* 	N/A 	N/A
+87087010 	Road wheels and parts and accessories thereof, for the industrial assembly of: pedestrian-controlled tractors, motor cars and vehicles principally designed for the transport of persons, vehicles for the transport of goods with compression-ignition internal combustion piston engine ‘diesel or semi-diesel engine’ <= 2500 cm³ or with spark-ignition internal piston engine <= 2800 cm³, and special purpose motor vehicles of heading 8705, N.E.S. 	* 	N/A 	N/A
+87087050 	Aluminium road wheels, aluminium parts and accessories thereof, for tractors, motor vehicles for the transport of ten or more persons, motor cars and other motor vehicles principally designed for the transport of persons, motor vehicles for the transport of goods and special purpose motor vehicles (excluding those for the industrial assembly of certain motor vehicles of subheading 8708.70.10) 	* 	N/A 	N/A
+Contents
+Is this page useful?
+Yes this page is useful
+No this page is not useful
+Is there anything wrong with this page?
+Prepare for Brexit
+
+    Prepare your business or organisation for Brexit
+    Prepare for Brexit if you live in the UK
+
+    Living in Europe after Brexit
+    Continue to live in the UK after Brexit
+
+Services and information
+
+    Benefits
+    Births, deaths, marriages and care
+    Business and self-employed
+    Childcare and parenting
+    Citizenship and living in the UK
+    Crime, justice and the law
+    Disabled people
+    Driving and transport
+
+    Education and learning
+    Employing people
+    Environment and countryside
+    Housing and local services
+    Money and tax
+    Passports, travel and living abroad
+    Visas and immigration
+    Working, jobs and pensions
+
+Departments and policy
+
+    How government works
+    Departments
+    Worldwide
+    Services
+    Guidance and regulation
+    News and communications
+    Policy papers and consultations
+    Transparency and freedom of information releases
+
+Support links
+
+    Help Cookies Contact Accessibility Terms and conditions Rhestr o Wasanaethau Cymraeg Built by the Government Digital Service
+
+Open Government Licence
+
+All content is available under the Open Government Licence v3.0, except where otherwise stated
+© Crown copyright

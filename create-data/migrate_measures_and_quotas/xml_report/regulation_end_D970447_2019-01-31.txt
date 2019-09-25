@@ -1,0 +1,4 @@
+envelope id = [ID]
+Transaction count = 182
+Record count = 182
+Measure count = 182

@@ -1,0 +1,54 @@
+	<env:transaction id="[TRANSACTION_ID]">
+		<env:app.message id="[MESSAGE_ID1]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>205</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER1]</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:certificate>
+						<oub:certificate.type.code>[CERTIFICATE_TYPE_CODE]</oub:certificate.type.code>
+						<oub:certificate.code>[CERTIFICATE_CODE]</oub:certificate.code>
+						<oub:validity.start.date>[VALIDITY_START_DATE]</oub:validity.start.date>
+						<oub:validity.end.date>[VALIDITY_END_DATE]</oub:validity.end.date>
+					</oub:certificate>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+		<env:app.message id="[MESSAGE_ID2]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>205</oub:record.code>
+					<oub:subrecord.code>05</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER2]</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:certificate.description.period>
+						<oub:certificate.description.period.sid>[CERTIFICATE_DESCRIPTION_PERIOD_SID]</oub:certificate.description.period.sid>
+						<oub:certificate.type.code>[CERTIFICATE_TYPE_CODE]</oub:certificate.type.code>
+						<oub:certificate.code>[CERTIFICATE_CODE]</oub:certificate.code>
+						<oub:validity.start.date>[VALIDITY_START_DATE]</oub:validity.start.date>
+					</oub:certificate.description.period>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+		<env:app.message id="[MESSAGE_ID3]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>205</oub:record.code>
+					<oub:subrecord.code>10</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER3]</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:certificate.description>
+						<oub:certificate.description.period.sid>[CERTIFICATE_DESCRIPTION_PERIOD_SID]</oub:certificate.description.period.sid>
+						<oub:language.id>EN</oub:language.id>
+						<oub:certificate.type.code>[CERTIFICATE_TYPE_CODE]</oub:certificate.type.code>
+						<oub:certificate.code>[CERTIFICATE_CODE]</oub:certificate.code>
+						<oub:description>[DESCRIPTION]</oub:description>
+					</oub:certificate.description>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>

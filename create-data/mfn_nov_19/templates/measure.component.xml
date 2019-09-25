@@ -1,0 +1,19 @@
+		<env:app.message id="[MESSAGE_ID]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>430</oub:record.code>
+					<oub:subrecord.code>05</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER]</oub:record.sequence.number>
+					<oub:update.type>[UPDATE_TYPE]</oub:update.type>
+					<oub:measure.component>
+						<oub:measure.sid>[MEASURE_SID]</oub:measure.sid>
+						<oub:duty.expression.id>[DUTY_EXPRESSION_ID]</oub:duty.expression.id>
+						<oub:duty.amount>[DUTY_AMOUNT]</oub:duty.amount>
+						<oub:monetary.unit.code>[MONETARY_UNIT_CODE]</oub:monetary.unit.code>
+						<oub:measurement.unit.code>[MEASUREMENT_UNIT_CODE]</oub:measurement.unit.code>
+						<oub:measurement.unit.qualifier.code>[MEASUREMENT_UNIT_QUALIFIER_CODE]</oub:measurement.unit.qualifier.code>
+					</oub:measure.component>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>

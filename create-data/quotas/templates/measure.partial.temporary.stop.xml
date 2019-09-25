@@ -1,0 +1,22 @@
+		<env:app.message id="[MESSAGE_ID]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>430</oub:record.code>
+					<oub:subrecord.code>25</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER]</oub:record.sequence.number>
+					<oub:update.type>[UPDATE_TYPE]</oub:update.type>
+					<oub:measure.partial.temporary.stop>
+						<oub:measure.sid>[MEASURE_SID]</oub:measure.sid>
+						<oub:validity.start.date>[VALIDITY_START_DATE]</oub:validity.start.date>
+						<oub:validity.end.date>[VALIDITY_END_DATE]</oub:validity.end.date>
+						<oub:partial.temporary.stop.regulation.id>[PARTIAL_TEMPORARY_STOP_REGULATION_ID]</oub:partial.temporary.stop.regulation.id>
+						<oub:partial.temporary.stop.regulation.officialjournal.number>[PARTIAL_TEMPORARY_STOP_REGULATION_OFFICIALJOURNAL_NUMBER]</oub:partial.temporary.stop.regulation.officialjournal.number>
+						<oub:partial.temporary.stop.regulation.officialjournal.page>[PARTIAL_TEMPORARY_STOP_REGULATION_OFFICIALJOURNAL_PAGE]</oub:partial.temporary.stop.regulation.officialjournal.page>
+						<oub:abrogation.regulation.id>[ABROGATION_REGULATION_ID]</oub:abrogation.regulation.id>
+						<oub:abrogation.regulation.officialjournal.number>[ABROGATION_REGULATION_OFFICIALJOURNAL_NUMBER]</oub:abrogation.regulation.officialjournal.number>
+						<oub:abrogation.regulation.officialjournal.page>[ABROGATION_REGULATION_OFFICIALJOURNAL_PAGE]</oub:abrogation.regulation.officialjournal.page>
+					</oub:measure.partial.temporary.stop>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>

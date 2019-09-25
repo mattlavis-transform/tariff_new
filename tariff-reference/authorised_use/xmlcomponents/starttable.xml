@@ -1,0 +1,83 @@
+    <w:tbl>
+      <w:tblPr>
+        <w:tblStyle w:val="ListTable3"/>
+        <w:tblW w:w="5000" w:type="pct"/>
+        <w:tblLook w:val="0620" w:firstRow="1" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:noHBand="1" w:noVBand="1"/>
+      </w:tblPr>
+      <w:tr>
+        <w:trPr>
+          <w:cnfStyle w:val="100000000000" w:firstRow="1" w:lastRow="0" w:firstColumn="0" w:lastColumn="0" w:oddVBand="0" w:evenVBand="0" w:oddHBand="0" w:evenHBand="0" w:firstRowFirstColumn="0" w:firstRowLastColumn="0" w:lastRowFirstColumn="0" w:lastRowLastColumn="0"/>
+          <w:cantSplit/>
+          <w:tblHeader/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:right w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+            </w:tcBorders>
+            <w:noWrap/>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="NormalinTable"/>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>Commodity code</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="3000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+            </w:tcBorders>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="NormalinTable"/>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>Description of goods / use</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1000" w:type="pct"/>
+            <w:tcBorders>
+              <w:top w:val="single" w:sz="4" w:space="0" w:color="A6A6A6" w:themeColor="background1" w:themeShade="A6"/>
+              <w:left w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+              <w:right w:val="single" w:sz="4" w:space="0" w:color="000000" w:themeColor="text1"/>
+            </w:tcBorders>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="NormalinTable"/>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>Duty expression</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>

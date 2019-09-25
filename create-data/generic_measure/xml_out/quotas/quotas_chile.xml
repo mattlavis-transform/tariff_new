@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:envelope xmlns="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0" id="ENV">
+	<env:transaction id="100000">
+		<env:app.message id="1">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100000</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>1</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20002</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091921</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1330</oub:quota.order.number.sid>
+						<oub:volume>1150000.00</oub:volume>
+						<oub:initial.volume>1150000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091921 for geography CL : Chile on pigmeat from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100001">
+		<env:app.message id="2">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100001</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>2</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20003</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091921</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1330</oub:quota.order.number.sid>
+						<oub:volume>1574000.00</oub:volume>
+						<oub:initial.volume>1574000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091921 for geography CL : Chile on pigmeat from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100002">
+		<env:app.message id="3">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100002</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>3</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20004</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091922</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1332</oub:quota.order.number.sid>
+						<oub:volume>657000.00</oub:volume>
+						<oub:initial.volume>657000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091922 for geography CL : Chile on meat of sheep or goats, fresh, chilled or frozen. from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100003">
+		<env:app.message id="4">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100003</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>4</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20005</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091922</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1332</oub:quota.order.number.sid>
+						<oub:volume>899000.00</oub:volume>
+						<oub:initial.volume>899000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091922 for geography CL : Chile on meat of sheep or goats, fresh, chilled or frozen. from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100004">
+		<env:app.message id="5">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100004</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>5</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20006</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091923</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1334</oub:quota.order.number.sid>
+						<oub:volume>7951000.00</oub:volume>
+						<oub:initial.volume>7951000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091923 for geography CL : Chile on poultrymeat from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100005">
+		<env:app.message id="6">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100005</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>6</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20007</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091923</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1334</oub:quota.order.number.sid>
+						<oub:volume>10880000.00</oub:volume>
+						<oub:initial.volume>10880000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091923 for geography CL : Chile on poultrymeat from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100006">
+		<env:app.message id="7">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100006</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>7</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20008</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091924</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1336</oub:quota.order.number.sid>
+						<oub:volume>342000.00</oub:volume>
+						<oub:initial.volume>342000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091924 for geography CL : Chile on cheese and curd from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100007">
+		<env:app.message id="8">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100007</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>8</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20009</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091924</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1336</oub:quota.order.number.sid>
+						<oub:volume>462000.00</oub:volume>
+						<oub:initial.volume>462000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091924 for geography CL : Chile on cheese and curd from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100008">
+		<env:app.message id="9">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100008</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>9</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20010</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091925</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1338</oub:quota.order.number.sid>
+						<oub:volume>121000.00</oub:volume>
+						<oub:initial.volume>121000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091925 for geography CL : Chile on garlic from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100009">
+		<env:app.message id="10">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100009</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>10</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20011</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091925</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1338</oub:quota.order.number.sid>
+						<oub:volume>163000.00</oub:volume>
+						<oub:initial.volume>163000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091925 for geography CL : Chile on garlic from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100010">
+		<env:app.message id="11">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100010</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>11</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20012</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091926</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1340</oub:quota.order.number.sid>
+						<oub:volume>228000.00</oub:volume>
+						<oub:initial.volume>228000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091926 for geography CL : Chile on cereal grains from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100011">
+		<env:app.message id="12">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100011</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>12</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20013</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091926</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1340</oub:quota.order.number.sid>
+						<oub:volume>308000.00</oub:volume>
+						<oub:initial.volume>308000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091926 for geography CL : Chile on cereal grains from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100012">
+		<env:app.message id="13">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100012</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>13</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20014</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091927</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1342</oub:quota.order.number.sid>
+						<oub:volume>114000.00</oub:volume>
+						<oub:initial.volume>114000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091927 for geography CL : Chile on mushrooms of the genus agaricus, prepared or preserved from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100013">
+		<env:app.message id="14">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100013</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>14</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20015</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091927</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1342</oub:quota.order.number.sid>
+						<oub:volume>154000.00</oub:volume>
+						<oub:initial.volume>154000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091927 for geography CL : Chile on mushrooms of the genus agaricus, prepared or preserved from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100014">
+		<env:app.message id="15">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100014</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>15</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20016</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091928</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1344</oub:quota.order.number.sid>
+						<oub:volume>228000.00</oub:volume>
+						<oub:initial.volume>228000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091928 for geography CL : Chile on cherries from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100015">
+		<env:app.message id="16">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100015</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>16</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20017</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091928</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1344</oub:quota.order.number.sid>
+						<oub:volume>308000.00</oub:volume>
+						<oub:initial.volume>308000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091928 for geography CL : Chile on cherries from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100016">
+		<env:app.message id="17">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100016</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>17</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20018</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091931</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1350</oub:quota.order.number.sid>
+						<oub:volume>51000.00</oub:volume>
+						<oub:initial.volume>51000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091931 for geography CL : Chile on sugar confectionery, not containing cocoa from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100017">
+		<env:app.message id="18">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100017</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>18</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20019</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091931</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1350</oub:quota.order.number.sid>
+						<oub:volume>67000.00</oub:volume>
+						<oub:initial.volume>67000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091931 for geography CL : Chile on sugar confectionery, not containing cocoa from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100018">
+		<env:app.message id="19">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100018</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>19</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20020</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091932</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1352</oub:quota.order.number.sid>
+						<oub:volume>51000.00</oub:volume>
+						<oub:initial.volume>51000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091932 for geography CL : Chile on chocolate from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100019">
+		<env:app.message id="20">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100019</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>20</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20021</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091932</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1352</oub:quota.order.number.sid>
+						<oub:volume>67000.00</oub:volume>
+						<oub:initial.volume>67000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091932 for geography CL : Chile on chocolate from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100020">
+		<env:app.message id="21">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100020</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>21</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20022</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091933</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1354</oub:quota.order.number.sid>
+						<oub:volume>63000.00</oub:volume>
+						<oub:initial.volume>63000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091933 for geography CL : Chile on sweet biscuits, waffles and wafers from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100021">
+		<env:app.message id="22">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100021</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>22</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20023</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091933</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1354</oub:quota.order.number.sid>
+						<oub:volume>83000.00</oub:volume>
+						<oub:initial.volume>83000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091933 for geography CL : Chile on sweet biscuits, waffles and wafers from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100022">
+		<env:app.message id="23">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100022</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>23</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20024</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091934</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1356</oub:quota.order.number.sid>
+						<oub:volume>632000.00</oub:volume>
+						<oub:initial.volume>632000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091934 for geography CL : Chile on hake, fresh or chilled from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100023">
+		<env:app.message id="24">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100023</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>24</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20025</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091934</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1356</oub:quota.order.number.sid>
+						<oub:volume>833000.00</oub:volume>
+						<oub:initial.volume>833000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091934 for geography CL : Chile on hake, fresh or chilled from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100024">
+		<env:app.message id="25">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100024</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>25</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20026</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091935</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1358</oub:quota.order.number.sid>
+						<oub:volume>5000.00</oub:volume>
+						<oub:initial.volume>5000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091935 for geography CL : Chile on fish fillets; smoked fish from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100025">
+		<env:app.message id="26">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100025</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>26</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20027</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091935</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1358</oub:quota.order.number.sid>
+						<oub:volume>7000.00</oub:volume>
+						<oub:initial.volume>7000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091935 for geography CL : Chile on fish fillets; smoked fish from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100026">
+		<env:app.message id="27">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100026</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>27</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20028</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091936</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1360</oub:quota.order.number.sid>
+						<oub:volume>19000.00</oub:volume>
+						<oub:initial.volume>19000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091936 for geography CL : Chile on prepared or preserved fish from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100027">
+		<env:app.message id="28">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100027</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>28</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20029</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091936</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1360</oub:quota.order.number.sid>
+						<oub:volume>25000.00</oub:volume>
+						<oub:initial.volume>25000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091936 for geography CL : Chile on prepared or preserved fish from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100028">
+		<env:app.message id="29">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100028</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>29</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20030</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091944</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>3161</oub:quota.order.number.sid>
+						<oub:volume>127000.00</oub:volume>
+						<oub:initial.volume>127000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091944 for geography CL : Chile on certain agricultural products originating in chile from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100029">
+		<env:app.message id="30">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100029</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>30</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20031</oub:quota.definition.sid>
+						<oub:quota.order.number.id>091944</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>3161</oub:quota.order.number.sid>
+						<oub:volume>167000.00</oub:volume>
+						<oub:initial.volume>167000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 091944 for geography CL : Chile on certain agricultural products originating in chile from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100030">
+		<env:app.message id="31">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100030</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>31</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20032</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092115</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1432</oub:quota.order.number.sid>
+						<oub:volume>657000.00</oub:volume>
+						<oub:initial.volume>657000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092115 for geography CL : Chile on boneless lamb from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100031">
+		<env:app.message id="32">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100031</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>32</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20033</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092115</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1432</oub:quota.order.number.sid>
+						<oub:volume>899000.00</oub:volume>
+						<oub:initial.volume>899000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092115 for geography CL : Chile on boneless lamb from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100032">
+		<env:app.message id="33">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100032</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>33</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20034</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092116</oub:quota.order.number.id>
+						<oub:validity.start.date>2019-03-30</oub:validity.start.date>
+						<oub:validity.end.date>2019-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1434</oub:quota.order.number.sid>
+						<oub:volume>657000.00</oub:volume>
+						<oub:initial.volume>657000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092116 for geography CL : Chile on boneless mutton/sheep from 2019-03-30 to 2019-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+	<env:transaction id="100033">
+		<env:app.message id="34">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>100033</oub:transaction.id>
+					<oub:record.code>370</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>34</oub:record.sequence.number>
+					<oub:update.type>3</oub:update.type>
+					<oub:quota.definition>
+						<oub:quota.definition.sid>20035</oub:quota.definition.sid>
+						<oub:quota.order.number.id>092116</oub:quota.order.number.id>
+						<oub:validity.start.date>2020-01-01</oub:validity.start.date>
+						<oub:validity.end.date>2020-12-31</oub:validity.end.date>
+						<oub:quota.order.number.sid>1434</oub:quota.order.number.sid>
+						<oub:volume>899000.00</oub:volume>
+						<oub:initial.volume>899000.00</oub:initial.volume>
+						<oub:measurement.unit.code>KGM</oub:measurement.unit.code>
+						<oub:maximum.precision>3</oub:maximum.precision>
+						<oub:critical.state>Y</oub:critical.state>
+						<oub:critical.threshold>90</oub:critical.threshold>
+						<oub:description>FCFS Quota number 092116 for geography CL : Chile on boneless mutton/sheep from 2020-01-01 to 2020-12-31</oub:description>
+					</oub:quota.definition>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>
+</env:envelope>

@@ -1,0 +1,40 @@
+	<env:transaction id="[TRANSACTION_ID]">
+		<env:app.message id="[MESSAGE_ID]">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+				<oub:record>
+					<oub:transaction.id>[TRANSACTION_ID]</oub:transaction.id>
+					<oub:record.code>430</oub:record.code>
+					<oub:subrecord.code>00</oub:subrecord.code>
+					<oub:record.sequence.number>[RECORD_SEQUENCE_NUMBER]</oub:record.sequence.number>
+					<oub:update.type>[UPDATE_TYPE]</oub:update.type>
+					<oub:measure>
+						<oub:measure.sid>[MEASURE_SID]</oub:measure.sid>
+						<oub:measure.type>[MEASURE_TYPE_ID]</oub:measure.type>
+						<oub:geographical.area>[GEOGRAPHICAL_AREA_ID]</oub:geographical.area>
+						<oub:goods.nomenclature.item.id>[GOODS_NOMENCLATURE_ITEM_ID]</oub:goods.nomenclature.item.id>
+						<oub:additional.code.type>[ADDITIONAL_CODE_TYPE_ID]</oub:additional.code.type>
+						<oub:additional.code>[ADDITIONAL_CODE_ID]</oub:additional.code>
+						<oub:ordernumber>[ORDERNUMBER]</oub:ordernumber>
+						<oub:reduction.indicator>[REDUCTION_INDICATOR]</oub:reduction.indicator>
+						<oub:validity.start.date>[VALIDITY_START_DATE]</oub:validity.start.date>
+						<oub:measure.generating.regulation.role>[MEASURE_GENERATING_REGULATION_ROLE]</oub:measure.generating.regulation.role>
+						<oub:measure.generating.regulation.id>[MEASURE_GENERATING_REGULATION_ID]</oub:measure.generating.regulation.id>
+						<oub:validity.end.date>[VALIDITY_END_DATE]</oub:validity.end.date>
+						<oub:justification.regulation.role>[JUSTIFICATION_REGULATION_ROLE]</oub:justification.regulation.role>
+						<oub:justification.regulation.id>[JUSTIFICATION_REGULATION_ID]</oub:justification.regulation.id>
+						<oub:stopped.flag>[STOPPED_FLAG]</oub:stopped.flag>
+						<oub:geographical.area.sid>[GEOGRAPHICAL_AREA_SID]</oub:geographical.area.sid>
+						<oub:goods.nomenclature.sid>[GOODS_NOMENCLATURE_SID]</oub:goods.nomenclature.sid>
+						<oub:additional.code.sid>[ADDITIONAL_CODE_SID]</oub:additional.code.sid>
+						<oub:export.refund.nomenclature.sid>[EXPORT_REFUND_NOMENCLATURE_SID]</oub:export.refund.nomenclature.sid>
+					</oub:measure>
+				</oub:record>
+			</oub:transmission>
+		</env:app.message>
+[COMPONENTS]
+[CONDITIONS]
+[CONDITION_COMPONENTS]
+[EXCLUDED]
+[FOOTNOTES]
+[PTS]
+	</env:transaction>

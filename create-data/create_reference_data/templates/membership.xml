@@ -1,0 +1,19 @@
+	<env:transaction id="{TRANSACTION_ID}">
+		<env:app.message id="{MESSAGE_ID1}">
+			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
+			<oub:record>
+			<oub:transaction.id>{TRANSACTION_ID}</oub:transaction.id>
+			<oub:record.code>250</oub:record.code>
+			<oub:subrecord.code>15</oub:subrecord.code>
+			<oub:record.sequence.number>{MESSAGE_ID1}</oub:record.sequence.number>
+			<oub:update.type>{UPDATE_TYPE}</oub:update.type>
+			<oub:geographical.area.membership>
+				<oub:geographical.area.sid>{GEOGRAPHICAL_AREA_SID}</oub:geographical.area.sid>
+				<oub:geographical.area.group.sid>{GEOGRAPHICAL_AREA_GROUP_SID}</oub:geographical.area.group.sid>
+				<oub:validity.start.date>{VALIDITY_START_DATE}</oub:validity.start.date>
+				<oub:validity.end.date>{VALIDITY_END_DATE}</oub:validity.end.date>
+			</oub:geographical.area.membership>
+			</oub:record>
+			</oub:transmission>
+		</env:app.message>
+	</env:transaction>

@@ -65,7 +65,6 @@ class eea_measure(object):
 
 		self.lookup_sid()
 		self.measure_sid = g.app.last_measure_sid
-		g.app.last_measure_sid += 1
 
 		s = s.replace("[MEASURE_SID]",         					str(g.app.last_measure_sid))
 
@@ -117,5 +116,6 @@ class eea_measure(object):
 
 		app.sequence_id += 1
 		app.transaction_id += 1
+		g.app.last_measure_sid += 1
 
 		return (s)

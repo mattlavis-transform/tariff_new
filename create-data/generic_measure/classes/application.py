@@ -344,6 +344,7 @@ class application(object):
 					gn.duty_list = []
 
 					self.commodity_list.append(gn)
+					
 		print ("Reading nomenclature data - complete")
 
 		

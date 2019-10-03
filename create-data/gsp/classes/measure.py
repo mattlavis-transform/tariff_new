@@ -12,6 +12,7 @@ class measure(object):
 		self.geographical_area_id						= geographical_area_id
 		self.goods_nomenclature_item_id 				= goods_nomenclature_item_id
 		self.duty_amount		        				= duty_amount
+		#self.exclusion_string		        			= exclusion_string
 		self.measure_excluded_geographical_area_list	= []
 		self.validity_end_date							= ""
 

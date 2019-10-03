@@ -997,7 +997,6 @@ class application(object):
 		f = open(self.TEMP_FILE, "w", encoding="utf-8")
 		f.write(s)
 		f.close()
-		#sys.exit()
 		self.validate(temp=True)
 
 		files[0] = self.TEMP_FILE
@@ -1453,7 +1452,39 @@ class application(object):
 			csvFile.close()
 
 
+	def get_measure_types_that_require_components(self):
+		self.measure_types_that_require_components_list = []
+		sql = """
+		select measure_type_id from measure_types
+		where measure_component_applicable_code = 1
+		and validity_end_date is null
+		order by 1
+		"""
+		cur = self.conn.cursor()
+		cur.execute(sql)
+		rows = cur.fetchall()
+		if len(rows) > 0:
+			for rw in rows:
+				self.measure_types_that_require_components_list.append(rw[0])
+		
+		"""
+		self.measure_types_that_require_components = ""
+		for item in measure_types_that_require_components_list:
+			self.measure_types_that_require_components += "'" + item + "', "
+
+		self.measure_types_that_require_components = self.measure_types_that_require_components.strip()
+		self.measure_types_that_require_components = self.measure_types_that_require_components.strip(",")
+		print (self.measure_types_that_require_components)
+		sys.exit()
+		"""
+
+
+			
+
+
 	def import_xml(self, xml_file, prompt = True):
+		self.get_measure_types_that_require_components()
+		self.duty_measure_list = []
 		ret = sys.gettrace()
 		if ret == None:
 			self.debug_mode = False
@@ -1940,11 +1971,12 @@ class application(object):
 
 		self.log_handle.close()
 
-		if self.perform_taric_validation == False:
+		if self.perform_taric_validation == True:
 			# Post load checks
 			self.rule_FO04()
 			self.rule_CE06()
 			self.rule_GA3()
+			self.rule_ME40()
 
 		# Register the load
 		self.register_import_complete(xml_file)
@@ -1952,6 +1984,45 @@ class application(object):
 			print ("File failed to load - rolling back")
 			self.rollback()
 			self.create_error_report()
+		else:
+			print ("Load complete with no errors")
+
+
+	def rule_ME40(self):
+		print ("Checking rule ME40")
+		# Check to see that all measures have at least one component associated with them
+		# if they are measures that require components
+		my_string = ""
+		for item in self.duty_measure_list:
+			my_string += str(item) + ", "
+
+		my_string = my_string.strip()
+		my_string = my_string.strip(",")
+
+		if my_string != "":
+			sql = """
+			select m.measure_sid, count(mc.*) as component_count
+			from measures m
+			left outer join measure_components mc
+			on m.measure_sid = mc.measure_sid
+			where m.measure_sid in
+			(""" + my_string + """)
+			group by m.measure_sid
+			order by m.measure_sid
+			"""
+			cur = self.conn.cursor()
+			cur.execute(sql)
+			rows = cur.fetchall()
+			my_list = []
+			for row in rows:
+				if int(row[1]) == 0:
+					my_list.append (row[0])
+
+			if len (my_list) > 0:
+				for measure_sid in my_list:
+					self.add_load_error("ME40 error on measures - No components on . " + str(measure_sid))
+
+
 
 	def create_error_report(self):
 		fname = self.import_file + "_error.txt"

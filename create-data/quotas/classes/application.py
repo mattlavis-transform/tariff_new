@@ -149,15 +149,23 @@ class application(object):
 
 		filename = os.path.join(self.TEMPLATE_DIR, "measure.xml")
 		file = open(filename, "r") 
-		self.template_measure = file.read() 
+		self.template_measure = file.read()
 
 		filename = os.path.join(self.TEMPLATE_DIR, "measure.component.xml")
 		file = open(filename, "r") 
 		self.template_measure_component = file.read() 
 
+		filename = os.path.join(self.TEMPLATE_DIR, "measure.condition.xml")
+		file = open(filename, "r") 
+		self.template_measure_condition = file.read() 
+
 		filename = os.path.join(self.TEMPLATE_DIR, "measure.excluded.geographical.area.xml")
 		file = open(filename, "r") 
 		self.template_measure_excluded_geographical_area = file.read() 
+
+		filename = os.path.join(self.TEMPLATE_DIR, "footnote.association.measure.xml")
+		file = open(filename, "r") 
+		self.template_footnote_association_measure = file.read() 
 
 
 	def write_xml(self):
@@ -260,8 +268,6 @@ class application(object):
 			old_comm_code = m.goods_nomenclature_item_id
 			old_order_number = m.quota_order_number_id
 		file.close()
-
-		sys.exit()
 
 
 	def get_quota_descriptions(self):
@@ -612,6 +618,7 @@ class application(object):
 		data["minimum_sids"][self.override_minimum_sids_node]["last_transaction_id"] = self.transaction_id
 		data["minimum_sids"][self.override_minimum_sids_node]["measures"] = self.last_measure_sid
 		data["minimum_sids"][self.override_minimum_sids_node]["measure.conditions"] = self.last_measure_condition_sid
+		data["minimum_sids"][self.override_minimum_sids_node]["quota.definitions"] = self.last_quota_definition_sid
 
 		jsonFile = open(self.CONFIG_FILE, "w+")
 		jsonFile.write(json.dumps(data, indent=4, sort_keys=True))

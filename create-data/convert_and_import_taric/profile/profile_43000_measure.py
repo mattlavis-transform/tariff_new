@@ -19,7 +19,6 @@ class profile_43000_measure(object):
 		validity_start_date_string			= app.getValue(oMessage, ".//oub:validity.start.date", True)
 		measure_generating_regulation_role	= app.getValue(oMessage, ".//oub:measure.generating.regulation.role", True)
 		measure_generating_regulation_id	= app.getValue(oMessage, ".//oub:measure.generating.regulation.id", True)
-		#regulation_code						= measure_generating_regulation_role + measure_generating_regulation_id
 		regulation_code						= measure_generating_regulation_id
 		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
 		validity_end_date_string			= app.getValue(oMessage, ".//oub:validity.end.date", True)
@@ -30,6 +29,11 @@ class profile_43000_measure(object):
 		goods_nomenclature_sid				= app.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid", True)
 		additional_code_sid					= app.getNumberValue(oMessage, ".//oub:additional.code.sid", True)
 		export_refund_nomenclature_sid		= app.getNumberValue(oMessage, ".//oub:export.refund.nomenclature.sid", True)
+
+		# Add to a global list of measures, so that this can be validated at the end that there are
+		# components associated with it
+		if measure_type in g.app.measure_types_that_require_components_list:
+			g.app.duty_measure_list.append(measure_sid)
 
 		if g.app.perform_taric_validation == True:
 			# Not a Taric error, but just simple referential integrity

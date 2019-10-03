@@ -1,6 +1,7 @@
 import psycopg2
 import common.globals as g
 import sys
+from datetime import datetime
 
 class profile_29000_modification_regulation(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
@@ -24,6 +25,39 @@ class profile_29000_modification_regulation(object):
 		stopped_flag                  		= app.getValue(oMessage, ".//oub:stopped.flag", True)
 		information_text                  	= app.getValue(oMessage, ".//oub:information.text", True)
 		approved_flag                  		= app.getValue(oMessage, ".//oub:approved.flag", True)
+
+		
+		
+		# Get the earlier of the 2 - effective or validity end dates
+		if validity_end_date != None and effective_end_date != None:
+			if validity_end_date < effective_end_date:
+				my_end_date = validity_end_date
+			else:
+				my_end_date = effective_end_date
+		elif validity_end_date != None:
+			my_end_date = validity_end_date
+		elif validity_end_date != None:
+			my_end_date = effective_end_date
+		else:
+			my_end_date = None
+
+		if my_end_date != None:
+			my_end_date_string = my_end_date.strftime("%Y-%m-%d")
+
+			if validity_end_date != None or effective_end_date != None:
+				sql = """select * from ml.measures_real_end_dates
+				where measure_generating_regulation_id = '""" + modification_regulation_id + """'
+				and measure_generating_regulation_role = '""" + modification_regulation_role + """'
+				and validity_end_date is not null
+				and validity_end_date > '""" + my_end_date_string + """'
+				"""
+
+				cur = g.app.conn.cursor()
+				cur.execute(sql)
+				rows = cur.fetchall()
+				if len(rows) != 0:
+					g.app.add_load_error("Modification regulation found with a specific end date - this will cause issues " + str(modification_regulation_id))
+
 
 		if update_type == "1":	# Update
 			operation = "U"

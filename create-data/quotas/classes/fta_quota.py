@@ -13,10 +13,11 @@ from classes.quota_order_number_origin_exclusion import quota_order_number_origi
 from classes.quota_association import quota_association
 
 class fta_quota(object):
-	def __init__(self, country_name, quota_order_number_id, annual_volume, increment, \
+	def __init__(self, country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
 	eu_period_starts, eu_period_ends, interim_volume, units, preferential, include_interim_period, \
 	quota_order_number_sid = -1):
 		self.country_name           = country_name
+		self.measure_type_id		= measure_type_id
 		self.quota_order_number_id  = quota_order_number_id
 		self.annual_volume          = annual_volume
 		self.increment              = increment
@@ -37,6 +38,7 @@ class fta_quota(object):
 		self.quota_definition_list = []
 		
 		if self.quota_order_number_id[0:3] == "094":
+			print ("Found a licensed quota", self.quota_order_number_id)
 			self.licensed = True
 			self.method = "Licensed"
 		else:
@@ -65,11 +67,6 @@ class fta_quota(object):
 					monetary_unit_code = ""
 					measurement_unit_code = ""
 					measurement_unit_qualifier_code = ""
-
-					if self.preferential == "Y":
-						measure_type_id = "143"
-					else:
-						measure_type_id = "122"
 
 					validity_start_date = ""
 					validity_end_date = ""
@@ -130,15 +127,17 @@ class fta_quota(object):
 				self.get_country_name()
 
 
+			self.get_origins_from_db()
+			self.get_origin_exclusions_from_db()
+
 			if self.licensed == False:
-				self.get_origins_from_db()
-				self.get_origin_exclusions_from_db()
 				try:
 					self.primary_origin = self.origin_list[0][2]
 				except:
 					self.is_new = True
 			else:
 				self.primary_origin = self.geographical_area_id
+
 
 	def create_new_origin(self):
 		validity_start_date = g.app.critical_date_plus_one.strftime("%Y-%m-%d")
@@ -200,6 +199,14 @@ class fta_quota(object):
 				mc = m.measure_component_list[i]
 				if mc.duty_expression_id in ('12', '14', '21', '25', '27', '29', '99'):
 					del m.measure_component_list[i]
+
+		# Do a check to see that all measures have got components assigned to then: if they have not, then add a zero duty rate to them (this is cheating)
+		for m in self.measure_list:
+			component_count = len(m.measure_component_list)
+			if component_count == 0:
+				print ("Commodity code", m.goods_nomenclature_item_id, "on order number", self.quota_order_number_id, "has no components")
+				mc = measure_component(m.measure_sid, "01", 0, "", "", "")
+				m.measure_component_list.append(mc)
 
 		commodity_list = []
 		for m in self.measure_list:
@@ -319,37 +326,63 @@ class fta_quota(object):
 			self.origin_list.append (obj)
 			# Needs completing
 		else:
-
-			sql = """
-			select distinct on (geographical_area_id)
-			qono.quota_order_number_origin_sid, qono.quota_order_number_sid, qono.geographical_area_id, g.geographical_area_sid
-			from quota_order_number_origins qono, geographical_areas g
-			where qono.geographical_area_id = g.geographical_area_id
-			and qono.validity_end_date is null
-			and quota_order_number_sid = (
-			select distinct on (qon.quota_order_number_id)
-			qon.quota_order_number_sid
-			from quota_order_numbers qon
-			where qon.quota_order_number_id = '""" + self.quota_order_number_id + """'
-			order by qon.quota_order_number_id, qon.validity_start_date desc
-			) order by geographical_area_id, qono.validity_start_date desc;
-			"""
-
-			self.origin_list = []
-			cur = g.app.conn.cursor()
-			cur.execute(sql)
-			rows = cur.fetchall()
-			for row in rows:
-				quota_order_number_origin_sid	= row[0]
-				quota_order_number_sid			= row[1]
-				geographical_area_id			= row[2]
-				geographical_area_sid			= row[3]
-				obj = list()
-				obj.append (quota_order_number_origin_sid)
-				obj.append (quota_order_number_sid)
-				obj.append (geographical_area_id)
-				obj.append (geographical_area_sid)
-				self.origin_list.append (obj)
+			if self.licensed == True:
+				sql = """
+				select distinct -1 as quota_order_number_origin_sid, -1 as quota_order_number_sid,
+				geographical_area_id, geographical_area_sid
+				from measures m, goods_nomenclatures g
+				where ordernumber = '""" + self.quota_order_number_id + """'
+				and g.goods_nomenclature_item_id = m.goods_nomenclature_item_id
+				and g.producline_suffix = '80'
+				and g.validity_end_date is null
+				and (m.validity_end_date >= '2018-01-01' or m.validity_end_date is null)
+				"""
+				self.origin_list = []
+				cur = g.app.conn.cursor()
+				cur.execute(sql)
+				rows = cur.fetchall()
+				for row in rows:
+					quota_order_number_origin_sid	= row[0]
+					quota_order_number_sid			= row[1]
+					geographical_area_id			= row[2]
+					geographical_area_sid			= row[3]
+					obj = list()
+					obj.append (quota_order_number_origin_sid)
+					obj.append (quota_order_number_sid)
+					obj.append (geographical_area_id)
+					obj.append (geographical_area_sid)
+					self.origin_list.append (obj)
+			else:
+				sql = """
+				select distinct on (geographical_area_id)
+				qono.quota_order_number_origin_sid, qono.quota_order_number_sid, qono.geographical_area_id, g.geographical_area_sid
+				from quota_order_number_origins qono, geographical_areas g
+				where qono.geographical_area_id = g.geographical_area_id
+				and qono.validity_end_date is null
+				and quota_order_number_sid = (
+				select distinct on (qon.quota_order_number_id)
+				qon.quota_order_number_sid
+				from quota_order_numbers qon
+				where qon.quota_order_number_id = '""" + self.quota_order_number_id + """'
+				order by qon.quota_order_number_id, qon.validity_start_date desc
+				) order by geographical_area_id, qono.validity_start_date desc;
+				"""
+				
+				self.origin_list = []
+				cur = g.app.conn.cursor()
+				cur.execute(sql)
+				rows = cur.fetchall()
+				for row in rows:
+					quota_order_number_origin_sid	= row[0]
+					quota_order_number_sid			= row[1]
+					geographical_area_id			= row[2]
+					geographical_area_sid			= row[3]
+					obj = list()
+					obj.append (quota_order_number_origin_sid)
+					obj.append (quota_order_number_sid)
+					obj.append (geographical_area_id)
+					obj.append (geographical_area_sid)
+					self.origin_list.append (obj)
 
 
 	def get_origin_exclusions_from_db(self):
@@ -390,13 +423,17 @@ class fta_quota(object):
 
 
 	def get_unit(self):
-		list1 = ["Kilograms", "Litres of pure alcohol", "Litres", "Kilograma", "Pieces", "Head", "Hectolitres", "Nar"]
-		list2 = ["KGM", "LPA", "LTR", "KGM", "NAR", "HLT", "NAR"]
-		for i in range(0, len(list1) - 1):
+		self.measurement_unit = ""
+		list1 = ["Kilograms", "Litres of pure alcohol", "Litres", "Kilograma", "Pieces", "Head", "Hectolitres", "Nar", "Units", "Tonnes", "Items"]
+		list2 = ["KGM",       "LPA",                    "LTR",    "KGM",       "NAR",    "NAR",  "HLT",         "NAR", "NAR",   "TNE",    "NAR"]
+		for i in range(0, len(list1)):
 			item = list1[i]
-			if self.units == item:
+			if self.units.strip() == item:
 				self.measurement_unit = list2[i]
 				break
+		if self.measurement_unit == "":
+			print (self.quota_order_number_id, "has no unit")
+			sys.exit()
 
 
 	def get_measures(self):
@@ -450,13 +487,12 @@ class fta_quota(object):
 		where m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
 		and m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
 		and g.producline_suffix = '80'
-		and m.measure_type_id in ('143', '146')
+		and m.measure_type_id in ('122', '123', '143', '146')
 		and (g.validity_end_date is null or g.validity_end_date > '""" + g.app.critical_date.strftime("%Y-%m-%d") + """')
 		and ordernumber = '""" + self.quota_order_number_id + """'
 		and (m.validity_end_date is null or m.validity_end_date > '""" + year_ago.strftime("%Y-%m-%d") + """')
 		order by m.goods_nomenclature_item_id, m.validity_start_date desc, mc.duty_expression_id
 		"""
-
 
 		self.measure_component_list = []
 		cur = g.app.conn.cursor()
@@ -489,6 +525,7 @@ class fta_quota(object):
 					
 
 		if contains_valid_components == False:
+			print ("No valid components for", self.quota_order_number_id)
 			self.get_measure_condition_components()
 
 
@@ -508,18 +545,21 @@ class fta_quota(object):
 		and monetary_unit_code is null
 		and mc.measure_sid in
 		(
-		select distinct 
-		m.measure_sid
-		from goods_nomenclatures g, ml.measures_real_end_dates m
-		where m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
-		and g.producline_suffix = '80'
-		and m.measure_type_id in ('143', '146')
-		and (g.validity_end_date is null or g.validity_end_date > '""" + g.app.critical_date.strftime("%Y-%m-%d") + """')
-		and ordernumber = '""" + self.quota_order_number_id + """'
-		-- and (m.validity_end_date is null or m.validity_end_date > '""" + year_ago.strftime("%Y-%m-%d") + """')
+			select distinct 
+			m.measure_sid
+			from goods_nomenclatures g, ml.measures_real_end_dates m
+			where m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
+			and g.producline_suffix = '80'
+			and m.measure_type_id in ('122', '123', '143', '146')
+			and (g.validity_end_date is null or g.validity_end_date > '""" + g.app.critical_date.strftime("%Y-%m-%d") + """')
+			and ordernumber = '""" + self.quota_order_number_id + """'
+			-- and (m.validity_end_date is null or m.validity_end_date > '""" + year_ago.strftime("%Y-%m-%d") + """')
 		)
 		order by m.measure_sid, mcc.duty_amount, m.validity_start_date desc
 		"""
+		if self.quota_order_number_id == "091370":
+			print (sql)
+			sys.exit()
 
 		self.measure_condition_component_list = []
 		cur = g.app.conn.cursor()
@@ -546,6 +586,11 @@ class fta_quota(object):
 		critplusone2 = datetime.date(d2.year, d2.month, d2.day)
 
 		# Get the interim period
+		"""
+		print (self.quota_order_number_id)
+		print (self.eu_period_starts)
+		print (self.eu_period_ends)
+		"""
 		if (self.eu_period_ends <= crit2 or (self.eu_period_starts - critplusone2).days == 0):
 			# There is no opening period
 			pass
@@ -557,7 +602,7 @@ class fta_quota(object):
 				length = (validity_end_date - validity_start_date).days + 1
 
 				try:
-					qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, "143", self.method, validity_start_date,
+					qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, self.measure_type_id, self.method, validity_start_date,
 					validity_end_date, length, self.interim_volume, self.measurement_unit, 3, "N", 90, "",
 					"", "", "", self.primary_origin)
 				except:
@@ -581,7 +626,7 @@ class fta_quota(object):
 			else:
 				self.critical_status = "N"
 			
-			qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, "143", self.method, validity_start_date,
+			qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, self.measure_type_id, self.method, validity_start_date,
 			validity_end_date, length, opening_balance, self.measurement_unit, 3, self.critical_status, 90, "",
 			"", "", "", self.primary_origin)
 			self.quota_definition_list.append (qd)
@@ -628,7 +673,7 @@ class fta_quota(object):
 				for m in self.measure_list:
 					if m.goods_nomenclature_item_id not in (comm_list):
 						comm_list.append (m.goods_nomenclature_item_id)
-						m.measure_sid = g.app.last_measure_sid
+						m.measure_sid						= g.app.last_measure_sid
 						g.app.last_measure_sid += 1
 						m.quota_order_number_id				= self.quota_order_number_id
 						m.geographical_area_id				= o[2].strip()

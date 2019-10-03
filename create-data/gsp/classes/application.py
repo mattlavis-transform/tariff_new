@@ -161,6 +161,12 @@ class application(object):
 					geographical_area_id		= row[0]
 					goods_nomenclature_item_id	= row[1]
 					duty_amount					= row[2]
+					"""
+					try:
+						exclusion = row[3]
+					except:
+						exclusion = ""
+					"""
 
 					if (goods_nomenclature_item_id != "goods nomenclature") and (goods_nomenclature_item_id != ""):
 						obj = measure(geographical_area_id, goods_nomenclature_item_id, duty_amount)
@@ -227,7 +233,7 @@ class application(object):
 
 	def get_geographical_areas(self):
 		sql = """SELECT geographical_area_id, geographical_area_sid FROM geographical_areas
-		WHERE geographical_area_id IN ('2020', '2027', '2005', '1032', 'IN', 'ID', 'KE');"""
+		WHERE geographical_area_id IN ('2020', '2027', '2005', '1032', 'IN', 'ID', 'KE', 'UA');"""
 		cur = self.conn.cursor()
 		cur.execute(sql)
 		rows = cur.fetchall()

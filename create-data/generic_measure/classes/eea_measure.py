@@ -56,8 +56,9 @@ class eea_measure(object):
 	def lookup_sid(self):
 		for gn in g.app.goods_nomenclature_sid_lookup:
 			if gn[1] == self.goods_nomenclature_item_id:
-				self.goods_nomenclature_sid = gn[0]
-				break
+				if gn[2] == "80":
+					self.goods_nomenclature_sid = gn[0]
+					break
 
 	def xml(self):
 		app = g.app

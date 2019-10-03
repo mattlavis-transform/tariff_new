@@ -4,10 +4,6 @@ import classes.globals as g
 from classes.fta_quota import fta_quota
 from classes.new_quota import new_quota
 
-"""
-excel_file              = "source/WTO and FTA phase 1 quotas.xlsx"
-excel_file = os.path.join(g.app.SOURCE_DIR, self.input_profile)
-"""
 
 sheet_name              = "TRQ_database_inward_agreed"
 sheet_name_new_quotas   = "New quotas"
@@ -21,24 +17,28 @@ fname = "measure_components.txt"
 f1 = open (fname, "w+")
 f1.close()
 
-# The workbook
+# The workbook in which the data is stored
 g.app.d("Opening quota source document", False)
 g.app.d("Using source file " + g.app.input_file)
 workbook = xlrd.open_workbook(g.app.input_file)
 
 # Get details of new quotas, rates and commodity codes
+# Read these from the new quotas sheet
 g.app.d("Getting details of new quotas", True)
 wb_new_quotas  = workbook.sheet_by_name(sheet_name_new_quotas)
 row_count = wb_new_quotas.nrows
 g.app.new_quotas    = []
 g.app.origins_added = []
+
 for row in range(1, row_count):
     quota_order_number_id       = wb_new_quotas.cell(row, 0).value
     goods_nomenclature_item_id  = wb_new_quotas.cell(row, 1).value
     duty_rate                   = wb_new_quotas.cell(row, 2).value
+    omit                        = wb_new_quotas.cell(row, 3).value
 
-    obj = new_quota(quota_order_number_id, goods_nomenclature_item_id, duty_rate)
-    g.app.new_quotas.append (obj)
+    if omit != "Y":
+        obj = new_quota(quota_order_number_id, goods_nomenclature_item_id, duty_rate)
+        g.app.new_quotas.append (obj)
 
 # Get a single list just containing the new quota order numbers
 
@@ -69,27 +69,28 @@ f.close()
 
 for row in range(1, row_count):
     country_name            = worksheet.cell(row, 1).value.strip()
-    quota_order_number_id   = worksheet.cell(row, 2).value.strip()
-    annual_volume           = worksheet.cell(row, 3).value
-    increment               = worksheet.cell(row, 4).value
-    eu_period_starts        = worksheet.cell(row, 5).value
-    eu_period_ends          = worksheet.cell(row, 6).value
+    quota_order_number_id   = worksheet.cell(row, 3).value.strip()
+    #print ("Works on ", quota_order_number_id)
+    measure_type_id         = worksheet.cell(row, 2).value.strip()
+    annual_volume           = worksheet.cell(row, 4).value
+    increment               = worksheet.cell(row, 5).value
     is_valid = True
 
     try:
-        date_tuple              = xlrd.xldate_as_tuple(worksheet.cell(row, 5).value, workbook.datemode)
-        eu_period_starts        = date(year = date_tuple[0], month = date_tuple[1], day = date_tuple[2])
         date_tuple              = xlrd.xldate_as_tuple(worksheet.cell(row, 6).value, workbook.datemode)
+        eu_period_starts        = date(year = date_tuple[0], month = date_tuple[1], day = date_tuple[2])
+        date_tuple              = xlrd.xldate_as_tuple(worksheet.cell(row, 7).value, workbook.datemode)
         eu_period_ends          = date(year = date_tuple[0], month = date_tuple[1], day = date_tuple[2])
     except:
         #print ("Date error on quota", quota_order_number_id)
         is_valid = False
 
-    interim_volume          = worksheet.cell(row, 11).value
-    units                   = worksheet.cell(row, 12).value
-    omit_string             = worksheet.cell(row, 18).value
-    preferential            = worksheet.cell(row, 19).value
-    include_interim_period  = worksheet.cell(row, 20).value
+
+    interim_volume          = worksheet.cell(row, 12).value
+    units                   = worksheet.cell(row, 13).value
+    omit_string             = worksheet.cell(row, 19).value
+    preferential            = worksheet.cell(row, 20).value
+    include_interim_period  = worksheet.cell(row, 21).value
 
     if omit_string != "Y":
         # Check to see if the item has already been added via the new quota process
@@ -104,7 +105,7 @@ for row in range(1, row_count):
 
         if found == False:
             # Standard create quota functions
-            obj_quota = fta_quota(country_name, quota_order_number_id, annual_volume, increment, \
+            obj_quota = fta_quota(country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
             eu_period_starts, eu_period_ends, interim_volume, units, preferential, include_interim_period)
             obj_quota.is_valid = is_valid
             g.app.quota_list.append (obj_quota)
@@ -123,6 +124,7 @@ for row in range(1, row_count):
 
         a = 1
 
+
 # Now write the XML
 g.app.d("Writing XML", True)
 g.app.fta_content = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -135,7 +137,8 @@ for quota in g.app.quota_list:
 
     if quota.is_valid == True:
         for qd in quota.quota_definition_list:
-            g.app.fta_content += qd.xml()
+            if quota.primary_origin != "LI":
+                g.app.fta_content += qd.xml()
 
     g.app.fta_content += quota.measure_xml()
 
@@ -159,3 +162,4 @@ f.write (g.app.fta_content)
 f.close()
 g.app.output_filename = g.app.output_file
 g.app.validate()
+g.app.set_config()

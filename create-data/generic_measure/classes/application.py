@@ -482,9 +482,10 @@ class application(object):
 		#commodity_string = set(commodity_string)
 		#commodity_string = sorted(commodity_string)
 		sql = """
-		select goods_nomenclature_sid, goods_nomenclature_item_id
+		select goods_nomenclature_sid, goods_nomenclature_item_id, producline_suffix
 		from goods_nomenclatures
 		where goods_nomenclature_item_id in (""" + commodity_string + """)
+		and (validity_end_date >= '2019-11-01' or validity_end_date is null)
 		"""
 		cur = self.conn.cursor()
 		cur.execute(sql)

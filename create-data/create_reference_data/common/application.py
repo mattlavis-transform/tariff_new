@@ -46,17 +46,19 @@ class application(object):
 		self.XML_DIR		= os.path.join(temp, "xml_in")
 		self.XML_DIR		= os.path.join(self.XML_DIR, "custom")
 
-		self.footnotes_list				= []
-		self.footnote_type_list			= []
-		self.measure_type_list			= []
-		self.additional_code_type_list	= []
-		self.goods_nomenclature_list	= []
-		self.certificate_type_list		= []
-		self.geographical_area_list		= []
-		self.membership_list			= []
-		self.certificates_list			= []
-		self.base_regulations_list		= []
-		self.regulation_groups_list		= []
+		self.footnotes_list					= []
+		self.footnote_associations_list		= []
+		self.footnote_type_list				= []
+		self.measure_type_list				= []
+		self.additional_code_type_list		= []
+		self.goods_nomenclature_list		= []
+		self.certificate_type_list			= []
+		self.geographical_area_list			= []
+		self.membership_list				= []
+		self.quota_order_number_origin_list	= []
+		self.certificates_list				= []
+		self.base_regulations_list			= []
+		self.regulation_groups_list			= []
 		self.cnt = 0
 
 		self.base_footnote_description_period_sid			= 200000
@@ -319,6 +321,17 @@ class application(object):
 		filename = os.path.join(self.TEMPLATE_DIR, "membership.xml")
 		handle = open(filename, "r")
 		self.membership_XML = handle.read()
+
+		# Get footnote association to measure XML
+		filename = os.path.join(self.TEMPLATE_DIR, "footnote.association.measure.xml")
+		handle = open(filename, "r")
+		self.footnote_association_measure_XML = handle.read()
+
+		# Get quota order number origin XML
+		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.origin.xml")
+		handle = open(filename, "r")
+		self.quota_order_number_origin_XML = handle.read()
+
 
 	def writeResults(self):
 		t_in = ""

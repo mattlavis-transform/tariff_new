@@ -9,50 +9,40 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
 
 import common.objects as o
-from common.footnote import footnote
+from common.footnote_association import footnote_association
 from common.application import application
 
 try:
 	profile = sys.argv[1]
 except:
-	profile = "footnotes"
+	profile = "footnote_associations"
 
 app = o.app
 app.getTemplates()
 app.get_profile(profile)
 
 fname = os.path.join(app.SOURCE_DIR, profile + ".xlsx")
-wb = load_workbook(filename=fname, read_only=True)
-ws = wb['Updated']
+wb = load_workbook(filename = fname, read_only=True)
+ws = wb['measure associations']
 
 row_count = ws.max_row
 col_count = ws.max_column
 
 for i in range(2, row_count + 1):
-	FOOTNOTE_TYPE_ID = ws.cell(row = i, column = 1).value
-	FOOTNOTE_ID      = ws.cell(row = i, column = 2).value
-	DESCRIPTION      = ws.cell(row = i, column = 3).value
+	footnote_type_id = ws.cell(row = i, column = 1).value
+	footnote_id      = ws.cell(row = i, column = 2).value
+	measure_type_id      = ws.cell(row = i, column = 3).value
+	geographical_area_id      = ws.cell(row = i, column = 4).value
+	goods_nomenclature_item_id  = ws.cell(row = i, column = 5).value
 
-	f = footnote(FOOTNOTE_TYPE_ID, FOOTNOTE_ID, DESCRIPTION, "update")
-	app.footnotes_list.append(f)
+	f = footnote_association(footnote_type_id, footnote_id, measure_type_id, geographical_area_id, goods_nomenclature_item_id)
+	app.footnote_associations_list.append(f)
 
-ws = wb['New']
-
-row_count = ws.max_row
-col_count = ws.max_column
-
-for i in range(2, row_count + 1):
-	FOOTNOTE_TYPE_ID = ws.cell(row = i, column = 1).value
-	FOOTNOTE_ID      = ws.cell(row = i, column = 2).value
-	DESCRIPTION      = ws.cell(row = i, column = 3).value
-
-	f = footnote(FOOTNOTE_TYPE_ID, FOOTNOTE_ID, DESCRIPTION, "insert")
-	app.footnotes_list.append(f)
 
 env = app.envelope_XML
 env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
 out = ""
-for f in app.footnotes_list:
+for f in app.footnote_associations_list:
 	f.writeXML(app)
 	out += f.xml
 

@@ -4,12 +4,14 @@ import datetime
 import sys
 
 from classes.measure_component import measure_component
-#from classes.measure_excluded_geographical_area import measure_excluded_geographical_area
+from classes.measure_condition import measure_condition
+from classes.footnote_association_measure import footnote_association_measure
+
 
 class measure(object):
 	def __init__(self, goods_nomenclature_item_id, quota_order_number_id, origin_identifier, duty_amount,
-						monetary_unit_code, measurement_unit_code, measurement_unit_qualifier_code, measure_type_id, 
-						start_date_override = "", end_date_override = "", measure_sid = -1):
+			monetary_unit_code, measurement_unit_code, measurement_unit_qualifier_code, measure_type_id, 
+			start_date_override = "", end_date_override = "", measure_sid = -1):
 		# from parameters
 		self.goods_nomenclature_item_id 		= goods_nomenclature_item_id
 		self.quota_order_number_id    			= quota_order_number_id
@@ -43,7 +45,6 @@ class measure(object):
 		else:
 			#print ("Error - incorrect goods nomenclature item ID -", self.goods_nomenclature_item_id)
 			self.goods_nomenclature_sid = -1
-			#sys.exit()
 
 		
 		# Initialised
@@ -58,18 +59,8 @@ class measure(object):
 		self.export_refund_nomenclature_sid		= ""
 
 		self.measure_component_list = []
-		#self.measure_sid = -1 # This is temporary
 		self.measure_sid = measure_sid
 
-		"""
-		The code below is duff - only works with single phrase duties
-
-		obj = measure_component(self.measure_sid, self.duty_amount, self.monetary_unit_code, self.measurement_unit_code, self.measurement_unit_qualifier_code)
-		self.measure_component_list.append(obj)
-		"""
-
-		#print ("In measure init", g.app.last_measure_sid)
-		#sys.exit()
 
 	def duty_string(self):
 		if self.monetary_unit_code == "":
@@ -85,12 +76,14 @@ class measure(object):
 			
 			return (out)
 
+
 	def fmt_muq(self):
 		if self.measurement_unit_qualifier_code == "E":
 			return ("net of drained weight")
 		else:
 			return ("blah blah blah")
 	
+
 	def fmt_mu(self):
 		if self.measurement_unit_code == "TNE":
 			return ("1000kg")
@@ -103,8 +96,10 @@ class measure(object):
 		else:
 			return self.measurement_unit_code
 
+
 	def transfer_sid(self):
 		pass
+
 
 	def xml(self):
 		if self.goods_nomenclature_sid == -1:
@@ -179,11 +174,41 @@ class measure(object):
 		self.pts_content = ""
 
 		for obj in self.measure_component_list:
+			if self.quota_order_number_id == "091370":
+				print ("Adding components for 091370")
 			self.component_content += obj.xml()
 
 		for obj in self.measure_excluded_geographical_area_list:
 			obj.measure_sid = self.measure_sid
 			self.exclusion_content += obj.measure_xml()
+
+		if self.quota_order_number_id[0:3] == "094":
+			# Add the standard conditions
+			self.conditions = []
+			my_condition = measure_condition(self.measure_sid, "C", 1, "27", "L", "001")
+			self.conditions.append (my_condition)
+
+			my_condition = measure_condition(self.measure_sid, "C", 2, "07", None, None)
+			self.conditions.append (my_condition)
+
+			my_condition = measure_condition(self.measure_sid, "Q", 1, "27", "Y", "100")
+			self.conditions.append (my_condition)
+
+			my_condition = measure_condition(self.measure_sid, "Q", 2, "07", None, None)
+			self.conditions.append (my_condition)
+
+			for c in self.conditions:
+				self.condition_content += c.xml()
+
+
+			# Add the standard footnote
+			self.footnotes = []
+			fn = footnote_association_measure(self.measure_sid, "CD", "356")
+			self.footnotes.append (fn)
+
+			for fn in self.footnotes:
+				self.footnote_content += fn.xml()
+
 		
 		s = s.replace("[COMPONENTS]\n", 			self.component_content)
 		s = s.replace("[CONDITIONS]\n", 			self.condition_content)
@@ -191,7 +216,5 @@ class measure(object):
 		s = s.replace("[EXCLUDED]\n", 				self.exclusion_content)
 		s = s.replace("[FOOTNOTES]\n", 				self.footnote_content)
 		s = s.replace("[PTS]\n",	 				self.pts_content)
-
-		#g.app.last_measure_sid = self.measure_sid
 
 		return (s)

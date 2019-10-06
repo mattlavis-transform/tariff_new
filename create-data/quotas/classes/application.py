@@ -332,6 +332,7 @@ class application(object):
 						monetary_unit_code, measurement_unit_code, measurement_unit_qualifier_code, start_date_override, end_date_override)
 						self.measure_list.append(obj)
 
+	"""
 	def get_quota_order_numbers_from_csv(self):
 		self.d("Getting order numbers from quota_order_numbers.csv", True)
 		# Think about countries other than China
@@ -359,7 +360,7 @@ class application(object):
 					origin_exclusion_string, validity_start_date, subject, status)
 
 					self.quota_order_number_list.append(obj)
-
+	"""
 
 	def compare_order_number_origins(self):
 		for obj in self.quota_order_number_list:
@@ -412,7 +413,6 @@ class application(object):
 					match_fail = item.geographical_area_id
 
 			
-
 			db_match_string = db_match_string.strip()
 
 			if matched == False:
@@ -585,6 +585,12 @@ class application(object):
 			qono = quota_order_number_origin(quota_order_number_sid, geographical_area_id, "")
 			qono.quota_order_number_id = quota_order_number_id
 			self.db_origin_list.append (qono)
+			"""
+			if geographical_area_id == "CH":
+				qono2 = quota_order_number_origin(quota_order_number_sid, "LI", "")
+				qono2.quota_order_number_id = quota_order_number_id
+				self.db_origin_list.append (qono2)
+			"""
 		
 		self.db_origin_exclusion_list = []
 		sql = """SELECT quota_order_number_id, qon.quota_order_number_sid, excluded_geographical_area_sid,

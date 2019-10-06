@@ -47,6 +47,7 @@ g.app.d("Getting full list of quotas", True)
 g.app.new_quota_ids = []
 for item in g.app.new_quotas:
     g.app.new_quota_ids.append (item.quota_order_number_id)
+
 g.app.new_quota_ids = set(g.app.new_quota_ids)
 g.app.quota_list = []
 
@@ -84,6 +85,7 @@ for row in range(1, row_count):
     except:
         #print ("Date error on quota", quota_order_number_id)
         is_valid = False
+        a = 1
 
 
     interim_volume          = worksheet.cell(row, 12).value
@@ -97,14 +99,17 @@ for row in range(1, row_count):
         found = False
         for item in g.app.quota_list:
             if item.quota_order_number_id.strip() == quota_order_number_id.strip():
-                #print ("Found quota", quota_order_number_id, "in the list of new quotas")
-                obj_quota = item
-                found = True
-                break
+                if item.country_name == country_name:
+                    print ("Found quota", quota_order_number_id, "in the list of new quotas")
+                    sys.exit()
+                    obj_quota = item
+                    found = True
+                    break
 
 
         if found == False:
             # Standard create quota functions
+            print ("Creating a new quota object", quota_order_number_id, "for", country_name)
             obj_quota = fta_quota(country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
             eu_period_starts, eu_period_ends, interim_volume, units, preferential, include_interim_period)
             obj_quota.is_valid = is_valid
@@ -126,19 +131,20 @@ for row in range(1, row_count):
 
 
 # Now write the XML
-g.app.d("Writing XML", True)
+g.app.d("\nWriting XML\n", True)
 g.app.fta_content = '<?xml version="1.0" encoding="UTF-8"?>\n'
 g.app.fta_content += '<env:envelope xmlns="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0" id="ENV">\n'
 
 for quota in g.app.quota_list:
+    #print ("Extracting quotas")
     if quota.is_new == True:
         g.app.fta_content += quota.quota_order_number_xml()
         g.app.fta_content += quota.origin_xml
 
     if quota.is_valid == True:
         for qd in quota.quota_definition_list:
-            if quota.primary_origin != "LI":
-                g.app.fta_content += qd.xml()
+            print ("Writing a new quota object", quota.quota_order_number_id, "for", quota.country_name)
+            g.app.fta_content += qd.xml()
 
     g.app.fta_content += quota.measure_xml()
 

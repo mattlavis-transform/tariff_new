@@ -501,6 +501,7 @@ class application(object):
 				if record_code == "430" and sub_record_code == "00":
 					validity_start_date					= self.getDateValue(oMessage, ".//oub:validity.start.date")
 					validity_end_date					= self.getDateValue(oMessage, ".//oub:validity.end.date")
+					goods_nomenclature_item_id			= self.getDateValue(oMessage, ".//oub:goods_nomenclature_item_id")
 					measure_generating_regulation_role	= self.getValue(oMessage, ".//oub:measure.generating.regulation.role")
 					measure_generating_regulation_id	= self.getValue(oMessage, ".//oub:measure.generating.regulation.id")
 					measure_type_id						= self.getValue(oMessage, ".//oub:measure.type")
@@ -509,6 +510,16 @@ class application(object):
 
 					# Action - remove the message node if the measure does not start until after the critical date
 					if update_type in ("1", "3"):
+						sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = '" + goods_nomenclature_item_id + "'"
+						cur = self.conn.cursor()
+						cur.execute(sql)
+						rows = cur.fetchall()
+						if len(rows) == 0:
+							oTransaction.remove (oMessage)
+							measure_list.append(measure_sid)
+							self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure on commodity that does not exist with measure.sid of " + measure_sid)
+							break
+
 						if validity_start_date > self.critical_date:
 							oTransaction.remove (oMessage)
 							measure_list.append(measure_sid)
@@ -1989,6 +2000,7 @@ class application(object):
 
 
 	def rule_ME40(self):
+		return
 		print ("Checking rule ME40")
 		# Check to see that all measures have at least one component associated with them
 		# if they are measures that require components

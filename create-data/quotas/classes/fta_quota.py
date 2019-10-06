@@ -38,7 +38,7 @@ class fta_quota(object):
 		self.quota_definition_list = []
 		
 		if self.quota_order_number_id[0:3] == "094":
-			print ("Found a licensed quota", self.quota_order_number_id)
+			#print ("Found a licensed quota", self.quota_order_number_id)
 			self.licensed = True
 			self.method = "Licensed"
 		else:
@@ -118,13 +118,13 @@ class fta_quota(object):
 
 		if self.is_new:
 			if self.country_name != "":
-				self.get_country_name()
+				self.get_matching_regulation()
 				self.create_new_origin()
 		else:
 			if self.country_name[0:4] == "Only":
 				self.override_origins = True
 			if self.country_name != "":
-				self.get_country_name()
+				self.get_matching_regulation()
 
 
 			self.get_origins_from_db()
@@ -204,7 +204,7 @@ class fta_quota(object):
 		for m in self.measure_list:
 			component_count = len(m.measure_component_list)
 			if component_count == 0:
-				print ("Commodity code", m.goods_nomenclature_item_id, "on order number", self.quota_order_number_id, "has no components")
+				#print ("Commodity code", m.goods_nomenclature_item_id, "on order number", self.quota_order_number_id, "has no components")
 				mc = measure_component(m.measure_sid, "01", 0, "", "", "")
 				m.measure_component_list.append(mc)
 
@@ -265,7 +265,7 @@ class fta_quota(object):
 		return (var)
 
 
-	def get_country_name(self):
+	def get_matching_regulation(self):
 		self.country_name = self.country_name.replace("Only ", "")
 		for item in g.app.geographical_areas:
 			if item.country_description == self.country_name:
@@ -324,6 +324,7 @@ class fta_quota(object):
 			obj.append (geographical_area_sid)
 
 			self.origin_list.append (obj)
+
 			# Needs completing
 		else:
 			if self.licensed == True:
@@ -352,6 +353,18 @@ class fta_quota(object):
 					obj.append (geographical_area_id)
 					obj.append (geographical_area_sid)
 					self.origin_list.append (obj)
+
+					# Add Liechtenstein in as another origin when it is a Swiss quota
+					if self.country_name == "Switzerland":
+						obj2 = list()
+						obj2.append (quota_order_number_origin_sid)
+						obj2.append (quota_order_number_sid)
+						obj2.append ("LI")
+						obj2.append (286)
+						self.origin_list.append (obj2)
+
+
+
 			else:
 				sql = """
 				select distinct on (geographical_area_id)
@@ -383,6 +396,15 @@ class fta_quota(object):
 					obj.append (geographical_area_id)
 					obj.append (geographical_area_sid)
 					self.origin_list.append (obj)
+
+					# Add Liechtenstein in as another origin when it is a Swiss quota
+					if self.country_name == "Switzerland":
+						obj2 = list()
+						obj2.append (quota_order_number_origin_sid)
+						obj2.append (quota_order_number_sid)
+						obj2.append ("LI")
+						obj2.append (286)
+						self.origin_list.append (obj2)
 
 
 	def get_origin_exclusions_from_db(self):
@@ -424,8 +446,8 @@ class fta_quota(object):
 
 	def get_unit(self):
 		self.measurement_unit = ""
-		list1 = ["Kilograms", "Litres of pure alcohol", "Litres", "Kilograma", "Pieces", "Head", "Hectolitres", "Nar", "Units", "Tonnes", "Items"]
-		list2 = ["KGM",       "LPA",                    "LTR",    "KGM",       "NAR",    "NAR",  "HLT",         "NAR", "NAR",   "TNE",    "NAR"]
+		list1 = ["Kilograms", "Litres of pure alcohol", "Litres", "Kilograma", "Pieces", "Head", "Hectolitres", "Nar", "Units", "Tonnes", "Items", "Metres squared"]
+		list2 = ["KGM",       "LPA",                    "LTR",    "KGM",       "NAR",    "NAR",  "HLT",         "NAR", "NAR",   "TNE",    "NAR",   "MTK"]
 		for i in range(0, len(list1)):
 			item = list1[i]
 			if self.units.strip() == item:
@@ -596,7 +618,7 @@ class fta_quota(object):
 			pass
 		else:
 			if self.include_interim_period != "N":
-				print ("Creating an interim period on quota", self.quota_order_number_id, self.include_interim_period)
+				#print ("Creating an interim period on quota", self.quota_order_number_id, self.include_interim_period)
 				validity_start_date		= datetime.date(critplusone2.year, critplusone2.month, critplusone2.day)
 				validity_end_date = self.eu_period_ends
 				length = (validity_end_date - validity_start_date).days + 1

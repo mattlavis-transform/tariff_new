@@ -7,7 +7,7 @@ from classes.measure_component import measure_component
 #from classes.measure_excluded_geographical_area import measure_excluded_geographical_area
 
 class measure(object):
-	def __init__(self, geographical_area_id, goods_nomenclature_item_id, duty_amount):
+	def __init__(self, geographical_area_id, goods_nomenclature_item_id, duty_amount, start_date_override, end_date_override):
 		# from parameters
 		self.geographical_area_id						= geographical_area_id
 		self.goods_nomenclature_item_id 				= goods_nomenclature_item_id
@@ -15,6 +15,8 @@ class measure(object):
 		#self.exclusion_string		        			= exclusion_string
 		self.measure_excluded_geographical_area_list	= []
 		self.validity_end_date							= ""
+		self.start_date_override = start_date_override
+		self.end_date_override = end_date_override
 
 		# Get GEO SID
 		for geo in g.app.geographical_area_list:
@@ -22,7 +24,7 @@ class measure(object):
 				self.geographical_area_sid = geo.geographical_area_sid
 				break
 
-		# Get the goods nomenclature SID
+		# Get the goods nomenclature SID and its end date; this will override anything else
 		sql = """SELECT goods_nomenclature_sid, validity_end_date FROM goods_nomenclatures WHERE producline_suffix = '80'
 		AND goods_nomenclature_item_id = '""" + self.goods_nomenclature_item_id + """'
 		ORDER BY validity_start_date DESC LIMIT 1"""
@@ -121,7 +123,22 @@ class measure(object):
 		"""
 
 		self.measure_type_id = "142"
-		self.validity_start_date = f.mdate(g.app.critical_date_plus_one)
+
+		# Bring in the date overrides, if one is specified
+		if self.start_date_override == "":
+			self.validity_start_date = f.mdate(g.app.critical_date_plus_one)
+		else:
+			self.validity_start_date = self.start_date_override
+
+		# Bring in the end date overrides, but only if this has not already been 
+		# overriden by the end date to the commodity code
+		if self.validity_end_date == "":
+			if self.end_date_override == "":
+				self.validity_end_date = ""
+			else:
+				self.validity_end_date = self.end_date_override
+
+			
 		my_area = int(self.geographical_area_id)
 		if my_area == 2020:
 			self.measure_generating_regulation_id = "U1900010"

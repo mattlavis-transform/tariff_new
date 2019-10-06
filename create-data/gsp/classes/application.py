@@ -161,6 +161,8 @@ class application(object):
 					geographical_area_id		= row[0]
 					goods_nomenclature_item_id	= row[1]
 					duty_amount					= row[2]
+					start_date_override			= fn.mstr(row[4])
+					end_date_override			= fn.mstr(row[5])
 					"""
 					try:
 						exclusion = row[3]
@@ -169,7 +171,7 @@ class application(object):
 					"""
 
 					if (goods_nomenclature_item_id != "goods nomenclature") and (goods_nomenclature_item_id != ""):
-						obj = measure(geographical_area_id, goods_nomenclature_item_id, duty_amount)
+						obj = measure(geographical_area_id, goods_nomenclature_item_id, duty_amount, start_date_override, end_date_override)
 						self.measure_list.append(obj)
 						self.goods_nomenclature_list.append(goods_nomenclature_item_id)
 

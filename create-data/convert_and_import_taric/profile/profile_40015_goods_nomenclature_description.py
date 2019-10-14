@@ -6,12 +6,12 @@ class profile_40015_goods_nomenclature_description(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  			= app.getTimestamp()
-		goods_nomenclature_description_period_sid	= app.getNumberValue(oMessage, ".//oub:goods.nomenclature.description.period.sid", True)
-		language_id									= app.getValue(oMessage, ".//oub:language.id", True)
-		goods_nomenclature_sid						= app.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid", True)
-		goods_nomenclature_item_id		            = app.getValue(oMessage, ".//oub:goods.nomenclature.item.id", True)
-		productline_suffix			                = app.getValue(oMessage, ".//oub:productline.suffix", True)
-		description									= app.getValue(oMessage, ".//oub:description", True)
+		goods_nomenclature_description_period_sid	= app.get_number_value(oMessage, ".//oub:goods.nomenclature.description.period.sid", True)
+		language_id									= app.get_value(oMessage, ".//oub:language.id", True)
+		goods_nomenclature_sid						= app.get_number_value(oMessage, ".//oub:goods.nomenclature.sid", True)
+		goods_nomenclature_item_id		            = app.get_value(oMessage, ".//oub:goods.nomenclature.item.id", True)
+		productline_suffix			                = app.get_value(oMessage, ".//oub:productline.suffix", True)
+		description									= app.get_value(oMessage, ".//oub:description", True)
 
 		if update_type == "1":	# UPDATE
 			operation = "U"

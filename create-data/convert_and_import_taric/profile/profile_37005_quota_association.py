@@ -6,10 +6,10 @@ class profile_37005_quota_association(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date              = app.getTimestamp()
-		main_quota_definition_sid	= app.getNumberValue(oMessage, ".//oub:main.quota.definition.sid", True)
-		sub_quota_definition_sid	= app.getNumberValue(oMessage, ".//oub:sub.quota.definition.sid", True)
-		relation_type				= app.getValue(oMessage, ".//oub:relation.type", True)
-		coefficient				    = app.getValue(oMessage, ".//oub:coefficient", True)
+		main_quota_definition_sid	= app.get_number_value(oMessage, ".//oub:main.quota.definition.sid", True)
+		sub_quota_definition_sid	= app.get_number_value(oMessage, ".//oub:sub.quota.definition.sid", True)
+		relation_type				= app.get_value(oMessage, ".//oub:relation.type", True)
+		coefficient				    = app.get_value(oMessage, ".//oub:coefficient", True)
 
 		if update_type == "1":		# Update
 			operation = "U"

@@ -5,11 +5,11 @@ class profile_37015_quota_suspension_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				= app.getTimestamp()
-		quota_suspension_period_sid = app.getNumberValue(oMessage, ".//oub:quota.suspension.period.sid", True)
-		quota_definition_sid        = app.getNumberValue(oMessage, ".//oub:quota.definition.sid", True)
-		suspension_start_date		= app.getDateValue(oMessage, ".//oub:suspension.start.date", True)
-		suspension_end_date			= app.getDateValue(oMessage, ".//oub:suspension.end.date", True)
-		description					= app.getValue(oMessage, ".//oub:description", True)
+		quota_suspension_period_sid = app.get_number_value(oMessage, ".//oub:quota.suspension.period.sid", True)
+		quota_definition_sid        = app.get_number_value(oMessage, ".//oub:quota.definition.sid", True)
+		suspension_start_date		= app.get_date_value(oMessage, ".//oub:suspension.start.date", True)
+		suspension_end_date			= app.get_date_value(oMessage, ".//oub:suspension.end.date", True)
+		description					= app.get_value(oMessage, ".//oub:description", True)
 
 		if update_type == "20":
 			app.doprint ("Deleting quota suspension period " + str(quota_suspension_period_sid))

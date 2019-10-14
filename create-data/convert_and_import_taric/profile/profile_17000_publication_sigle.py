@@ -7,12 +7,12 @@ class profile_17000_publication_sigle(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date		= app.getTimestamp()
-		code_type_id		= app.getValue(oMessage, ".//oub:code.type.id", True)
-		code				= app.getValue(oMessage, ".//oub:code", True)
-		validity_start_date = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date	= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		publication_code	= app.getValue(oMessage, ".//oub:publication.code", True)
-		publication_sigle	= app.getValue(oMessage, ".//oub:publication.sigle", True)
+		code_type_id		= app.get_value(oMessage, ".//oub:code.type.id", True)
+		code				= app.get_value(oMessage, ".//oub:code", True)
+		validity_start_date = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date	= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		publication_code	= app.get_value(oMessage, ".//oub:publication.code", True)
+		publication_sigle	= app.get_value(oMessage, ".//oub:publication.sigle", True)
 
 		if update_type == "1":	    # UPDATE
 			operation = "U"

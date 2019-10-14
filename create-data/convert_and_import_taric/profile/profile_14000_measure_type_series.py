@@ -7,10 +7,10 @@ class profile_14000_measure_type_series(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date		        = app.getTimestamp()
-		measure_type_series_id      = app.getValue(oMessage, ".//oub:measure.type.series.id", True)
-		validity_start_date	        = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date	        = app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		measure_type_combination    = app.getValue(oMessage, ".//oub:measure.type.combination", True)
+		measure_type_series_id      = app.get_value(oMessage, ".//oub:measure.type.series.id", True)
+		validity_start_date	        = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date	        = app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		measure_type_combination    = app.get_value(oMessage, ".//oub:measure.type.combination", True)
 
 		if update_type == "1":	# UPDATE
 			operation = "U"

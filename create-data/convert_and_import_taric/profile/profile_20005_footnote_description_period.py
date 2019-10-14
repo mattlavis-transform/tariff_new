@@ -5,10 +5,10 @@ class profile_20005_footnote_description_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				    = app.getTimestamp()
-		footnote_description_period_sid = app.getNumberValue(oMessage, ".//oub:footnote.description.period.sid", True)
-		footnote_type_id			    = app.getValue(oMessage, ".//oub:footnote.type.id", True)
-		footnote_id					    = app.getValue(oMessage, ".//oub:footnote.id", True)
-		validity_start_date			    = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
+		footnote_description_period_sid = app.get_number_value(oMessage, ".//oub:footnote.description.period.sid", True)
+		footnote_type_id			    = app.get_value(oMessage, ".//oub:footnote.type.id", True)
+		footnote_id					    = app.get_value(oMessage, ".//oub:footnote.id", True)
+		validity_start_date			    = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
 
 		footnote_types = g.app.get_footnote_types()
 

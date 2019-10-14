@@ -5,11 +5,11 @@ class profile_40040_goods_nomenclature_successor(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				        = app.getTimestamp()
-		goods_nomenclature_sid		        = app.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid", True)
-		absorbed_goods_nomenclature_item_id	= app.getValue(oMessage, ".//oub:absorbed.goods.nomenclature.item.id", True)
-		absorbed_productline_suffix			= app.getValue(oMessage, ".//oub:absorbed.productline.suffix", True)
-		goods_nomenclature_item_id	        = app.getValue(oMessage, ".//oub:goods.nomenclature.item.id", True)
-		productline_suffix			        = app.getValue(oMessage, ".//oub:productline.suffix", True)
+		goods_nomenclature_sid		        = app.get_number_value(oMessage, ".//oub:goods.nomenclature.sid", True)
+		absorbed_goods_nomenclature_item_id	= app.get_value(oMessage, ".//oub:absorbed.goods.nomenclature.item.id", True)
+		absorbed_productline_suffix			= app.get_value(oMessage, ".//oub:absorbed.productline.suffix", True)
+		goods_nomenclature_item_id	        = app.get_value(oMessage, ".//oub:goods.nomenclature.item.id", True)
+		productline_suffix			        = app.get_value(oMessage, ".//oub:productline.suffix", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

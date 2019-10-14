@@ -5,12 +5,12 @@ class profile_25000_geographical_area(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                      = app.getTimestamp()
-		geographical_area_sid				= app.getNumberValue(oMessage, ".//oub:geographical.area.sid", True)
-		geographical_area_id				= app.getValue(oMessage, ".//oub:geographical.area.id", True)
-		validity_start_date					= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		geographical_code					= app.getValue(oMessage, ".//oub:geographical.code", True)
-		parent_geographical_area_group_sid	= app.getNumberValue(oMessage, ".//oub:parent.geographical.area.group.sid", True)
+		geographical_area_sid				= app.get_number_value(oMessage, ".//oub:geographical.area.sid", True)
+		geographical_area_id				= app.get_value(oMessage, ".//oub:geographical.area.id", True)
+		validity_start_date					= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date					= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		geographical_code					= app.get_value(oMessage, ".//oub:geographical.code", True)
+		parent_geographical_area_group_sid	= app.get_number_value(oMessage, ".//oub:parent.geographical.area.group.sid", True)
 
 		geographical_area_groups = g.app.get_geographical_area_groups()
 

@@ -17,17 +17,18 @@ class commodity(object):
 		self.indents                      = indents
 		self.leaf                         = leaf
 		self.assigned                     = False
-		self.combined_duty          = ""
-		self.notes_list				= []
-		self.notes_string			= ""
-		self.duty_list              = []
-		self.suppress_row			= False
-		self.suppress_duty			= False
-		self.indent_string          = ""
-		self.significant_children   = False
-		self.measure_count          = 0
-		self.measure_type_count     = 0
-		self.prevent_row_suppression = False
+		self.combined_duty          	= ""
+		self.combined_duty_csv			= ""
+		self.notes_list					= []
+		self.notes_string				= ""
+		self.duty_list              	= []
+		self.suppress_row				= False
+		self.suppress_duty				= False
+		self.indent_string          	= ""
+		self.significant_children   	= False
+		self.measure_count          	= 0
+		self.measure_type_count     	= 0
+		self.prevent_row_suppression 	= False
 		
 		self.format_description()
 		self.get_significant_digits()
@@ -103,6 +104,7 @@ class commodity(object):
 	
 		self.combined_duty = self.combined_duty.replace("  ", " ")
 		self.combined_duty = self.combined_duty.strip()
+		self.combined_duty_csv = self.combined_duty
 
 
 	def latinise(self):

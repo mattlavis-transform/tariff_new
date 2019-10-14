@@ -5,17 +5,17 @@ class profile_43010_measure_condition(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                              = app.getTimestamp()
-		measure_condition_sid			            = app.getNumberValue(oMessage, ".//oub:measure.condition.sid", True)
-		measure_sid			                        = app.getNumberValue(oMessage, ".//oub:measure.sid", True)
-		condition_code				                = app.getValue(oMessage, ".//oub:condition.code", True)
-		component_sequence_number				    = app.getValue(oMessage, ".//oub:component.sequence.number", True)
-		condition_duty_amount					    = app.getValue(oMessage, ".//oub:condition.duty.amount", True)
-		condition_monetary_unit_code			    = app.getValue(oMessage, ".//oub:condition.monetary.unit.code", True)
-		condition_measurement_unit_code			    = app.getValue(oMessage, ".//oub:condition.measurement.unit.code", True)
-		condition_measurement_unit_qualifier_code	= app.getValue(oMessage, ".//oub:condition.measurement.unit.qualifier.code", True)
-		action_code	                                = app.getValue(oMessage, ".//oub:action.code", True)
-		certificate_type_code	                    = app.getValue(oMessage, ".//oub:certificate.type.code", True)
-		certificate_code                        	= app.getValue(oMessage, ".//oub:certificate.code", True)
+		measure_condition_sid			            = app.get_number_value(oMessage, ".//oub:measure.condition.sid", True)
+		measure_sid			                        = app.get_number_value(oMessage, ".//oub:measure.sid", True)
+		condition_code				                = app.get_value(oMessage, ".//oub:condition.code", True)
+		component_sequence_number				    = app.get_value(oMessage, ".//oub:component.sequence.number", True)
+		condition_duty_amount					    = app.get_value(oMessage, ".//oub:condition.duty.amount", True)
+		condition_monetary_unit_code			    = app.get_value(oMessage, ".//oub:condition.monetary.unit.code", True)
+		condition_measurement_unit_code			    = app.get_value(oMessage, ".//oub:condition.measurement.unit.code", True)
+		condition_measurement_unit_qualifier_code	= app.get_value(oMessage, ".//oub:condition.measurement.unit.qualifier.code", True)
+		action_code	                                = app.get_value(oMessage, ".//oub:action.code", True)
+		certificate_type_code	                    = app.get_value(oMessage, ".//oub:certificate.type.code", True)
+		certificate_code                        	= app.get_value(oMessage, ".//oub:certificate.code", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

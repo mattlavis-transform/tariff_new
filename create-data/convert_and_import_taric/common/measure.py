@@ -5,10 +5,10 @@ class measure(object):
 	def __init__(self, app, root):
 		self.xml = ""
 		for oTransaction in root.findall('.//oub:measure/../../../../../env:transaction', app.namespaces):
-			update_type = self.getValue(app, oTransaction, ".//oub:record/oub:update.type")
+			update_type = self.get_value(app, oTransaction, ".//oub:record/oub:update.type")
 			print (oTransaction.get("id"), update_type)
-			validity_start_date = datetime.strptime(self.getValue(app, oTransaction, ".//oub:measure/oub:validity.start.date"), '%Y-%m-%d')
-			validity_end_date	= self.getValue(app, oTransaction, ".//oub:measure/oub:validity.start.date")
+			validity_start_date = datetime.strptime(self.get_value(app, oTransaction, ".//oub:measure/oub:validity.start.date"), '%Y-%m-%d')
+			validity_end_date	= self.get_value(app, oTransaction, ".//oub:measure/oub:validity.start.date")
 			if validity_end_date != "":
 				validity_end_date = datetime.strptime(validity_end_date, '%Y-%m-%d')
 				if validity_end_date > app.critical_date:
@@ -61,7 +61,7 @@ class measure(object):
 
 	def build(self, app, oNode, field, xpath, indent):
 		if "oub" in xpath or "env" in xpath:
-			s = self.getValue(app, oNode, xpath)
+			s = self.get_value(app, oNode, xpath)
 			if s != "":
 				self.xml += ("  " * indent) + field + s + self.closeoff(field) + "\n"
 		else:
@@ -74,7 +74,7 @@ class measure(object):
 	def doReplace(self, namespace, field, value):
 		self.xml = self.xml.replace(field, value)
 
-	def getValue(self, app, oNode, xpath):
+	def get_value(self, app, oNode, xpath):
 		try:
 			s = oNode.find(xpath, app.namespaces).text
 		except:

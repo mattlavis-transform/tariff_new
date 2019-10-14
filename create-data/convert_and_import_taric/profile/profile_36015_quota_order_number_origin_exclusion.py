@@ -6,8 +6,8 @@ class profile_36015_quota_order_number_origin_exclusion(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  = app.getTimestamp()
-		quota_order_number_origin_sid	= app.getNumberValue(oMessage, ".//oub:quota.order.number.origin.sid", True)
-		excluded_geographical_area_sid	= app.getNumberValue(oMessage, ".//oub:excluded.geographical.area.sid", True)
+		quota_order_number_origin_sid	= app.get_number_value(oMessage, ".//oub:quota.order.number.origin.sid", True)
+		excluded_geographical_area_sid	= app.get_number_value(oMessage, ".//oub:excluded.geographical.area.sid", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

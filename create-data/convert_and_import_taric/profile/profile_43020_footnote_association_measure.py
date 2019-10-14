@@ -5,9 +5,9 @@ class profile_43020_footnote_association_measure(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date      = app.getTimestamp()
-		measure_sid			= app.getNumberValue(oMessage, ".//oub:measure.sid", True)
-		footnote_type_id	= app.getValue(oMessage, ".//oub:footnote.type.id", True)
-		footnote_id	        = app.getValue(oMessage, ".//oub:footnote.id", True)
+		measure_sid			= app.get_number_value(oMessage, ".//oub:measure.sid", True)
+		footnote_type_id	= app.get_value(oMessage, ".//oub:footnote.type.id", True)
+		footnote_id	        = app.get_value(oMessage, ".//oub:footnote.id", True)
 
 		if measure_sid < 0:
 			national = True

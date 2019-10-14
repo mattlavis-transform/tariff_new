@@ -5,10 +5,10 @@ class profile_25005_geographical_area_description_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				    			= app.getTimestamp()
-		geographical_area_description_period_sid	= app.getNumberValue(oMessage, ".//oub:geographical.area.description.period.sid", True)
-		geographical_area_sid			    		= app.getNumberValue(oMessage, ".//oub:geographical.area.sid", True)
-		validity_start_date			    			= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		geographical_area_id					    = app.getValue(oMessage, ".//oub:geographical.area.id", True)
+		geographical_area_description_period_sid	= app.get_number_value(oMessage, ".//oub:geographical.area.description.period.sid", True)
+		geographical_area_sid			    		= app.get_number_value(oMessage, ".//oub:geographical.area.sid", True)
+		validity_start_date			    			= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		geographical_area_id					    = app.get_value(oMessage, ".//oub:geographical.area.id", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

@@ -14,20 +14,18 @@ for f in files:
 	print (f)
 	my_list.append(f)
 
-
 my_list.sort()
 for f in my_list:
 	print (f)
-
-#sys.exit()
 
 out = open(results, 'w')
 out.close()
 
 for f in my_list:
 	if f.endswith(ext):
-		f = os.path.join(dir_path, f)
-		data = open(f)
+		f2 = os.path.join(dir_path, f)
+		print (f2)
+		data = open(f2)
 		out = open(results, 'a')
 		contents = data.read()
 		out.write (contents)

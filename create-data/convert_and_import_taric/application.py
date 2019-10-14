@@ -135,6 +135,17 @@ from profile.profile_43025_measure_partial_temporary_stop			import profile_43025
 from profile.profile_44000_monetary_exchange_period					import profile_44000_monetary_exchange_period
 from profile.profile_44005_monetary_exchange_rate					import profile_44005_monetary_exchange_rate
 
+
+class bcolors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+
 class application(object):
 	def __init__(self):
 		self.reg_count = 0
@@ -213,6 +224,7 @@ class application(object):
 				self.log_list.append (s)
 				s2 = row[0] + "," + row[1] + "," + row[2] + "," + row[3] + "," + row[4] + "," + row[5]
 				self.log_list_string.append (s2)
+
 
 
 	def get_config(self):
@@ -326,13 +338,30 @@ class application(object):
 			self.deleted_goods_nomenclatures.append (obj)
 
 
-	def end_date_EU_measures(self, files):
-		if len(files) == 0:
-			sys.exit()
-		else:
-			xml_file = files[0]
+	def promote_fix_file(self, files):
+		self.files_prepend	= []
+		self.files_append	= []
+		# If there is anything with a plus sign at the start, then this should be loaded before the primary file.
+		# It must have the same envelope ID as the primary file
+		for file in files:
+			if file[0] == "+":
+				self.files_prepend.append(file)
 
+		# Then add in the ohrer files
+		for file in files:
+			if file[0] != "+":
+				self.files_append.append(file)
+
+
+
+	def end_date_EU_measures(self, files_to_combine):
+		if len(files_to_combine) == 0:
+			sys.exit()
+
+		xml_file = files_to_combine[0]
 		self.convertFilename(xml_file)
+		self.promote_fix_file(files_to_combine)
+
 		self.d("Creating converted file for " + self.output_filename, False)
 
 		self.xml_file_In	= os.path.join(self.XML_IN_DIR,  xml_file)
@@ -375,7 +404,10 @@ class application(object):
 		self.certificate_description_period_list = []
 		self.geographical_area_description_period_list = []
 
+		self.transactions_to_kill = []
+
 		for oTransaction in root.findall('.//env:transaction', self.namespaces):
+			transaction_id = oTransaction.attrib["id"]
 			for oMessage in oTransaction.findall('.//env:app.message', self.namespaces):
 				record_code			= oMessage.find(".//oub:record.code", self.namespaces).text
 				sub_record_code		= oMessage.find(".//oub:subrecord.code", self.namespaces).text
@@ -384,8 +416,8 @@ class application(object):
 
 				# 20005 FOOTNOTE DESCRIPTION PERIOD
 				if record_code == "200" and sub_record_code == "05" and update_type in ("1", "3"):
-					validity_start_date				= self.getDateValue(oMessage, ".//oub:validity.start.date")
-					footnote_description_period_sid	= self.getDateValue(oMessage, ".//oub:footnote.description.period.sid")
+					validity_start_date				= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					footnote_description_period_sid	= self.get_date_value(oMessage, ".//oub:footnote.description.period.sid")
 					if validity_start_date >= self.critical_date:
 						footnote_description_period_list.append(footnote_description_period_sid)
 						oTransaction.remove (oMessage)
@@ -393,15 +425,15 @@ class application(object):
 
 				# 20010 FOOTNOTE DESCRIPTION
 				if record_code == "200" and sub_record_code == "10" and update_type in ("1", "3"):
-					footnote_description_period_sid	= self.getDateValue(oMessage, ".//oub:footnote.description.period.sid")
+					footnote_description_period_sid	= self.get_date_value(oMessage, ".//oub:footnote.description.period.sid")
 					if footnote_description_period_sid in self.footnote_description_period_list:
 						oTransaction.remove (oMessage)
 						self.register_update("200", "10", "delete", update_type_string, footnote_description_period_sid, xml_file, "Delete instruction to footnote description " + footnote_description_period_sid)
 
 				# 20505 CERTIFICATE DESCRIPTION PERIOD
 				if record_code == "205" and sub_record_code == "05" and update_type in ("1", "3"):
-					validity_start_date				= self.getDateValue(oMessage, ".//oub:validity.start.date")
-					certificate_description_period_sid	= self.getDateValue(oMessage, ".//oub:certificate.description.period.sid")
+					validity_start_date				= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					certificate_description_period_sid	= self.get_date_value(oMessage, ".//oub:certificate.description.period.sid")
 					if validity_start_date >= self.critical_date:
 						certificate_description_period_list.append(certificate_description_period_sid)
 						oTransaction.remove (oMessage)
@@ -409,15 +441,15 @@ class application(object):
 
 				# 20510 CERTIFICATE DESCRIPTION
 				if record_code == "205" and sub_record_code == "10" and update_type in ("1", "3"):
-					certificate_description_period_sid	= self.getDateValue(oMessage, ".//oub:certificate.description.period.sid")
+					certificate_description_period_sid	= self.get_date_value(oMessage, ".//oub:certificate.description.period.sid")
 					if certificate_description_period_sid in self.certificate_description_period_list:
 						oTransaction.remove (oMessage)
 						self.register_update("205", "10", "delete", update_type_string, certificate_description_period_sid, xml_file, "Delete instruction to certificate description " + certificate_description_period_sid)
 
 				# 25005 GEOGRAPHICAL AREA DESCRIPTION PERIOD
 				if record_code == "250" and sub_record_code == "05" and update_type in ("1", "3"):
-					validity_start_date				= self.getDateValue(oMessage, ".//oub:validity.start.date")
-					geographical_area_description_period_sid	= self.getDateValue(oMessage, ".//oub:geographical_area.description.period.sid")
+					validity_start_date				= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					geographical_area_description_period_sid	= self.get_date_value(oMessage, ".//oub:geographical_area.description.period.sid")
 					if validity_start_date >= self.critical_date:
 						geographical_area_description_period_list.append(geographical_area_description_period_sid)
 						oTransaction.remove (oMessage)
@@ -425,21 +457,45 @@ class application(object):
 
 				# 25010 GEOGRAPHICAL AREA DESCRIPTION
 				if record_code == "250" and sub_record_code == "10" and update_type in ("1", "3"):
-					geographical_area_description_period_sid	= self.getDateValue(oMessage, ".//oub:geographical_area.description.period.sid")
+					geographical_area_description_period_sid	= self.get_date_value(oMessage, ".//oub:geographical_area.description.period.sid")
 					if geographical_area_description_period_sid in self.geographical_area_description_period_list:
 						oTransaction.remove (oMessage)
 						self.register_update("250", "10", "delete", update_type_string, geographical_area_description_period_sid, xml_file, "Delete instruction to geographical_area description " + geographical_area_description_period_sid)
 
+				# 36000	QUOTA ORDER NUMBER
+				if record_code == "360" and sub_record_code == "00": # and update_type in ("1", "3"):
+					validity_start_date		= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					if validity_start_date >= self.critical_date:
+						oTransaction.remove (oMessage)
+						if transaction_id not in self.transactions_to_kill:
+							self.transactions_to_kill.append(transaction_id)
+
+				# 36100	QUOTA ORDER NUMBER ORIGIN
+				if record_code == "360" and sub_record_code == "10": # and update_type in ("1", "3"):
+					validity_start_date		= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					if validity_start_date >= self.critical_date:
+						oTransaction.remove (oMessage)
+						if transaction_id not in self.transactions_to_kill:
+							self.transactions_to_kill.append(transaction_id)
+
+				# 36150	QUOTA ORDER NUMBER ORIGIN EXCLUSION
+				if record_code == "360" and sub_record_code == "15": # and update_type in ("1", "3"):
+					oTransaction.remove (oMessage)
+					if transaction_id not in self.transactions_to_kill:
+						self.transactions_to_kill.append(transaction_id)
+
 				# 37000	QUOTA DEFINITION
 				# We actually do want to delete quota definitions
 				if record_code == "370" and sub_record_code == "00" and update_type in ("1", "3"):
-					validity_start_date		= self.getDateValue(oMessage, ".//oub:validity.start.date")
-					validity_end_date		= self.getDateValue(oMessage, ".//oub:validity.end.date")
-					quota_definition_sid	=  self.getValue(oMessage, ".//oub:quota.definition.sid")
+					validity_start_date		= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					validity_end_date		= self.get_date_value(oMessage, ".//oub:validity.end.date")
+					quota_definition_sid	=  self.get_value(oMessage, ".//oub:quota.definition.sid")
 
 					# Action - remove the quota definition message node if the quota definition does not start
 					# until after the critical date
 					if validity_start_date >= self.critical_date:
+						if transaction_id not in self.transactions_to_kill:
+							self.transactions_to_kill.append(transaction_id)
 						quota_order_definition_list.append (quota_definition_sid)
 						oTransaction.remove (oMessage)
 						self.register_update("370", "00", "delete", update_type_string, quota_definition_sid, xml_file, "Delete instruction to create quota order definition " + quota_definition_sid)
@@ -447,23 +503,32 @@ class application(object):
 						# Action - insert the end date on the quota definition, if the end date is blank
 						# Not sure if this is possible, but here for completion
 						if validity_end_date == "":
-							oElement = self.getNode(oMessage, ".//oub:quota.definition")
+							oElement = self.get_node(oMessage, ".//oub:quota.definition")
 							self.add_edit_node(oElement, "oub:validity.end.date", "oub:validity.start.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
 							self.register_update("370", "00", "update", update_type_string, quota_definition_sid, xml_file, "Insert an end date for a quota definition which was otherwise un-end dated for definition " + quota_definition_sid)
 
 						# Action - update the end date, if the end date is later than the critical date
 						# and the start date is before the critical date, i.e. straddles
 						elif validity_end_date >= self.critical_date:
-							oElement = self.getNode(oMessage, ".//oub:quota.definition")
-							self.setNode(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+							oElement = self.get_node(oMessage, ".//oub:quota.definition")
+							self.set_node(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
 							self.register_update("370", "00", "update", update_type_string, quota_definition_sid, xml_file, "Update an explicit quota definition end date to the critical date for quota definition " + quota_definition_sid)
 
+				if record_code == "370" and sub_record_code == "00" and update_type in ("2"):
+					validity_start_date		= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					validity_end_date		= self.get_date_value(oMessage, ".//oub:validity.end.date")
+					quota_definition_sid	=  self.get_value(oMessage, ".//oub:quota.definition.sid")
+					if validity_start_date >= self.critical_date:
+						oTransaction.remove (oMessage)
+						self.register_update("370", "00", "delete", update_type_string, quota_definition_sid, xml_file, "Delete instruction to delete quota order definition " + quota_definition_sid)
+
+				"""
 				# 40000 GOODS NOMENCLATURE - Inserts
 				if record_code == "400" and sub_record_code == "00" and update_type == "3":
-					goods_nomenclature_sid		= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_item_id	= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix			= self.getValue(oMessage, ".//oub:producline.suffix")
-					validity_start_date			= self.getDateValue(oMessage, ".//oub:validity.start.date")
+					goods_nomenclature_sid		= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_item_id	= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix			= self.get_value(oMessage, ".//oub:producline.suffix")
+					validity_start_date			= self.get_date_value(oMessage, ".//oub:validity.start.date")
 					if validity_start_date > self.nomenclature_date:
 						found = False
 						for item in self.deleted_goods_nomenclatures:
@@ -478,10 +543,10 @@ class application(object):
 
 				# 40000 GOODS NOMENCLATURE - Updates
 				if record_code == "400" and sub_record_code == "00" and update_type == "1":
-					goods_nomenclature_sid		= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_item_id	= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix			= self.getValue(oMessage, ".//oub:producline.suffix")
-					validity_end_date			= self.getDateValue(oMessage, ".//oub:validity.end.date")
+					goods_nomenclature_sid		= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_item_id	= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix			= self.get_value(oMessage, ".//oub:producline.suffix")
+					validity_end_date			= self.get_date_value(oMessage, ".//oub:validity.end.date")
 
 					if validity_end_date != "":
 						dx = datetime.strftime(self.nomenclature_date, "%Y-%m-%d 00:00:00")
@@ -497,55 +562,69 @@ class application(object):
 							oTransaction.remove (oMessage)
 							self.register_update("400", "00", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to update goods.nomenclature.item for commodity " + goods_nomenclature_item_id)
 
+				"""
+				# Barbaric but necessary - this removes all goods nomenclature items
+				if record_code == "400":
+					oTransaction.remove (oMessage)
+
+
 				# 43000	MEASURE
 				if record_code == "430" and sub_record_code == "00":
-					validity_start_date					= self.getDateValue(oMessage, ".//oub:validity.start.date")
-					validity_end_date					= self.getDateValue(oMessage, ".//oub:validity.end.date")
-					goods_nomenclature_item_id			= self.getDateValue(oMessage, ".//oub:goods_nomenclature_item_id")
-					measure_generating_regulation_role	= self.getValue(oMessage, ".//oub:measure.generating.regulation.role")
-					measure_generating_regulation_id	= self.getValue(oMessage, ".//oub:measure.generating.regulation.id")
-					measure_type_id						= self.getValue(oMessage, ".//oub:measure.type")
-					measure_sid							= self.getValue(oMessage, ".//oub:measure.sid")
-					self.regulation_list.append (measure_generating_regulation_id)
+					validity_start_date					= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					validity_end_date					= self.get_date_value(oMessage, ".//oub:validity.end.date")
+					goods_nomenclature_item_id			= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					measure_generating_regulation_role	= self.get_value(oMessage, ".//oub:measure.generating.regulation.role")
+					measure_generating_regulation_id	= self.get_value(oMessage, ".//oub:measure.generating.regulation.id")
+					measure_type_id						= self.get_value(oMessage, ".//oub:measure.type")
+					measure_sid							= self.get_value(oMessage, ".//oub:measure.sid")
 
-					# Action - remove the message node if the measure does not start until after the critical date
-					if update_type in ("1", "3"):
-						sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = '" + goods_nomenclature_item_id + "'"
-						cur = self.conn.cursor()
-						cur.execute(sql)
-						rows = cur.fetchall()
-						if len(rows) == 0:
-							oTransaction.remove (oMessage)
-							measure_list.append(measure_sid)
-							self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure on commodity that does not exist with measure.sid of " + measure_sid)
-							break
+					if measure_type_id != "490":
+						# Don't put end dates on 490s (Standard Import Value) measures
+						self.regulation_list.append (measure_generating_regulation_id)
 
-						if validity_start_date > self.critical_date:
-							oTransaction.remove (oMessage)
-							measure_list.append(measure_sid)
-							self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
+						# Action - remove the message node if the measure does not start until after the critical date
+						if update_type in ("2"):
+							if validity_start_date > self.critical_date:
+								if transaction_id not in self.transactions_to_kill:
+									self.transactions_to_kill.append(transaction_id)
 
-						# Action - if the measure begins before EU Exit, but the end date is empty,
-						# then insert an end date (i.e the critical date - to be determined)
-						# This also requires a justification regulation ID and role to be added
-						elif validity_end_date == "":
-							oElement = self.getNode(oMessage, ".//oub:measure")
+						if update_type in ("1", "3"):
+							sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = '" + goods_nomenclature_item_id + "'"
+							cur = self.conn.cursor()
+							cur.execute(sql)
+							rows = cur.fetchall()
+							if len(rows) == 0:
+								oTransaction.remove (oMessage)
+								measure_list.append(measure_sid)
+								self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure on commodity that does not exist with measure.sid of " + measure_sid)
+								break
 
-							self.add_edit_node(oElement, "oub:justification.regulation.id", "oub:measure.generating.regulation.id", measure_generating_regulation_id)
-							self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:measure.generating.regulation.id", measure_generating_regulation_role)
-							self.add_edit_node(oElement, "oub:validity.end.date", "oub:measure.generating.regulation.id", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+							if validity_start_date > self.critical_date:
+								oTransaction.remove (oMessage)
+								measure_list.append(measure_sid)
+								self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
 
-							self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure with no end date to end on the critical date - measure_sid " + measure_sid)
+							# Action - if the measure begins before EU Exit, but the end date is empty,
+							# then insert an end date (i.e the critical date - to be determined)
+							# This also requires a justification regulation ID and role to be added
+							elif validity_end_date == "":
+								oElement = self.get_node(oMessage, ".//oub:measure")
 
-						# Action - if the measure begins before EU Exit, but the end date is after EU Exit and is fixed,
-						# then alter the end date to be the critical date - to be determined)
-						elif validity_end_date >= self.critical_date:
-							oElement = self.getNode(oMessage, ".//oub:measure")
-							self.setNode(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
-							self.add_edit_node(oElement, "oub:justification.regulation.id",   "oub:validity.end.date", measure_generating_regulation_id)
-							self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:validity.end.date", measure_generating_regulation_role)
+								self.add_edit_node(oElement, "oub:justification.regulation.id", "oub:measure.generating.regulation.id", measure_generating_regulation_id)
+								self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:measure.generating.regulation.id", measure_generating_regulation_role)
+								self.add_edit_node(oElement, "oub:validity.end.date", "oub:measure.generating.regulation.id", datetime.strftime(self.critical_date, "%Y-%m-%d"))
 
-							self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure that starts before EU Exit and ends after EU Exit to end on the critical date - measure_sid: " + measure_sid)
+								self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure with no end date to end on the critical date - measure_sid " + measure_sid)
+
+							# Action - if the measure begins before EU Exit, but the end date is after EU Exit and is fixed,
+							# then alter the end date to be the critical date - to be determined)
+							elif validity_end_date >= self.critical_date:
+								oElement = self.get_node(oMessage, ".//oub:measure")
+								self.set_node(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+								self.add_edit_node(oElement, "oub:justification.regulation.id",   "oub:validity.end.date", measure_generating_regulation_id)
+								self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:validity.end.date", measure_generating_regulation_role)
+
+								self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure that starts before EU Exit and ends after EU Exit to end on the critical date - measure_sid: " + measure_sid)
 
 
 
@@ -561,31 +640,31 @@ class application(object):
 
 				# 40005 GOODS NOMENCLATURE INDENT
 				if record_code == "400" and sub_record_code == "05" and update_type == "3":
-					goods_nomenclature_sid		= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_item_id	= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix			= self.getValue(oMessage, ".//oub:producline.suffix")
-					validity_start_date			= self.getDateValue(oMessage, ".//oub:validity.start.date")
+					goods_nomenclature_sid		= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_item_id	= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix			= self.get_value(oMessage, ".//oub:producline.suffix")
+					validity_start_date			= self.get_date_value(oMessage, ".//oub:validity.start.date")
 					if validity_start_date > self.nomenclature_date:
 						oTransaction.remove (oMessage)
 						self.register_update("400", "05", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to create / update goods.nomenclature.indent for commodity " + goods_nomenclature_item_id)
 
 				# 40010 GOODS NOMENCLATURE DESCRIPTION PERIOD
 				if record_code == "400" and sub_record_code == "10" and update_type == "3":
-					goods_nomenclature_sid						= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_description_period_sid	= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.description.period.sid")
-					goods_nomenclature_item_id					= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix							= self.getValue(oMessage, ".//oub:productline.suffix")
-					validity_start_date							= self.getDateValue(oMessage, ".//oub:validity.start.date")
+					goods_nomenclature_sid						= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_description_period_sid	= self.get_number_value(oMessage, ".//oub:goods.nomenclature.description.period.sid")
+					goods_nomenclature_item_id					= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix							= self.get_value(oMessage, ".//oub:productline.suffix")
+					validity_start_date							= self.get_date_value(oMessage, ".//oub:validity.start.date")
 					if validity_start_date > self.nomenclature_date:
 						oTransaction.remove (oMessage)
 						self.register_update("400", "10", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to create goods.nomenclature.description.period for commodity " + goods_nomenclature_item_id)
 
 				# 40015 GOODS NOMENCLATURE DESCRIPTION
 				if record_code == "400" and sub_record_code == "15" and update_type == "3":
-					goods_nomenclature_sid						= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_description_period_sid	= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.description.period.sid")
-					goods_nomenclature_item_id					= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix							= self.getValue(oMessage, ".//oub:productline.suffix")
+					goods_nomenclature_sid						= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_description_period_sid	= self.get_number_value(oMessage, ".//oub:goods.nomenclature.description.period.sid")
+					goods_nomenclature_item_id					= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix							= self.get_value(oMessage, ".//oub:productline.suffix")
 					if self.goods_nomenclature_deleted(goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix):
 					#if goods_nomenclature_sid in self.deleted_goods_nomenclatures:
 						oTransaction.remove (oMessage)
@@ -593,27 +672,27 @@ class application(object):
 
 				# 40020 GOODS NOMENCLATURE - FOOTNOTE ASSOCIATION
 				if record_code == "400" and sub_record_code == "20" and update_type == "3":
-					goods_nomenclature_sid						= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_description_period_sid	= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.description.period.sid")
-					goods_nomenclature_item_id					= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix							= self.getValue(oMessage, ".//oub:productline.suffix")
+					goods_nomenclature_sid						= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_description_period_sid	= self.get_number_value(oMessage, ".//oub:goods.nomenclature.description.period.sid")
+					goods_nomenclature_item_id					= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix							= self.get_value(oMessage, ".//oub:productline.suffix")
 					if self.goods_nomenclature_deleted(goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix):
 						oTransaction.remove (oMessage)
 						self.register_update("400", "20", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to create goods.nomenclature.footnote.association for commodity " + goods_nomenclature_item_id)
 
 				# 40035 GOODS NOMENCLATURE ORIGIN
 				if record_code == "400" and sub_record_code == "35" and update_type == "3":
-					goods_nomenclature_sid						= self.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid")
-					goods_nomenclature_item_id					= self.getValue(oMessage, ".//oub:goods.nomenclature.item.id")
-					productline_suffix							= self.getValue(oMessage, ".//oub:productline.suffix")
+					goods_nomenclature_sid						= self.get_number_value(oMessage, ".//oub:goods.nomenclature.sid")
+					goods_nomenclature_item_id					= self.get_value(oMessage, ".//oub:goods.nomenclature.item.id")
+					productline_suffix							= self.get_value(oMessage, ".//oub:productline.suffix")
 					if self.goods_nomenclature_deleted(goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix):
 						oTransaction.remove (oMessage)
 						self.register_update("400", "35", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to create goods.nomenclature.origin for commodity " + goods_nomenclature_item_id)
 
 				# 40040 GOODS NOMENCLATURE SUCCESSOR
 				if record_code == "400" and sub_record_code == "40" and update_type == "3":
-					goods_nomenclature_item_id					= self.getValue(oMessage, ".//oub:absorbed.goods.nomenclature.item.id")
-					productline_suffix							= self.getValue(oMessage, ".//oub:absorbed.productline.suffix")
+					goods_nomenclature_item_id					= self.get_value(oMessage, ".//oub:absorbed.goods.nomenclature.item.id")
+					productline_suffix							= self.get_value(oMessage, ".//oub:absorbed.productline.suffix")
 					#if self.goods_nomenclature_deleted(None, goods_nomenclature_item_id, productline_suffix):
 					oTransaction.remove (oMessage)
 					self.register_update("400", "40", "delete", update_type_string, goods_nomenclature_item_id, xml_file, "Delete instruction to create goods.nomenclature.successor for commodity " + goods_nomenclature_item_id)
@@ -625,8 +704,8 @@ class application(object):
 					# 37005	QUOTA ASSOCIATION
 					# There are no associations left - yay
 					if record_code == "370" and sub_record_code == "05" and update_type in ("1", "3"):
-						main_quota_definition_sid	= self.getValue(oMessage, ".//oub:main.quota.definition.sid")
-						sub_quota_definition_sid	= self.getValue(oMessage, ".//oub:sub.quota.definition.sid")
+						main_quota_definition_sid	= self.get_value(oMessage, ".//oub:main.quota.definition.sid")
+						sub_quota_definition_sid	= self.get_value(oMessage, ".//oub:sub.quota.definition.sid")
 						for sid in quota_order_definition_list:
 							if (main_quota_definition_sid == sid) or (sub_quota_definition_sid == sid):
 								oTransaction.remove (oMessage)
@@ -635,10 +714,10 @@ class application(object):
 
 					# 37010	QUOTA BLOCKING PERIOD
 					if record_code == "370" and sub_record_code == "10" and update_type in ("1", "3"):
-						quota_blocking_period_sid	= self.getValue(oMessage, ".//oub:quota.blocking.period.sid")
-						quota_definition_sid		= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						blocking_start_date			= self.getDateValue(oMessage, ".//oub:blocking.start.date")
-						blocking_end_date			= self.getDateValue(oMessage, ".//oub:blocking.end.date")
+						quota_blocking_period_sid	= self.get_value(oMessage, ".//oub:quota.blocking.period.sid")
+						quota_definition_sid		= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						blocking_start_date			= self.get_date_value(oMessage, ".//oub:blocking.start.date")
+						blocking_end_date			= self.get_date_value(oMessage, ".//oub:blocking.end.date")
 
 						# Action - Delete a blocking period if the blocking period starts after the critical date
 						if blocking_start_date > self.critical_date:
@@ -649,9 +728,9 @@ class application(object):
 						# then end date the blocking period on the critical date
 						# Please note - blocking periods must have an end date, so there is no condition where end date is blank
 						elif blocking_start_date < self.critical_date and blocking_end_date > self.critical_date:
-							oElement = self.getNode(oMessage, ".//oub:quota.blocking.period")
+							oElement = self.get_node(oMessage, ".//oub:quota.blocking.period")
 							self.register_update("370", "10", "update", update_type_string, quota_blocking_period_sid, xml_file, "Update an existing blocking period end date to the critical date")
-							self.setNode(oElement, "oub:blocking.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+							self.set_node(oElement, "oub:blocking.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the blocking period too
@@ -667,10 +746,10 @@ class application(object):
 					# 37015	QUOTA SUSPENSION PERIOD
 					# There are none of these left, yay
 					if record_code == "370" and sub_record_code == "15" and update_type in ("1", "3"):
-						quota_suspension_period_sid	= self.getValue(oMessage, ".//oub:quota.suspension.period.sid")
-						quota_definition_sid		= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						suspension_start_date		= self.getDateValue(oMessage, ".//oub:suspension.start.date")
-						suspension_end_date			= self.getDateValue(oMessage, ".//oub:suspension.end.date")
+						quota_suspension_period_sid	= self.get_value(oMessage, ".//oub:quota.suspension.period.sid")
+						quota_definition_sid		= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						suspension_start_date		= self.get_date_value(oMessage, ".//oub:suspension.start.date")
+						suspension_end_date			= self.get_date_value(oMessage, ".//oub:suspension.end.date")
 
 						# Action - Delete a suspension period if the suspension period starts after the critical date
 						if suspension_start_date > self.critical_date:
@@ -681,9 +760,9 @@ class application(object):
 						# then end date the suspension period on the critical date
 						# Please note - suspension periods must have an end date, so there is no condition where end date is blank
 						elif suspension_start_date < self.critical_date and suspension_end_date > self.critical_date:
-							oElement = self.getNode(oMessage, ".//oub:quota.suspension.period")
+							oElement = self.get_node(oMessage, ".//oub:quota.suspension.period")
 							self.d("Update an existing suspension period end date to the critical date")
-							self.setNode(oElement, "oub:suspension.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+							self.set_node(oElement, "oub:suspension.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
 							self.register_update("370", "15", "update", update_type_string, quota_suspension_period_sid, xml_file, "Update an existing suspension period end date to the critical date")
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
@@ -699,8 +778,8 @@ class application(object):
 
 					# 37505	QUOTA UNBLOCKING EVENT
 					if record_code == "375" and sub_record_code == "05" and update_type in ("1", "3"):
-						quota_definition_sid		= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						unblocking_date				= self.getDateValue(oMessage, ".//oub:unblocking.date")
+						quota_definition_sid		= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						unblocking_date				= self.get_date_value(oMessage, ".//oub:unblocking.date")
 
 						# Action - Delete an unblocking event if it takes place after the critical date
 						if unblocking_date > self.critical_date:
@@ -720,8 +799,8 @@ class application(object):
 
 					# 37510	QUOTA CRITICAL EVENT
 					if record_code == "375" and sub_record_code == "10" and update_type in ("1", "3"):
-						quota_definition_sid		= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						critical_state_change_date	= self.getDateValue(oMessage, ".//oub:critical.state.change.date")
+						quota_definition_sid		= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						critical_state_change_date	= self.get_date_value(oMessage, ".//oub:critical.state.change.date")
 
 						# Action - Delete an critical event if it takes place after the critical date
 						if critical_state_change_date > self.critical_date:
@@ -741,8 +820,8 @@ class application(object):
 
 					# 37515	QUOTA EXHAUSTION EVENT
 					if record_code == "375" and sub_record_code == "15" and update_type in ("1", "3"):
-						quota_definition_sid	= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						exhaustion_date			= self.getDateValue(oMessage, ".//oub:exhaustion.date")
+						quota_definition_sid	= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						exhaustion_date			= self.get_date_value(oMessage, ".//oub:exhaustion.date")
 
 						# Action - Delete an critical event if it takes place after the critical date
 						if exhaustion_date > self.critical_date:
@@ -763,8 +842,8 @@ class application(object):
 
 					# 37520	QUOTA REOPENING EVENT
 					if record_code == "375" and sub_record_code == "20" and update_type in ("1", "3"):
-						quota_definition_sid	= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						reopening_date			= self.getDateValue(oMessage, ".//oub:reopening.date")
+						quota_definition_sid	= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						reopening_date			= self.get_date_value(oMessage, ".//oub:reopening.date")
 
 						# Action - Delete an reopening event if it takes place after the critical date
 						if reopening_date > self.critical_date:
@@ -784,8 +863,8 @@ class application(object):
 
 					# 37525	QUOTA UNSUSPENSION EVENT
 					if record_code == "375" and sub_record_code == "25" and update_type in ("1", "3"):
-						quota_definition_sid	= self.getValue(oMessage, ".//oub:quota.definition.sid")
-						unsuspension_date		= self.getDateValue(oMessage, ".//oub:unsuspension.date")
+						quota_definition_sid	= self.get_value(oMessage, ".//oub:quota.definition.sid")
+						unsuspension_date		= self.get_date_value(oMessage, ".//oub:unsuspension.date")
 
 						# Action - Delete an unsuspension event if it takes place after the critical date
 						if unsuspension_date > self.critical_date:
@@ -806,7 +885,7 @@ class application(object):
 				# 43005	MEASURE COMPONENT
 				if record_code == "430" and sub_record_code == "05":
 					if update_type in ("1", "3"):
-						measure_sid	= self.getValue(oMessage, ".//oub:measure.sid")
+						measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 						removed_node = False
 						for sid in measure_list:
 							if (measure_sid == sid):
@@ -826,12 +905,12 @@ class application(object):
 				# Look for any measure conditions in the current file that have a measure_sid that matches
 				# one that has been deleted from the file - if so, then delete this instuction
 				if record_code == "430" and sub_record_code == "10" and update_type in ("1", "3"):
-					measure_sid	= self.getValue(oMessage, ".//oub:measure.sid")
+					measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 					removed_node = False
 					for sid in measure_list:
 						if (measure_sid == sid):
 							oTransaction.remove (oMessage)
-							measure_condition_sid = self.getValue(oMessage, ".//oub:measure.condition.sid")
+							measure_condition_sid = self.get_value(oMessage, ".//oub:measure.condition.sid")
 							self.register_update("430", "10", "delete", update_type_string, sid, xml_file, "Delete measure condition for deleted measure with sid " + sid)
 							measure_condition_list.append(measure_condition_sid)
 							removed_node = True
@@ -851,7 +930,7 @@ class application(object):
 				# Look in the current file for any excluded geo areas that map to any of the measure sids that have been removed.
 				# If found, then delete them from the XML file
 				if record_code == "430" and sub_record_code == "15" and update_type in ("1", "3"):
-					measure_sid	= self.getValue(oMessage, ".//oub:measure.sid")
+					measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 					removed_node = False
 					for sid in measure_list:
 						if (measure_sid == sid):
@@ -864,7 +943,7 @@ class application(object):
 					# If found, then delete them from the XML file
 					if not(removed_node):
 						for s in self.log_list:
-							if s.record_code == "430" and s.sub_record_code == "15" and (s.update_type_string in ("insert", "update")):
+							if s.record_code == "430" and s.sub_record_code == "15" and (s.update_type_string in ("insert", "delete", "update")):
 								if s.sid == measure_sid:
 									oTransaction.remove (oMessage)
 									self.register_update("430", "15", "delete", update_type_string, measure_sid, xml_file, "Delete geographical area exclusion for deleted measure with sid " + measure_sid)
@@ -872,7 +951,7 @@ class application(object):
 
 				# 43020	FOOTNOTE ASSOCIATION (MEASURE)
 				if record_code == "430" and sub_record_code == "20" and update_type in ("1", "3"):
-					measure_sid	= self.getValue(oMessage, ".//oub:measure.sid")
+					measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 					removed_node = False
 					for sid in measure_list:
 						if (measure_sid == sid):
@@ -891,7 +970,7 @@ class application(object):
 
 				# 43025	MEASURE PARTIAL TEMPORARY STOP
 				if record_code == "430" and sub_record_code == "25" and update_type in ("1", "3"):
-					measure_sid	= self.getValue(oMessage, ".//oub:measure.sid")
+					measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 					removed_node = False
 					for sid in measure_list:
 						if (measure_sid == sid):
@@ -923,7 +1002,7 @@ class application(object):
 				# Look in the current file for any measure condition records that have been deleted from the XML file
 				# If found, the delete the measure condition component instruction as well
 				if record_code == "430" and sub_record_code == "11" and update_type in ("1", "3"):
-					measure_condition_sid = self.getNumberValue(oMessage, ".//oub:measure.condition.sid")
+					measure_condition_sid = self.get_number_value(oMessage, ".//oub:measure.condition.sid")
 					#print (measure_condition_sid)
 					removed_node = False
 
@@ -944,6 +1023,14 @@ class application(object):
 									self.register_update("430", "11", "delete", update_type_string, measure_condition_sid, xml_file, "Delete measure condition component for deleted measure condition with sid " + measure_condition_sid)
 									break
 
+
+		for transaction_to_kill in self.transactions_to_kill:
+			print (transaction_to_kill)
+			for oTransaction in root.findall('.//env:transaction', self.namespaces):
+				transaction_id = oTransaction.attrib["id"]
+				if transaction_to_kill == transaction_id:
+					root.remove (oTransaction)
+					break
 
 		# Loop through the transactions, looking for empty transactions, where the sub messages have all been deleted
 		# If found, then delete them all
@@ -1008,16 +1095,16 @@ class application(object):
 		f = open(self.TEMP_FILE, "w", encoding="utf-8")
 		f.write(s)
 		f.close()
-		self.validate(temp=True)
+		self.validate(temp = True)
 
-		files[0] = self.TEMP_FILE
+		self.files_append[0] = self.TEMP_FILE
 
-		iCount = len(files)
+		iCount = len(self.files_append)
 		if iCount > 1:
 			self.d("Merging in additional files", True)
 		iLoop = 0
 		with open(self.xml_file_out, 'w') as outfile:
-			for fname in files:
+			for fname in self.files_append:
 
 				a = 1
 				iLoop += 1
@@ -1118,7 +1205,7 @@ class application(object):
 		if success == False:
 			my_schema.validate(s)
 
-	def validateMetadata(self):
+	def validate_metadata(self):
 		self.d("Validating the metadata XML file against the metadata schema")
 		schema_path = os.path.join(self.SCHEMA_DIR, "BatchFileInterfaceMetadata-1.0.7.xsd")
 		my_schema = xmlschema.XMLSchema(schema_path)
@@ -1130,7 +1217,7 @@ class application(object):
 		except:
 			self.d("The metadata file did not validate and crashed the validator.")
 
-	def getValue(self, node, xpath, return_null = False):
+	def get_value(self, node, xpath, return_null = False):
 		try:
 			s = node.find(xpath, self.namespaces).text
 		except:
@@ -1140,7 +1227,7 @@ class application(object):
 				s = ""
 		return (s)
 
-	def getNumberValue(self, node, xpath, return_null = False):
+	def get_number_value(self, node, xpath, return_null = False):
 		try:
 			s = int(node.find(xpath, self.namespaces).text)
 		except:
@@ -1150,14 +1237,14 @@ class application(object):
 				s = ""
 		return (s)
 
-	def getNode(self, node, xpath):
+	def get_node(self, node, xpath):
 		try:
 			s = node.find(xpath, self.namespaces)
 		except:
 			s = None
 		return (s)
 
-	def getDateValue(self, node, xpath, return_null = False):
+	def get_date_value(self, node, xpath, return_null = False):
 		try:
 			s = node.find(xpath, self.namespaces).text
 			pos = s.find("T")
@@ -1171,7 +1258,7 @@ class application(object):
 				s = ""
 		return (s)
 
-	def getIndex(self, node, xpath):
+	def get_index(self, node, xpath):
 		index = -1
 		for child in node.iter():
 			#print (child.tag)
@@ -1183,19 +1270,19 @@ class application(object):
 
 	def add_edit_node(self, oElement, new_node, after, new_node_text):
 		after = after.replace("oub:", "")
-		s = self.getValue(oElement, new_node)
+		s = self.get_value(oElement, new_node)
 		if s == "":
-			index = self.getIndex(oElement, after)
+			index = self.get_index(oElement, after)
 			new_element      = ET.Element(new_node)
 			new_element.text = new_node_text
 			oElement.insert(index, new_element)
 		else:
-			node = self.getNode(oElement, new_node)
+			node = self.get_node(oElement, new_node)
 			node.text = new_node_text
 
 
-	def setNode(self, oElement, xpath, new_node_text):
-		node = self.getNode(oElement, xpath)
+	def set_node(self, oElement, xpath, new_node_text):
+		node = self.get_node(oElement, xpath)
 		node.text = new_node_text
 
 	def d(self, s, include_indent = True):
@@ -1226,6 +1313,7 @@ class application(object):
 				if sid not in LOG_FILE_MEASURE_content:
 					f = open(self.LOG_FILE_MEASURE, "a")
 					f.write(sid + "\n")
+					print ("Writing ", str(sid), "to file")
 					f.close()
 
 			elif record_code == "430" and sub_record_code == "10":
@@ -1260,7 +1348,7 @@ class application(object):
 		f = open(self.metadata_filepath, "w")
 		f.write(self.metadata_XML)
 		f.close()
-		self.validateMetadata()
+		self.validate_metadata()
 
 	def getTimestamp(self):
 		ts = datetime.now()
@@ -1478,20 +1566,6 @@ class application(object):
 			for rw in rows:
 				self.measure_types_that_require_components_list.append(rw[0])
 		
-		"""
-		self.measure_types_that_require_components = ""
-		for item in measure_types_that_require_components_list:
-			self.measure_types_that_require_components += "'" + item + "', "
-
-		self.measure_types_that_require_components = self.measure_types_that_require_components.strip()
-		self.measure_types_that_require_components = self.measure_types_that_require_components.strip(",")
-		print (self.measure_types_that_require_components)
-		sys.exit()
-		"""
-
-
-			
-
 
 	def import_xml(self, xml_file, prompt = True):
 		self.get_measure_types_that_require_components()
@@ -1545,7 +1619,7 @@ class application(object):
 			tree = ET.parse(self.xml_file_In)
 		except:
 			print ("The selected file could not be found")
-			sys.exit()
+			sys.exit(0)
 		root = tree.getroot()
 
 		self.register_import_start(xml_file)
@@ -1991,6 +2065,7 @@ class application(object):
 
 		# Register the load
 		self.register_import_complete(xml_file)
+		print (bcolors.ENDC)
 		if len(self.load_errors) > 0:
 			print ("File failed to load - rolling back")
 			self.rollback()
@@ -2243,6 +2318,7 @@ class application(object):
 
 
 	def add_load_error(self, msg):
+		print (bcolors.OKGREEN)
 		print ("Rule violation -", msg)
 		self.load_errors.append(msg)
 

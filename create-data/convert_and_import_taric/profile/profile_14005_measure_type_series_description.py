@@ -5,9 +5,9 @@ class profile_14005_measure_type_series_description(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  = app.getTimestamp()
-		measure_type_series_id			= app.getValue(oMessage, ".//oub:measure.type.series.id", True)
-		language_id						= app.getValue(oMessage, ".//oub:language.id", True)
-		description						= app.getValue(oMessage, ".//oub:description", True)
+		measure_type_series_id			= app.get_value(oMessage, ".//oub:measure.type.series.id", True)
+		language_id						= app.get_value(oMessage, ".//oub:language.id", True)
+		description						= app.get_value(oMessage, ".//oub:description", True)
 
 		if update_type == "1":	# UPDATE
 			operation = "U"

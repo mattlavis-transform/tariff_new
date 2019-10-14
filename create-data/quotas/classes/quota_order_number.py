@@ -1,13 +1,14 @@
 import classes.functions as f
 import classes.globals as g
 import datetime
+from datetime import datetime
 import sys
 
 from classes.quota_order_number_origin import quota_order_number_origin
 from classes.quota_order_number_origin_exclusion import quota_order_number_origin_exclusion
 
 class quota_order_number(object):
-	def __init__(self, quota_order_number_id, regulation_id, method, measure_type_id, origin_string, origin_exclusion_string, validity_start_date, subject, status):
+	def __init__(self, quota_order_number_id = "", regulation_id = "", method = "", measure_type_id = "", origin_string = "", origin_exclusion_string = "", validity_start_date = "", subject = "", status = ""):
 		self.quota_order_number_id      = quota_order_number_id
 		self.regulation_id              = regulation_id
 		self.method			            = method
@@ -15,8 +16,10 @@ class quota_order_number(object):
 		self.origin_string              = origin_string
 		self.origin_exclusion_string    = origin_exclusion_string
 		self.validity_start_date    	= validity_start_date
+		self.validity_end_date    		= ""
 		self.subject		            = subject
 		self.status		            	= status
+		self.update_type				= ""
 
 		self.cleanse_subject()
 
@@ -36,9 +39,53 @@ class quota_order_number(object):
 		self.assign_definitions()
 		self.assign_measures()
 
+
+	def get_data_from_id(self):
+		sql = """
+		select quota_order_number_sid, validity_start_date, validity_end_date
+		from quota_order_numbers
+		where quota_order_number_id = '""" + self.quota_order_number_id + """'
+		order by validity_start_date desc limit 1
+		"""
+		cur = g.app.conn.cursor()
+		cur.execute(sql)
+		rows = cur.fetchall()
+		if len(rows) > 0:
+			self.quota_order_number_sid	= rows[0][0]
+			self.validity_start_date	= rows[0][1]
+			self.validity_end_date		= rows[0][2]
+		else:
+			sys.exit()
+
+
+	def get_next_sid(self):
+		self.quota_order_number_sid = o.app.last_quota_order_number_sid
+		o.app.last_quota_order_number_sid += 1
+
+
+	def terminate(self, validity_end_date):
+		self.validity_end_date	= validity_end_date
+		self.update_type		= "1"
+
+
+	def start(self, validity_start_date):
+		self.validity_start_date	= validity_start_date
+		self.update_type			= "3"
+
+
+	def date_to_string(self, v):
+		if v is None:
+			return ""
+		elif (isinstance(v, str)):
+			return v
+		else:
+			return datetime.strftime(v, '%Y-%m-%d')
+
+
 	def cleanse_subject(self):
 		self.subject = self.subject.replace("<", "&lt;")
 		self.subject = self.subject.replace(">", "&gt;")
+
 
 	def trim_measure_type(self):
 		space_pos = self.measure_type_id.find(" ")
@@ -85,7 +132,10 @@ class quota_order_number(object):
 
 
 	def check_existence(self):
-		sql = "SELECT quota_order_number_sid FROM quota_order_numbers WHERE quota_order_number_id = '" + self.quota_order_number_id + "' ORDER BY validity_start_date DESC LIMIT 1"
+		sql = """SELECT quota_order_number_sid FROM quota_order_numbers
+		WHERE quota_order_number_id = '""" + self.quota_order_number_id + """' 
+		AND validity_end_date IS NULL
+		ORDER BY validity_start_date DESC LIMIT 1"""
 		cur = g.app.conn.cursor()
 		cur.execute(sql)
 		rows = cur.fetchall()
@@ -100,24 +150,38 @@ class quota_order_number(object):
 			g.app.last_quota_order_number_sid += 1
 			self.quota_order_number_sid = g.app.last_quota_order_number_sid
 
-	def xml(self):
-		#if self.status == "Existing":
-		#	return ("")
 
+	def date_to_string(self, v):
+		if v is None:
+			return ""
+		elif (isinstance(v, str)):
+			return v
+		else:
+			return datetime.strftime(v, '%Y-%m-%d')
+
+
+	def quota_order_number_id_formatted(self):
+		return self.quota_order_number_id[0:2] + "." + self.quota_order_number_id[-4:]
+
+
+
+	def xml(self):
 		if self.quota_order_number_id[0:3] == "094":
 			return ("")
 
 		s = ""
 		if self.exists == False:
-			s = g.app.template_quota_order_number
+			s = "<!-- Beginning quota order number XML for quota " + self.quota_order_number_id_formatted() + " //-->\n"			
+			s += g.app.template_quota_order_number
+			s += "<!-- Ending quota order number XML for quota " + self.quota_order_number_id_formatted() + " //-->\n"			
 			s = s.replace("[TRANSACTION_ID]",			str(g.app.transaction_id))
 			s = s.replace("[MESSAGE_ID]",				str(g.app.message_id))
 			s = s.replace("[RECORD_SEQUENCE_NUMBER]",	str(g.app.message_id))
-			s = s.replace("[UPDATE_TYPE]",				"3")
+			s = s.replace("[UPDATE_TYPE]",				self.update_type)
 			s = s.replace("[QUOTA_ORDER_NUMBER_SID]",	str(self.quota_order_number_sid))
 			s = s.replace("[QUOTA_ORDER_NUMBER_ID]",	self.quota_order_number_id)
-			s = s.replace("[VALIDITY_START_DATE]",		self.validity_start_date)
-			s = s.replace("[VALIDITY_END_DATE]",		"")
+			s = s.replace("[VALIDITY_START_DATE]",		self.date_to_string(self.validity_start_date))
+			s = s.replace("[VALIDITY_END_DATE]",		self.date_to_string(self.validity_end_date))
 
 			s = s.replace("\t\t\t\t\t\t<oub:validity.end.date></oub:validity.end.date>\n", "")
 			g.app.message_id +=1

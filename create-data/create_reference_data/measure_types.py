@@ -15,8 +15,14 @@ from common.application import application
 app = o.app
 app.getTemplates()
 
-fname = os.path.join(app.SOURCE_DIR, "measure_types.xlsx")
-wb = load_workbook(filename=fname, read_only=True)
+try:
+	profile = sys.argv[1]
+except:
+	profile = "measure_types"
+
+
+fname = os.path.join(app.SOURCE_DIR, profile + ".xlsx")
+wb = load_workbook(filename = fname, read_only = True)
 ws = wb['Updated']
 
 row_count = ws.max_row
@@ -57,7 +63,7 @@ for obj in app.measure_type_list:
 	out += obj.xml
 
 out = env.replace("{BODY}", out)
-filename = os.path.join(app.XML_DIR, "measure_types.xml")
+filename = os.path.join(app.XML_DIR, profile + ".xml")
 f = open(filename, "w", encoding="utf-8") 
 f.write(out)
 f.close()

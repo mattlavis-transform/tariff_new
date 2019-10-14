@@ -6,9 +6,9 @@ class profile_44005_monetary_exchange_rate(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  = app.getTimestamp()
-		monetary_exchange_period_sid	= app.getNumberValue(oMessage, ".//oub:monetary.exchange.period.sid", True)
-		child_monetary_unit_code		= app.getValue(oMessage, ".//oub:child.monetary.unit.code", True)
-		exchange_rate					= app.getValue(oMessage, ".//oub:exchange.rate", True)
+		monetary_exchange_period_sid	= app.get_number_value(oMessage, ".//oub:monetary.exchange.period.sid", True)
+		child_monetary_unit_code		= app.get_value(oMessage, ".//oub:child.monetary.unit.code", True)
+		exchange_rate					= app.get_value(oMessage, ".//oub:exchange.rate", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

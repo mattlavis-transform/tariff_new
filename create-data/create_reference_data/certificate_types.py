@@ -18,21 +18,6 @@ app.getTemplates()
 fname = os.path.join(app.SOURCE_DIR, "certificate_types.xlsx")
 wb = load_workbook(filename=fname, read_only=True)
 
-"""
-ws = wb['Updated']
-
-row_count = ws.max_row
-col_count = ws.max_column
-
-for i in range(2, row_count + 1):
-	CERTIFICATE_TYPE_ID = ws.cell(row = i, column = 1).value
-	DESCRIPTION         = ws.cell(row = i, column = 2).value
-	VALIDITY_START_DATE	= ws.cell(row = i, column = 3).value
-
-	act = certificate_type(CERTIFICATE_TYPE_ID, DESCRIPTION, VALIDITY_START_DATE, "update")
-	app.certificate_type_list.append(act)
-"""
-
 ws = wb['New']
 
 row_count = ws.max_row

@@ -5,12 +5,12 @@ class profile_43011_measure_condition_component(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  = app.getTimestamp()
-		measure_condition_sid			= app.getNumberValue(oMessage, ".//oub:measure.condition.sid", True)
-		duty_expression_id				= app.getValue(oMessage, ".//oub:duty.expression.id", True)
-		duty_amount					    = app.getValue(oMessage, ".//oub:duty.amount", True)
-		monetary_unit_code			    = app.getValue(oMessage, ".//oub:monetary.unit.code", True)
-		measurement_unit_code			= app.getValue(oMessage, ".//oub:measurement.unit.code", True)
-		measurement_unit_qualifier_code	= app.getValue(oMessage, ".//oub:measurement.unit.qualifier.code", True)
+		measure_condition_sid			= app.get_number_value(oMessage, ".//oub:measure.condition.sid", True)
+		duty_expression_id				= app.get_value(oMessage, ".//oub:duty.expression.id", True)
+		duty_amount					    = app.get_value(oMessage, ".//oub:duty.amount", True)
+		monetary_unit_code			    = app.get_value(oMessage, ".//oub:monetary.unit.code", True)
+		measurement_unit_code			= app.get_value(oMessage, ".//oub:measurement.unit.code", True)
+		measurement_unit_qualifier_code	= app.get_value(oMessage, ".//oub:measurement.unit.qualifier.code", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

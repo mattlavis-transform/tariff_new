@@ -5,10 +5,10 @@ class profile_20505_certificate_description_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				        = app.getTimestamp()
-		certificate_description_period_sid  = app.getNumberValue(oMessage, ".//oub:certificate.description.period.sid", True)
-		certificate_type_code			    = app.getValue(oMessage, ".//oub:certificate.type.code", True)
-		certificate_code				    = app.getValue(oMessage, ".//oub:certificate.code", True)
-		validity_start_date			        = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
+		certificate_description_period_sid  = app.get_number_value(oMessage, ".//oub:certificate.description.period.sid", True)
+		certificate_type_code			    = app.get_value(oMessage, ".//oub:certificate.type.code", True)
+		certificate_code				    = app.get_value(oMessage, ".//oub:certificate.code", True)
+		validity_start_date			        = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
 
 		certificate_types = g.app.get_certificate_types()
 

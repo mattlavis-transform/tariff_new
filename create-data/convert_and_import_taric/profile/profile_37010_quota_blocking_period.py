@@ -5,12 +5,12 @@ class profile_37010_quota_blocking_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				= app.getTimestamp()
-		quota_blocking_period_sid   = app.getNumberValue(oMessage, ".//oub:quota.blocking.period.sid", True)
-		quota_definition_sid        = app.getNumberValue(oMessage, ".//oub:quota.definition.sid", True)
-		blocking_start_date			= app.getDateValue(oMessage, ".//oub:blocking.start.date", True)
-		blocking_end_date			= app.getDateValue(oMessage, ".//oub:blocking.end.date", True)
-		blocking_period_type		= app.getValue(oMessage, ".//oub:blocking.period.type", True)
-		description					= app.getValue(oMessage, ".//oub:description", True)
+		quota_blocking_period_sid   = app.get_number_value(oMessage, ".//oub:quota.blocking.period.sid", True)
+		quota_definition_sid        = app.get_number_value(oMessage, ".//oub:quota.definition.sid", True)
+		blocking_start_date			= app.get_date_value(oMessage, ".//oub:blocking.start.date", True)
+		blocking_end_date			= app.get_date_value(oMessage, ".//oub:blocking.end.date", True)
+		blocking_period_type		= app.get_value(oMessage, ".//oub:blocking.period.type", True)
+		description					= app.get_value(oMessage, ".//oub:description", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

@@ -100,6 +100,7 @@ class application(object):
 		self.last_quota_suspension_period_sid				= self.larger(self.get_scalar("SELECT MAX(quota_suspension_period_sid) FROM quota_suspension_periods_oplog"), min_list['quota.suspension.periods']) + 1
 		self.last_quota_blocking_period_sid					= self.larger(self.get_scalar("SELECT MAX(quota_blocking_period_sid) FROM quota_blocking_periods_oplog"), min_list['quota.blocking.periods']) + 1
 
+
 	def validate(self, filename):
 		self.d ("Validating XML file", False)
 		schema_path = os.path.join(self.SCHEMA_DIR, "envelope.xsd")
@@ -158,12 +159,16 @@ class application(object):
 		data = json.load(jsonFile)				# Read the JSON into the buffer
 		jsonFile.close()						# Close the JSON file
 
-		data["minimum_sids"][self.DBASE]["last_transaction_id"] = self.transaction_id
-		data["minimum_sids"][self.DBASE]["geographical.area.description.periods"] = self.last_geographical_area_description_period_sid
+		data["minimum_sids"][self.DBASE]["last_transaction_id"]						= self.transaction_id
+		data["minimum_sids"][self.DBASE]["geographical.area.description.periods"]	= self.last_geographical_area_description_period_sid
+		data["minimum_sids"][self.DBASE]["certificate.description.periods"]			= self.last_certificate_description_period_sid
+		data["minimum_sids"][self.DBASE]["footnote.description.periods"]			= self.last_footnote_description_period_sid
+		data["minimum_sids"][self.DBASE]["quota.order.numbers"]						= self.last_quota_order_number_sid
 
 		jsonFile = open(self.CONFIG_FILE, "w+")
 		jsonFile.write(json.dumps(data, indent = 4, sort_keys = True))
 		jsonFile.close()
+		
 
 	def set_config2(self, key, value):
 		jsonFile = open(self.CONFIG_FILE, "r")	# Open the JSON file for reading
@@ -331,6 +336,11 @@ class application(object):
 		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.origin.xml")
 		handle = open(filename, "r")
 		self.quota_order_number_origin_XML = handle.read()
+
+		# Get quota order number XML
+		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.xml")
+		handle = open(filename, "r")
+		self.quota_order_number_XML = handle.read()
 
 
 	def writeResults(self):

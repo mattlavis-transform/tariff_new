@@ -77,7 +77,7 @@ class application(object):
 		self.measures_with_sivs_list	= []
 		self.quota_definition_sid_mapping_list = []
 		self.quota_description_list = []
-		self.override_prompt = False
+		self.override_prompt = True
 		self.destination_geographical_area_id	= ""
 		self.destination_geographical_area_sid	= ""
 		

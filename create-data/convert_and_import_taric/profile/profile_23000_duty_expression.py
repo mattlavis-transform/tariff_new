@@ -7,12 +7,12 @@ class profile_23000_duty_expression(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date		    			= app.getTimestamp()
-		duty_expression_id					= app.getValue(oMessage, ".//oub:duty.expression.id", True)
-		validity_start_date	    			= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date	    			= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		duty_amount_applicability_code	    = app.getNumberValue(oMessage, ".//oub:duty.amount.applicability.code", True)
-		measurement_unit_applicability_code	= app.getNumberValue(oMessage, ".//oub:measurement.unit.applicability.code", True)
-		monetary_unit_applicability_code	= app.getNumberValue(oMessage, ".//oub:monetary.unit.applicability.code", True)
+		duty_expression_id					= app.get_value(oMessage, ".//oub:duty.expression.id", True)
+		validity_start_date	    			= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date	    			= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		duty_amount_applicability_code	    = app.get_number_value(oMessage, ".//oub:duty.amount.applicability.code", True)
+		measurement_unit_applicability_code	= app.get_number_value(oMessage, ".//oub:measurement.unit.applicability.code", True)
+		monetary_unit_applicability_code	= app.get_number_value(oMessage, ".//oub:monetary.unit.applicability.code", True)
 
 		if update_type == "1":	# UPDATE
 			operation = "U"

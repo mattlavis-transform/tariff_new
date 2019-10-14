@@ -23,6 +23,7 @@ from classes.quota_association						import quota_association
 from classes.geographical_area						import geographical_area
 from classes.measure								import measure
 from classes.fta_quota								import fta_quota
+from classes.measurement_unit						import measurement_unit
 
 import classes.functions as fn
 
@@ -465,10 +466,26 @@ class application(object):
 		units					= ""
 		preferential			= ""
 		include_interim_period	= "N"
+		measure_type_id			= "122"
 
-		obj_quota = fta_quota(country_name, quota_order_number_id, annual_volume, increment, \
+		obj_quota = fta_quota(country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
 		eu_period_starts, eu_period_ends, interim_volume, units, preferential, include_interim_period)
 		self.quota_list.append (obj_quota)
+
+
+	def get_measurement_units(self):
+		self.measurement_units = []
+		my_file = os.path.join(self.SOURCE_DIR, "measurement_units.csv")
+		with open(my_file) as csv_file:
+			csv_reader = csv.reader(csv_file, delimiter = ",")
+			for row in csv_reader:
+				if (len(row) > 0):
+					identifer						= row[0]
+					measurement_unit_code			= row[1]
+					measurement_unit_qualifier_code	= row[2]
+					obj = measurement_unit(identifer, measurement_unit_code, measurement_unit_qualifier_code)
+					self.measurement_units.append (obj)
+
 
 
 	def get_minimum_sids(self):
@@ -625,6 +642,8 @@ class application(object):
 		data["minimum_sids"][self.override_minimum_sids_node]["measures"] = self.last_measure_sid
 		data["minimum_sids"][self.override_minimum_sids_node]["measure.conditions"] = self.last_measure_condition_sid
 		data["minimum_sids"][self.override_minimum_sids_node]["quota.definitions"] = self.last_quota_definition_sid
+		data["minimum_sids"][self.override_minimum_sids_node]["quota.order.numbers"] = self.last_quota_order_number_sid
+		data["minimum_sids"][self.override_minimum_sids_node]["quota.order.number.origins"] = self.last_quota_order_number_origin_sid
 
 		jsonFile = open(self.CONFIG_FILE, "w+")
 		jsonFile.write(json.dumps(data, indent=4, sort_keys=True))

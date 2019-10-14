@@ -6,10 +6,10 @@ class profile_44000_monetary_exchange_period(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                      = app.getTimestamp()
-		monetary_exchange_period_sid	    = app.getNumberValue(oMessage, ".//oub:monetary.exchange.period.sid", True)
-		parent_monetary_unit_code			= app.getValue(oMessage, ".//oub:parent.monetary.unit.code", True)
-		validity_start_date					= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
+		monetary_exchange_period_sid	    = app.get_number_value(oMessage, ".//oub:monetary.exchange.period.sid", True)
+		parent_monetary_unit_code			= app.get_value(oMessage, ".//oub:parent.monetary.unit.code", True)
+		validity_start_date					= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date					= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

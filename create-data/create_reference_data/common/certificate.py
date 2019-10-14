@@ -30,6 +30,7 @@ class certificate(object):
 
 	def get_next_certificate_description_period_sid(self):
 		self.certificate_description_period_sid = o.app.last_certificate_description_period_sid
+		o.app.last_certificate_description_period_sid += 1
 
 	def writeXML(self, app):
 		if not(self.same):
@@ -67,7 +68,6 @@ class certificate(object):
 				app.message_id 					+= 2
 			else:
 				app.message_id 					+= 3
-			o.app.last_certificate_description_period_sid += 1
 	
 	def resolve(self, app):
 		s = self.description

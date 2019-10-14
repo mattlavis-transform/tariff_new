@@ -7,28 +7,28 @@ class profile_43000_measure(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                      = app.getTimestamp()
-		measure_sid							= app.getNumberValue(oMessage, ".//oub:measure.sid", True)
-		measure_type						= app.getValue(oMessage, ".//oub:measure.type", True)
-		geographical_area					= app.getValue(oMessage, ".//oub:geographical.area", True)
-		goods_nomenclature_item_id			= app.getValue(oMessage, ".//oub:goods.nomenclature.item.id", True)
-		additional_code_type				= app.getValue(oMessage, ".//oub:additional.code.type", True)
-		additional_code						= app.getValue(oMessage, ".//oub:additional.code", True)
-		ordernumber							= app.getValue(oMessage, ".//oub:ordernumber", True)
-		reduction_indicator					= app.getNumberValue(oMessage, ".//oub:reduction.indicator", True)
-		validity_start_date					= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_start_date_string			= app.getValue(oMessage, ".//oub:validity.start.date", True)
-		measure_generating_regulation_role	= app.getValue(oMessage, ".//oub:measure.generating.regulation.role", True)
-		measure_generating_regulation_id	= app.getValue(oMessage, ".//oub:measure.generating.regulation.id", True)
+		measure_sid							= app.get_number_value(oMessage, ".//oub:measure.sid", True)
+		measure_type						= app.get_value(oMessage, ".//oub:measure.type", True)
+		geographical_area					= app.get_value(oMessage, ".//oub:geographical.area", True)
+		goods_nomenclature_item_id			= app.get_value(oMessage, ".//oub:goods.nomenclature.item.id", True)
+		additional_code_type				= app.get_value(oMessage, ".//oub:additional.code.type", True)
+		additional_code						= app.get_value(oMessage, ".//oub:additional.code", True)
+		ordernumber							= app.get_value(oMessage, ".//oub:ordernumber", True)
+		reduction_indicator					= app.get_number_value(oMessage, ".//oub:reduction.indicator", True)
+		validity_start_date					= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_start_date_string			= app.get_value(oMessage, ".//oub:validity.start.date", True)
+		measure_generating_regulation_role	= app.get_value(oMessage, ".//oub:measure.generating.regulation.role", True)
+		measure_generating_regulation_id	= app.get_value(oMessage, ".//oub:measure.generating.regulation.id", True)
 		regulation_code						= measure_generating_regulation_id
-		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		validity_end_date_string			= app.getValue(oMessage, ".//oub:validity.end.date", True)
-		justification_regulation_role		= app.getValue(oMessage, ".//oub:justification.regulation.role", True)
-		justification_regulation_id			= app.getValue(oMessage, ".//oub:justification.regulation.id", True)
-		stopped_flag						= app.getValue(oMessage, ".//oub:stopped.flag", True)
-		geographical_area_sid				= app.getNumberValue(oMessage, ".//oub:geographical.area.sid", True)
-		goods_nomenclature_sid				= app.getNumberValue(oMessage, ".//oub:goods.nomenclature.sid", True)
-		additional_code_sid					= app.getNumberValue(oMessage, ".//oub:additional.code.sid", True)
-		export_refund_nomenclature_sid		= app.getNumberValue(oMessage, ".//oub:export.refund.nomenclature.sid", True)
+		validity_end_date					= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		validity_end_date_string			= app.get_value(oMessage, ".//oub:validity.end.date", True)
+		justification_regulation_role		= app.get_value(oMessage, ".//oub:justification.regulation.role", True)
+		justification_regulation_id			= app.get_value(oMessage, ".//oub:justification.regulation.id", True)
+		stopped_flag						= app.get_value(oMessage, ".//oub:stopped.flag", True)
+		geographical_area_sid				= app.get_number_value(oMessage, ".//oub:geographical.area.sid", True)
+		goods_nomenclature_sid				= app.get_number_value(oMessage, ".//oub:goods.nomenclature.sid", True)
+		additional_code_sid					= app.get_number_value(oMessage, ".//oub:additional.code.sid", True)
+		export_refund_nomenclature_sid		= app.get_number_value(oMessage, ".//oub:export.refund.nomenclature.sid", True)
 
 		# Add to a global list of measures, so that this can be validated at the end that there are
 		# components associated with it
@@ -121,6 +121,8 @@ class profile_43000_measure(object):
 						quota_order_number_sid2 = item[1]
 						validity_start_date2 = item[2]
 						validity_end_date2 = item[3]
+						if str(measure_sid) == "3682137":
+							a = 1
 						if ordernumber == quota_order_number_id2:
 							found = True
 							break
@@ -138,10 +140,13 @@ class profile_43000_measure(object):
 								ON9_error = True
 						
 						if ON9_error == True:
+							pass
+							"""
 							if validity_start_date > datetime.strptime("2007-12-31", "%Y-%m-%d"):
-								g.app.add_load_error("ON9 - When a quota order number is used in a measure then the validity period " \
+								g.app.add_load_error("ON9 - When a quota order number is used in a measure, then the validity period " \
 								"of the quota order number must span the validity period of the measure. This rule is only applicable for " \
 								"measure with start date after 31/12/2007, when loading measure with SID " + str(measure_sid) + " for order number " + ordernumber + ".")
+							"""
 
 			# run ME24 check - check that there is a supporting regulation
 			if regulation_code not in g.app.all_regulations:
@@ -226,7 +231,7 @@ class profile_43000_measure(object):
 				sql += ")\nand\n(\n"
 
 				if validity_end_date == None:
-					# The news measure does not have an end date
+					# The new measure does not have an end date
 					sql += """  (validity_end_date is null or (validity_start_date <= '""" + validity_start_date_string + """'
 					and validity_end_date >= '""" + validity_start_date_string + """')))"""
 				else:
@@ -256,8 +261,17 @@ class profile_43000_measure(object):
 				cur.execute(sql)
 				rows = cur.fetchall()
 				if len(rows) > 0:
+					rw = rows[0]
+					offended_measure_sid = rw[0]
 					g.app.add_load_error("ME32 conflict caused - please revert database.  Conflict caused on measure " \
-					+ str(measure_sid) + " on commodity " +  goods_nomenclature_item_id + " (order number - " + str(ordernumber) + ")")
+					+ str(measure_sid) + " with start date " + str(validity_start_date) + " on commodity " +  goods_nomenclature_item_id + " (order number - " + str(ordernumber) + ") with existing measure_sid " + str(offended_measure_sid))
+
+					"""
+					if str(measure_sid) == "3702511":
+						print (sql)
+						sys.exit()
+					"""
+
 			
 		tariff_measure_number = goods_nomenclature_item_id
 		if goods_nomenclature_item_id != None:

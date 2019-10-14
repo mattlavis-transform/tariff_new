@@ -48,7 +48,7 @@ class measure(object):
 
 		
 		# Initialised
-		self.justification_regulation_id		= "" # self.measure_generating_regulation_id
+		self.justification_regulation_id		= ""
 		self.justification_regulation_role		= "1"
 		self.measure_generating_regulation_role	= 1
 		self.stopped_flag						= "0"
@@ -120,13 +120,6 @@ class measure(object):
 				obj.measure_sid = self.measure_sid
 				obj.update_type = "3"
 
-		"""
-		if self.start_date_override != "":
-			self.validity_start_date = self.start_date_override
-		if self.end_date_override != "":
-			self.validity_end_date = self.end_date_override
-		"""
-
 		s = s.replace("[UPDATE_TYPE]",                        	"3")
 		s = s.replace("[MEASURE_SID]",                        	f.mstr(self.measure_sid))
 		s = s.replace("[MEASURE_TYPE_ID]",                    	f.mstr(self.measure_type_id))
@@ -164,8 +157,7 @@ class measure(object):
 		s = s.replace("\t\t\t\t\t\t<oub:export.refund.nomenclature.sid></oub:export.refund.nomenclature.sid>\n", "")
 
 		g.app.message_id += 1
-		#print (g.app.last_measure_sid)
-		
+
 		self.component_content = ""
 		self.condition_content = ""
 		self.condition_component_content = ""
@@ -174,8 +166,6 @@ class measure(object):
 		self.pts_content = ""
 
 		for obj in self.measure_component_list:
-			if self.quota_order_number_id == "091370":
-				print ("Adding components for 091370")
 			self.component_content += obj.xml()
 
 		for obj in self.measure_excluded_geographical_area_list:

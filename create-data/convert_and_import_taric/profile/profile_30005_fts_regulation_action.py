@@ -5,10 +5,10 @@ class profile_30005_fts_regulation_action(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date			= app.getTimestamp()
-		fts_regulation_role     = app.getValue(oMessage, ".//oub:fts.regulation.role", True)
-		fts_regulation_id	    = app.getValue(oMessage, ".//oub:fts.regulation.id", True)
-		stopped_regulation_role	= app.getValue(oMessage, ".//oub:stopped.regulation.role", True)
-		stopped_regulation_id	= app.getValue(oMessage, ".//oub:stopped.regulation.id", True)
+		fts_regulation_role     = app.get_value(oMessage, ".//oub:fts.regulation.role", True)
+		fts_regulation_id	    = app.get_value(oMessage, ".//oub:fts.regulation.id", True)
+		stopped_regulation_role	= app.get_value(oMessage, ".//oub:stopped.regulation.role", True)
+		stopped_regulation_id	= app.get_value(oMessage, ".//oub:stopped.regulation.id", True)
 
 		if update_type == "1":	# UPDATE    
 			operation = "U"

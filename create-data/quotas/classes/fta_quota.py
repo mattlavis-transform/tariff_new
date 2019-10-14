@@ -53,7 +53,7 @@ class fta_quota(object):
 
 		# Check to see if this is a new quota
 		self.check_exists()
-		if self.is_new:
+		if self.is_new == True:
 			self.quota_order_number_sid = g.app.last_quota_order_number_sid
 			g.app.last_quota_order_number_sid += 1
 
@@ -63,10 +63,10 @@ class fta_quota(object):
 					goods_nomenclature_item_id = self.format_comm_code(m.goods_nomenclature_item_id)
 					#print ("For new quota", m.quota_order_number_id, "include a new comm code", goods_nomenclature_item_id)
 
-					duty_amount = -1
-					monetary_unit_code = ""
-					measurement_unit_code = ""
-					measurement_unit_qualifier_code = ""
+					duty_amount						= -1
+					monetary_unit_code				= ""
+					measurement_unit_code			= ""
+					measurement_unit_qualifier_code	= ""
 
 					validity_start_date = ""
 					validity_end_date = ""
@@ -92,7 +92,7 @@ class fta_quota(object):
 			self.get_sid()
 			self.common_elements()
 			self.get_measure_components()
-			self.get_measures()
+			self.get_existing_measures()
 			self.assign_measure_components()
 
 	def format_comm_code(self, s):
@@ -101,11 +101,11 @@ class fta_quota(object):
 			s += "0" * (10 - len(s))
 		return s
 
+
 	def common_elements(self):
 		self.get_origins()
-		# Get balances and units
 		self.standardise_numbers()
-		self.measurement_unit = ""
+		self.measurement_unit_code	= ""
 		if self.units != "":
 			self.get_unit()
 
@@ -148,7 +148,10 @@ class fta_quota(object):
 
 		if self.quota_order_number_id not in g.app.origins_added:
 			for obj in self.origin_objects:
+				if self.is_new == False or self.suppress_quota_order_number_creation == True:
+					obj.quota_order_number_origin_sid = self.quota_order_number_sid
 				self.origin_xml += obj.xml()
+				print ("Creating a new origin for quota", self.quota_order_number_id, "which should have SID of", str(self.quota_order_number_sid))
 
 		origin_object = list()
 		origin_object.append (obj.quota_order_number_origin_sid)
@@ -162,8 +165,18 @@ class fta_quota(object):
 
 
 	def check_exists(self):
+		print ("Checking existence of quota", self.quota_order_number_id)
+		# Exceptions because Defra have made a mess of selecting quota order numbers
+		self.suppress_quota_order_number_creation = False
+		if self.quota_order_number_id in ('092018', '092020', '092021', '092023'): # These are for Bosnia and Macedonia
+			self.suppress_quota_order_number_creation = True
+			self.is_new = True
+			print ("Suppressing QON for quota", self.quota_order_number_id)
+			return
+
+		# For licensed quotas
 		if self.quota_order_number_id[0:3] == "094":
-			sql = "select * from ml.measures_real_end_dates where ordernumber = '" + self.quota_order_number_id.strip() + "' limit 10"
+			sql = "select * from ml.measures_real_end_dates where ordernumber = '" + self.quota_order_number_id.strip() + "' order by validity_start_date desc limit 1"
 			cur = g.app.conn.cursor()
 			cur.execute(sql)
 			rows = cur.fetchall()
@@ -173,8 +186,10 @@ class fta_quota(object):
 				#print ("Found a new licensed quota in function check_exists - quota", self.quota_order_number_id)
 			else:
 				self.is_new = False
+
+		# For FCFS quotas
 		else: 
-			sql = "select * from quota_order_numbers where quota_order_number_id = '" + self.quota_order_number_id.strip() + "'"
+			sql = "select * from quota_order_numbers where validity_end_date is null and quota_order_number_id = '" + self.quota_order_number_id.strip() + "'"
 			cur = g.app.conn.cursor()
 			cur.execute(sql)
 			rows = cur.fetchall()
@@ -331,13 +346,14 @@ class fta_quota(object):
 				sql = """
 				select distinct -1 as quota_order_number_origin_sid, -1 as quota_order_number_sid,
 				geographical_area_id, geographical_area_sid
-				from measures m, goods_nomenclatures g
+				from ml.measures_real_end_dates m, goods_nomenclatures g
 				where ordernumber = '""" + self.quota_order_number_id + """'
 				and g.goods_nomenclature_item_id = m.goods_nomenclature_item_id
 				and g.producline_suffix = '80'
 				and g.validity_end_date is null
 				and (m.validity_end_date >= '2018-01-01' or m.validity_end_date is null)
 				"""
+
 				self.origin_list = []
 				cur = g.app.conn.cursor()
 				cur.execute(sql)
@@ -445,20 +461,23 @@ class fta_quota(object):
 
 
 	def get_unit(self):
-		self.measurement_unit = ""
-		list1 = ["Kilograms", "Litres of pure alcohol", "Litres", "Kilograma", "Pieces", "Head", "Hectolitres", "Nar", "Units", "Tonnes", "Items", "Metres squared"]
-		list2 = ["KGM",       "LPA",                    "LTR",    "KGM",       "NAR",    "NAR",  "HLT",         "NAR", "NAR",   "TNE",    "NAR",   "MTK"]
-		for i in range(0, len(list1)):
-			item = list1[i]
-			if self.units.strip() == item:
-				self.measurement_unit = list2[i]
+		# Called from within the function common elements
+		# Gets the actual measurement_unit and measurement_qualifier_unit depending on what is listed in the Excel
+		# The measurement units have been read in from the CSV
+		self.measurement_unit_code = ""
+
+		for obj in g.app.measurement_units:
+			if self.units.strip() == obj.identifier:
+				self.measurement_unit_code				= obj.measurement_unit_code
+				self.measurement_unit_qualifier_code	= obj.measurement_unit_qualifier_code
 				break
-		if self.measurement_unit == "":
+		
+		if self.measurement_unit_code == "":
 			print (self.quota_order_number_id, "has no unit")
 			sys.exit()
 
 
-	def get_measures(self):
+	def get_existing_measures(self):
 		year_ago = g.app.critical_date + relativedelta(years = -1)
 		sql = """
 		select distinct measure_sid, m.goods_nomenclature_item_id, measure_type_id,
@@ -485,13 +504,11 @@ class fta_quota(object):
 			validity_start_date			= row[3]
 			validity_end_date			= row[4]
 
-			# Check on overrides
-			# TO DO
-			
-			duty_amount = -1
-			monetary_unit_code = ""
-			measurement_unit_code = ""
-			measurement_unit_qualifier_code = ""
+			duty_amount						= -1
+			monetary_unit_code				= ""
+			measurement_unit_code			= ""
+			measurement_unit_qualifier_code	= ""
+
 			m = measure(goods_nomenclature_item_id, self.quota_order_number_id, "", duty_amount,
 			monetary_unit_code, measurement_unit_code, measurement_unit_qualifier_code, measure_type_id,
 			validity_start_date, validity_end_date, measure_sid)
@@ -609,10 +626,17 @@ class fta_quota(object):
 
 		# Get the interim period
 		"""
-		print (self.quota_order_number_id)
-		print (self.eu_period_starts)
-		print (self.eu_period_ends)
+		print ("QON", self.quota_order_number_id)
+		print ("EU period starts", self.eu_period_starts)
+		print ("EU period ends", self.eu_period_ends)
+
+
+		print (type(self.eu_period_ends))
+		print (type(crit2))
+		print (type(self.eu_period_starts))
+		print (type(critplusone2))
 		"""
+
 		if (self.eu_period_ends <= crit2 or (self.eu_period_starts - critplusone2).days == 0):
 			# There is no opening period
 			pass
@@ -625,8 +649,8 @@ class fta_quota(object):
 
 				try:
 					qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, self.measure_type_id, self.method, validity_start_date,
-					validity_end_date, length, self.interim_volume, self.measurement_unit, 3, "N", 90, "",
-					"", "", "", self.primary_origin)
+					validity_end_date, length, self.interim_volume, self.measurement_unit_code, 3, "N", 90, "",
+					self.measurement_unit_qualifier_code, "", "", self.primary_origin)
 				except:
 					print (self.quota_order_number_id, "failure on primary origin")
 					sys.exit()
@@ -649,9 +673,14 @@ class fta_quota(object):
 				self.critical_status = "N"
 			
 			qd = quota_definition(self.quota_order_number_id, self.quota_order_number_sid, self.measure_type_id, self.method, validity_start_date,
-			validity_end_date, length, opening_balance, self.measurement_unit, 3, self.critical_status, 90, "",
-			"", "", "", self.primary_origin)
+			validity_end_date, length, opening_balance, self.measurement_unit_code, 3, self.critical_status, 90, "",
+			self.measurement_unit_qualifier_code, "", "", self.primary_origin)
 			self.quota_definition_list.append (qd)
+
+
+
+	def quota_order_number_id_formatted(self):
+		return self.quota_order_number_id[0:2] + "." + self.quota_order_number_id[-4:]
 
 
 	def get_quota_associations(self):
@@ -716,6 +745,8 @@ class fta_quota(object):
 
 		return (s)
 
+
+
 	def get_measure_exclusion_list(self, quota_order_number_origin_sid, geographical_area_id):
 		tmp = []
 		for obj in self.origin_exclusions:
@@ -724,9 +755,33 @@ class fta_quota(object):
 				tmp.append (obj_exclusion)
 		return (tmp)
 
+
+
 	def quota_order_number_xml(self):
+		# Create the XML to support the creation of new quota order number objects
+		# Should be suppressed if the QON is not new
 		self.validity_start_date = datetime.datetime.strftime(g.app.critical_date_plus_one, "%Y-%m-%d")
 		if self.quota_order_number_id[0:3] == "094":
+			return ("")
+		if self.is_new == False or self.suppress_quota_order_number_creation == True:
+			 # In this instance, I need to get the order number of the existing quota order number
+			sql = """select quota_order_number_sid from quota_order_numbers qon
+			where qon.quota_order_number_id = '""" + self.quota_order_number_id + """'
+			and validity_end_date is null
+			order by 1 desc;"""
+			cur = g.app.conn.cursor()
+			cur.execute(sql)
+			rows = cur.fetchall()
+			count = len(rows)
+			if count == 0:
+				print ("Problem - system thinks a quota exists, but it does not")
+				sys.exit()
+			else:
+				row = rows[0]
+				self.quota_order_number_sid = row[0]
+				print ("Retrieved real SID for quota order number", self.quota_order_number_id, "which is", str(self.quota_order_number_sid))
+
+
 			return ("")
 
 		s = g.app.template_quota_order_number
@@ -743,19 +798,5 @@ class fta_quota(object):
 		g.app.message_id +=1
 		g.app.transaction_id +=1
 
-
-		"""
-		for obj in self.origin_list:
-			g.app.last_quota_order_number_origin_sid += 1
-			obj.quota_order_number_origin_sid = g.app.last_quota_order_number_origin_sid
-			obj.quota_order_number_sid = self.quota_order_number_sid
-			obj.description = self.subject
-			s += obj.xml()
-
-		for obj in self.quota_definition_list:
-			obj.quota_order_number_sid = self.quota_order_number_sid
-			obj.description = self.subject
-			s += obj.xml()
-		"""
 
 		return (s)

@@ -5,14 +5,14 @@ class profile_27500_complete_abrogation_regulation(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date						= app.getTimestamp()
-		complete_abrogation_regulation_role	= app.getValue(oMessage, ".//oub:complete.abrogation.regulation.role", True)
-		complete_abrogation_regulation_id	= app.getValue(oMessage, ".//oub:complete.abrogation.regulation.id", True)
-		published_date		        		= app.getDateValue(oMessage, ".//oub:published.date", True)
-		officialjournal_number			    = app.getValue(oMessage, ".//oub:officialjournal.number", True)
-		officialjournal_page	            = app.getValue(oMessage, ".//oub:officialjournal.page", True)
-		replacement_indicator               = app.getValue(oMessage, ".//oub:replacement.indicator", True)
-		information_text                  	= app.getValue(oMessage, ".//oub:information.text", True)
-		approved_flag                  		= app.getValue(oMessage, ".//oub:approved.flag", True)
+		complete_abrogation_regulation_role	= app.get_value(oMessage, ".//oub:complete.abrogation.regulation.role", True)
+		complete_abrogation_regulation_id	= app.get_value(oMessage, ".//oub:complete.abrogation.regulation.id", True)
+		published_date		        		= app.get_date_value(oMessage, ".//oub:published.date", True)
+		officialjournal_number			    = app.get_value(oMessage, ".//oub:officialjournal.number", True)
+		officialjournal_page	            = app.get_value(oMessage, ".//oub:officialjournal.page", True)
+		replacement_indicator               = app.get_value(oMessage, ".//oub:replacement.indicator", True)
+		information_text                  	= app.get_value(oMessage, ".//oub:information.text", True)
+		approved_flag                  		= app.get_value(oMessage, ".//oub:approved.flag", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

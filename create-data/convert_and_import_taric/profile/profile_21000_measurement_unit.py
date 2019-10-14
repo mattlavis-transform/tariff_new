@@ -7,9 +7,9 @@ class profile_21000_measurement_unit(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date		    = app.getTimestamp()
-		measurement_unit_code	= app.getValue(oMessage, ".//oub:measurement.unit.code", True)
-		validity_start_date	    = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date	    = app.getDateValue(oMessage, ".//oub:validity.end.date", True)
+		measurement_unit_code	= app.get_value(oMessage, ".//oub:measurement.unit.code", True)
+		validity_start_date	    = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date	    = app.get_date_value(oMessage, ".//oub:validity.end.date", True)
 
 		if update_type == "1":	# UPDATE
 			operation = "U"

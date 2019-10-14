@@ -15,7 +15,12 @@ from common.application import application
 app = o.app
 app.getTemplates()
 
-fname = os.path.join(app.SOURCE_DIR, "certificates.xlsx")
+try:
+	profile = sys.argv[1]
+except:
+	profile = "certificates"
+
+fname = os.path.join(app.SOURCE_DIR, profile + ".xlsx")
 wb = load_workbook(filename=fname, read_only=True)
 
 """
@@ -55,7 +60,7 @@ for obj in app.certificates_list:
 	out += obj.xml
 
 out = env.replace("{BODY}", out)
-filename = os.path.join(app.XML_DIR, "certificates.xml")
+filename = os.path.join(app.XML_DIR, profile + ".xml")
 f = open(filename, "w", encoding="utf-8") 
 f.write(out)
 f.close()
@@ -70,4 +75,5 @@ try:
 except:
 	print ("The file did not validate and crashed the validator.")
 	my_schema.validate(filename)
+
 app.set_config()

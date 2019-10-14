@@ -122,11 +122,13 @@ class chapter(object):
 							if upper_commodity.significant_digits == 2:
 								if upper_commodity.combined_duty != "":
 									my_commodity.combined_duty = upper_commodity.combined_duty
+									my_commodity.combined_duty_csv = upper_commodity.combined_duty_csv
 								break
 						else:
 							if upper_commodity.indents < yardstick_indent:
 								if upper_commodity.combined_duty != "":
 									my_commodity.combined_duty = upper_commodity.combined_duty
+									my_commodity.combined_duty_csv = upper_commodity.combined_duty_csv
 									break
 								elif upper_commodity.indents == 0:
 										break
@@ -246,13 +248,11 @@ class chapter(object):
 		###########################################################################
 		table_content = ""
 		if self.chapter_id == 1:
-			csv_content = '"Full commodity code","Formatted commodity code","PLS","Duty","Notes","Description"\n'
+			csv_content = '"Full commodity code","Formatted commodity code","PLS","Duty","Description"\n'
 		else:
 			csv_content = ""
 
 		for my_commodity in commodity_list:
-			if my_commodity.commodity_code == "6911100090":
-				print ("ifhos", my_commodity.commodity_code, my_commodity.commodity_code_formatted)
 			if app.document_type == "classification":
 				my_commodity.suppress_row = False
 			if my_commodity.suppress_row == False:
@@ -278,8 +278,8 @@ class chapter(object):
 				if my_commodity.suppress_duty == True:
 					csv_content += '"",'
 				else:
-					csv_content += '"' + f.reduce(my_commodity.combined_duty) + '",'
-				csv_content += '"' + f.reduce(my_commodity.notes_string) + '",'
+					csv_content += '"' + f.reduce(my_commodity.combined_duty_csv) + '",'
+				#csv_content += '"' + f.reduce(my_commodity.notes_string) + '",'
 				csv_content += '"' + f.reduce(my_commodity.description) + '"\n'
 			
 			
@@ -311,10 +311,10 @@ class chapter(object):
 			else:
 				width_list = [600, 1050, 600, 2750]
 
-		table_xml_string = table_xml_string.replace("{WIDTH_CLASSIFICATION}", str(width_list[0]))
-		table_xml_string = table_xml_string.replace("{WIDTH_DUTY}",			str(width_list[1]))
+		table_xml_string = table_xml_string.replace("{WIDTH_CLASSIFICATION}", 	str(width_list[0]))
+		table_xml_string = table_xml_string.replace("{WIDTH_DUTY}",				str(width_list[1]))
 		table_xml_string = table_xml_string.replace("{WIDTH_NOTES}",			str(width_list[2]))
-		table_xml_string = table_xml_string.replace("{WIDTH_DESCRIPTION}",	str(width_list[3]))
+		table_xml_string = table_xml_string.replace("{WIDTH_DESCRIPTION}",		str(width_list[3]))
 
 		table_xml_string = table_xml_string.replace("{TABLEBODY}", table_content)
 

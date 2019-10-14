@@ -5,15 +5,15 @@ class profile_43025_measure_partial_temporary_stop(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                  = app.getTimestamp()
-		measure_sid						                            = app.getNumberValue(oMessage, ".//oub:measure.sid", True)
-		validity_start_date			                                = app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date			                                = app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		partial_temporary_stop_regulation_id				        = app.getValue(oMessage, ".//oub:partial.temporary.stop.regulation.id", True)
-		partial_temporary_stop_regulation_officialjournal_number    = app.getValue(oMessage, ".//oub:partial.temporary.stop.regulation.officialjournal.number", True)
-		partial_temporary_stop_regulation_officialjournal_page		= app.getValue(oMessage, ".//oub:partial.temporary.stop.regulation.officialjournal.page", True)
-		abrogation_regulation_id			                        = app.getValue(oMessage, ".//oub:abrogation.regulation.id", True)
-		abrogation_regulation_officialjournal_number	            = app.getValue(oMessage, ".//oub:abrogation.regulation.officialjournal.number", True)
-		abrogation_regulation_officialjournal_page                  = app.getValue(oMessage, ".//oub:abrogation.regulation.officialjournal.page", True)
+		measure_sid						                            = app.get_number_value(oMessage, ".//oub:measure.sid", True)
+		validity_start_date			                                = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date			                                = app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		partial_temporary_stop_regulation_id				        = app.get_value(oMessage, ".//oub:partial.temporary.stop.regulation.id", True)
+		partial_temporary_stop_regulation_officialjournal_number    = app.get_value(oMessage, ".//oub:partial.temporary.stop.regulation.officialjournal.number", True)
+		partial_temporary_stop_regulation_officialjournal_page		= app.get_value(oMessage, ".//oub:partial.temporary.stop.regulation.officialjournal.page", True)
+		abrogation_regulation_id			                        = app.get_value(oMessage, ".//oub:abrogation.regulation.id", True)
+		abrogation_regulation_officialjournal_number	            = app.get_value(oMessage, ".//oub:abrogation.regulation.officialjournal.number", True)
+		abrogation_regulation_officialjournal_page                  = app.get_value(oMessage, ".//oub:abrogation.regulation.officialjournal.page", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

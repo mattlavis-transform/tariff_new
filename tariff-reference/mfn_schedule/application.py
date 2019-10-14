@@ -2,6 +2,7 @@ import xlsxwriter
 import psycopg2
 import sys
 import os
+import re
 from os import system, name 
 import csv
 import json
@@ -14,6 +15,16 @@ from category import category
 from special import special
 from geographical_area import geographical_area
 from goods_nomenclature import goods_nomenclature
+
+class bcolors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
 
 class application(object):
 	def __init__(self):
@@ -52,6 +63,7 @@ class application(object):
 			self.document_type = "schedule"
 
 		self.OUTPUT_DIR			= os.path.join(self.BASE_DIR,	"output")
+		self.ODS_DIR			= os.path.join(self.OUTPUT_DIR,	"ods")
 		self.OUTPUT_DIR			= os.path.join(self.OUTPUT_DIR, self.document_type)
 
 		# Define the parameters - first chapter
@@ -101,10 +113,11 @@ class application(object):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		self.DBASE	= my_dict['dbase']
+		#self.DBASE	= my_dict['dbase']
 		#self.DBASE	= "tariff_staging"
 		#self.DBASE	= "tariff_eu"
-		self.DBASE	= "tariff_staging"
+		#self.DBASE	= "tariff_staging"
+		self.DBASE	= my_dict['dbase']
 		self.p		= my_dict['p']
 
 		# Connect to the database
@@ -112,7 +125,7 @@ class application(object):
 
 
 	def connect(self):
-		self.DBASE = "tariff_fta"
+		#self.DBASE = "tariff_fta"
 		self.conn = psycopg2.connect("dbname=" + self.DBASE + " user=postgres password=" + self.p)
 
 
@@ -221,8 +234,6 @@ class application(object):
 		self.authoriseduse_list.append("8802300000")
 		self.authoriseduse_list.append("8802400000")
 		"""
-
-		8802110000
 		
 	def get_special_notes(self):
 		# This function is required - it looks in the file special_notes.csv
@@ -244,7 +255,7 @@ class application(object):
 
 			self.special_list.append(oSpecial)
 
-	def getSeasonal(self):
+	def get_seasonal(self):
 		filename = os.path.join(self.SOURCE_DIR, "seasonal_commodities.csv")
 		with open(filename, "r") as f:
 			reader = csv.reader(f)
@@ -338,23 +349,26 @@ class application(object):
 				self.goods_nomenclature_item_string += "'" + m.goods_nomenclature_item_id + "', "
 
 
-		self.mfn_measures = sorted(self.mfn_measures, key = lambda x: x.category, reverse = False)
+		if self.document_type == "mfn":
+			self.mfn_measures = sorted(self.mfn_measures, key = lambda x: x.category, reverse = False)
+		else:
+			self.mfn_measures = sorted(self.mfn_measures, key = lambda x: x.goods_nomenclature_item_id, reverse = False)
 
 
 		self.goods_nomenclature_item_string = self.goods_nomenclature_item_string.strip()
 		self.goods_nomenclature_item_string = self.goods_nomenclature_item_string.strip(",")
 
-		# Now get the quota assignments to these commodity codes
+		# Now get the quota assignments to these commodity codes
 		sql = """
-		select distinct measure_type_id, goods_nomenclature_item_id, ordernumber, geographical_area_id from measures
-		where goods_nomenclature_item_id in 
+		select distinct measure_type_id, goods_nomenclature_item_id, ordernumber, geographical_area_id
+		from ml.measures_real_end_dates where goods_nomenclature_item_id in 
 		(""" + self.goods_nomenclature_item_string + """)
-		and validity_start_date >= '2018-01-01'
+		and validity_start_date >= '2019-11-01'
 		and measure_type_id in ('122', '123', '143', '146')
 		and ordernumber is not null
 		order by goods_nomenclature_item_id, measure_type_id
 		"""
-		print (sql)
+
 		cur = self.conn.cursor()
 		cur.execute(sql)
 		rows = cur.fetchall()
@@ -370,153 +384,63 @@ class application(object):
 				for quota in self.quota_assignments:
 					if quota["goods_nomenclature_item_id"] == m.goods_nomenclature_item_id:
 						if quota["measure_type_id"] in ('122', '123'):
-							m.mfn_quota = "Tariff rate quota"
-							break
-							"""
-							temp = quota["ordernumber"]
-							temp = temp[0:2] + "." + temp[2:6]
-							m.mfn_quota += temp + "\n"
-							print ("found a quota match")
-							"""
+							if quota["ordernumber"] in ("094067", "094069") and quota["geographical_area_id"] in ("AR", "BR", "CL", "TH"):
+								pass
+							elif quota["ordernumber"] in ("094422") and quota["geographical_area_id"] in ("BR", "CL"):
+								pass
+							else:
+								temp = self.format_quota_order_number(quota["ordernumber"])
+								geo = quota["geographical_area_id"]
+								if geo not in ("1008", "1011"):
+									temp += " (" + geo + ")"
+								if temp not in m.mfn_quota:
+									m.mfn_quota += temp + "\n"
 
-			#m.mfn_quota = m.mfn_quota.strip("\n")
+			m.mfn_quota = m.mfn_quota.strip("\n")
 
 
+	def format_quota_order_number(self, v):
+		v = v.strip()
+		if len(v) == 6:
+			v = v[0:2] + "." + v[2:6]
+		return (v)
 
 
-	def write_mfns_to_excel(self):
-		print ("Write data to Excel spreadsheet")
-		workbook = xlsxwriter.Workbook('hello.xlsx')
+	def populate_guidance_sheet(self, worksheet_guidance):
+		worksheet_guidance.set_column(0, 5, 3.5)
+		worksheet_guidance.set_column(3, 3, 85)
 
-		column_header = workbook.add_format()
-		column_header.set_bold()
-		column_header.set_bg_color('#cccccc')
-		column_header.set_align('vcenter')
-		column_header.set_text_wrap()
-		column_header.set_border(1)
+		# The black bits
+		for i in range(1, 6):
+			worksheet_guidance.write(1, i, "", self.guidance_black)
+			worksheet_guidance.write(8, i, "", self.guidance_black)
 
-		column_header_centre = workbook.add_format()
-		column_header_centre.set_bold()
-		column_header_centre.set_bg_color('#cccccc')
-		column_header_centre.set_align('vcenter')
-		column_header_centre.set_text_wrap()
-		column_header_centre.set_border(1)
-		column_header_centre.set_align('center')
+		for i in range(1, 9):
+			worksheet_guidance.write(i, 1, "", self.guidance_black)
+			worksheet_guidance.write(i, 5, "", self.guidance_black)
 
-		cell = workbook.add_format()
-		cell.set_text_wrap()
-		cell.set_align('top')
-		cell.set_border(1)
+		worksheet_guidance.write(1, 3, "Guidance - Using this worksheet", self.guidance_black)
+		worksheet_guidance.set_row(1, 30)
+		worksheet_guidance.write(3, 3, "Tariff preferences", self.cell_bold)
+		worksheet_guidance.write(4, 3, "To see information about applicable Tariff preferences after EU Exit, select the \"tariff_preferences\" tab below. " + \
+		"This tab lists each commodity against which an import duty will continue to apply after EU Exit. Additionally the tab " + \
+		"shows any WTO Quota or Autonomous Tariff Quota (ATQ) that is applicable to that commodity, as well as the applicable " + \
+		"Preferential Tariff for trading nations or blocs with which the UK has provisionally agreed a Trade Agreement.\n\n" + \
+		"Where there is no preference with the third country or if the preference is no more advantageous than the applicable MFN duty, " + \
+		"the third country preferential duty is listed as '-'", self.cell_left)
 
-		cell_blue = workbook.add_format()
-		cell_blue.set_text_wrap()
-		cell_blue.set_align('top')
-		cell_blue.set_bg_color('cceeff')
-		cell_blue.set_border(1)
-		cell_blue.set_align('center')
 
-		cell_centre = workbook.add_format()
-		cell_centre.set_text_wrap()
-		cell_centre.set_align('top')
-		cell_centre.set_border(1)
-		cell_centre.set_align('center')
+		worksheet_guidance.write(5, 3, "\nQuotas", self.cell_bold)
+		worksheet_guidance.write(6, 3, "To see information about applicable preferential Tariff Rate Quotas after EU Exit, select the \"tariff_rate_quotas\" tab below. " + \
+		"As with the Tariffs tab, this tab lists each commodity against which an import duty will continue to apply after EU Exit " + \
+		"and applicable WTO Quotas or Autonomous Tariff Quota (ATQ).\n\n" + \
+		"In addition, if a Preferential Tariff Rate Quota (TRQ) applies to a commodity code for a given exporting country, the order " + \
+		"number of that TRQ is displayed.\n\n" + \
+		"Where there is no preferential Tariff Rate Quota in place with the third country, the TRQ is listed as '-'", self.cell_left)
 
-		category = workbook.add_format()
-		category.set_bg_color('black')
-		category.set_color('white')
-		category.set_bold()
-		category.set_align('vcenter')
-
-		worksheet = workbook.add_worksheet("tariff_preferences")
-		worksheet2 = workbook.add_worksheet("tariff_rate_quotas")
-
-		preferential_area_count = len(self.preferential_areas)
-		worksheet.set_column(0, 0, 15)
-		worksheet.set_column(1, 1, 60) 
-		worksheet.set_column(2, 3, 20)
-		worksheet.set_column(4, preferential_area_count + 4, 20)
-
-		worksheet2.set_column(0, 0, 15)
-		worksheet2.set_column(1, 1, 60) 
-		worksheet2.set_column(2, 3, 20)
-		worksheet2.set_column(4, preferential_area_count + 4, 20)
-
-		my_row = 0
-		current_category = ""
-
-		for m in self.mfn_measures:
-			if m.is_zero == False:
-				quota_matched = False
-				if m.category != current_category and m.category != "Unspecified":
-					# Write the category row 
-					my_row += 1
-					worksheet.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, category)
-					worksheet.set_row(my_row - 1, 30)
-					worksheet2.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, category)
-					worksheet2.set_row(my_row - 1, 30)
-
-					# Write the columns headers
-					my_row += 1
-					worksheet.set_row(my_row - 1, 30)
-					worksheet.write('A' + str(my_row), 'Commodity code', column_header)
-					worksheet.write('B' + str(my_row), 'Description', column_header)
-					worksheet.write('C' + str(my_row), 'Most favoured nation (MFN) rate', column_header_centre)
-					worksheet.write('D' + str(my_row), 'MFN TRQ', column_header_centre)
-
-					worksheet2.set_row(my_row - 1, 30)
-					worksheet2.write('A' + str(my_row), 'Commodity code', column_header)
-					worksheet2.write('B' + str(my_row), 'Description', column_header)
-					worksheet2.write('C' + str(my_row), 'Most favoured nation (MFN) rate', column_header_centre)
-					worksheet2.write('D' + str(my_row), 'MFN TRQ', column_header_centre)
-
-					my_col = 4
-					for item in self.preferential_areas:
-						worksheet.write(my_row - 1, my_col, item.name, column_header_centre)
-						worksheet2.write(my_row - 1, my_col, item.name, column_header_centre)
-						my_col += 1
-
-				my_row += 1
-				if m.mfn_quota == "":
-					m.mfn_quota = "-"
-				worksheet.write('A' + str(my_row), m.goods_nomenclature_formatted(), cell)
-				worksheet.write('B' + str(my_row), m.combined_description, cell)
-				worksheet.write('C' + str(my_row), m.combined_duty, cell_blue)
-				worksheet.write('D' + str(my_row), m.mfn_quota, cell_blue)
-
-				worksheet2.write('A' + str(my_row), m.goods_nomenclature_formatted(), cell)
-				worksheet2.write('B' + str(my_row), m.combined_description, cell)
-				worksheet2.write('C' + str(my_row), m.combined_duty, cell_blue)
-				worksheet2.write('D' + str(my_row), m.mfn_quota, cell_blue)
-
-				# Write the preferential rates
-				my_col = 4
-				preferential_rate	= "-"
-				for preferential_area in self.preferential_areas:
-					preferential_quota	= "-"
-					if m.goods_nomenclature_item_id in preferential_area.preferential_rates:
-						preferential_rate = preferential_area.preferential_rates[m.goods_nomenclature_item_id]
-
-					if preferential_area.name == "Chile":
-						for quota in self.quota_assignments:
-							if quota["goods_nomenclature_item_id"] == m.goods_nomenclature_item_id:
-								print ("Chile match on commodity code", quota["measure_type_id"], quota["geographical_area_id"])
-								if quota["measure_type_id"] in ('143', '146'):
-									if quota["geographical_area_id"] == "CL":
-										preferential_quota = "Applicable"
-										quota_matched = True
-										break
-
-					
-					worksheet.write(my_row - 1, my_col, preferential_rate, cell_centre)
-					worksheet2.write(my_row - 1, my_col, preferential_quota, cell_centre)
-					my_col += 1
-
-				current_category = m.category
-
-		workbook.close()
 			
 	def get_categories(self):
-		print ("Get categories of products")
+		self.d("Get categories of products", True)
 		self.categories = []
 		self.category_file = os.path.join(self.SOURCE_DIR, 	"data for tariff categorisation.csv")
 		with open(self.category_file, 'r') as csvfile:
@@ -528,30 +452,49 @@ class application(object):
 				self.categories.append(c)
 
 	def get_geo_areas_for_excel(self):
-		print ("Getting list of all preferential areas to include")
+		self.d("Getting list of all preferential areas to include", True)
 		self.preferential_areas = []
 		with open(self.CONFIG_FILE_LOCAL, 'r') as f:
 			my_dict = json.load(f)
 			for item in my_dict["country_profiles"]:
-				create_excel_template = my_dict["country_profiles"][item]["excel_template"]
+				create_excel_template	= my_dict["country_profiles"][item]["excel_template"]
+				name					= my_dict["country_profiles"][item]["excel_country_name"]
 				if create_excel_template == "Yes":
 					g = geographical_area()
-					g.name			= my_dict["country_profiles"][item]["excel_country_name"]
-					g.content		= my_dict["country_profiles"][item]
-					g.country_codes	= my_dict["country_profiles"][item]["country_codes"]
+					g.name					= my_dict["country_profiles"][item]["excel_country_name"]
+					g.content				= my_dict["country_profiles"][item]
+					g.country_codes			= my_dict["country_profiles"][item]["country_codes"]
+					g.primary_country_code	= g.country_codes[0]
+					try:
+						g.excluded_country_codes = my_dict["country_profiles"][item]["excluded_country_codes"]
+					except:
+						g.excluded_country_codes = []
+					try:
+						g.weighting		= my_dict["country_profiles"][item]["weighting"]
+					except:
+						pass
 
-					self.preferential_areas.append (g)
+					if "xmerica" not in g.name:
+						self.preferential_areas.append (g)
 					a = 1
 
-		self.preferential_areas = sorted(self.preferential_areas, key = lambda x: x.name, reverse = False)
+		self.preferential_areas = sorted(self.preferential_areas, key = lambda x: x.name, 		reverse = False)
+		self.preferential_areas = sorted(self.preferential_areas, key = lambda x: x.weighting,	reverse = False)
+
+
+	def d(self, msg, heading = False):
+		if heading == True:
+			print ("\n" + msg.upper())
+		else:
+			print (msg)
 
 
 	def get_rates_for_geo_areas(self):
-		print ("Getting rates for preferential areas")
-		for item in self.preferential_areas:
-			print ("- Getting rates for", item.name)
-			country_codes = item.country_codes_to_sql()
-			#print (country_codes)
+		self.d("Getting rates for preferential areas", True)
+		for preferential_area in self.preferential_areas:
+			print ("- Getting rates for", bcolors.OKBLUE, preferential_area.name, bcolors.ENDC, "from database")
+			country_codes			= preferential_area.country_codes_to_sql()
+			excluded_country_codes	= preferential_area.excluded_country_codes_to_sql()
 			# Get the measure components (duties)
 			sql = """select mc.measure_sid, mc.duty_expression_id, mc.duty_amount, mc.monetary_unit_code,
 			mc.measurement_unit_code, mc.measurement_unit_qualifier_code
@@ -559,13 +502,14 @@ class application(object):
 			where m.measure_sid = mc.measure_sid
 			and m.validity_start_date >= '2019-11-01'
 			and m.geographical_area_id in (""" + country_codes + """)
-			and measure_type_id in ('142', '143', '145', '146')
+			and measure_type_id in ('142', '143', '145', '146', '122', '123')
 			order by m.goods_nomenclature_item_id, mc.duty_expression_id
 			"""
+
 			cur = self.conn.cursor()
 			cur.execute(sql)
 			rows = cur.fetchall()
-			item.duty_list = []
+			preferential_area.duty_list = []
 			for rw in rows:
 				d = duty()
 				d.measure_sid						= rw[0]
@@ -576,21 +520,45 @@ class application(object):
 				d.measurement_unit_qualifier_code	= functions.mstr(rw[5])
 				d.get_duty_string()
 				
-				item.duty_list.append(d)
+				preferential_area.duty_list.append(d)
+			
 			
 			# Get the measures
-			sql = """
-			select measure_sid, goods_nomenclature_item_id, measure_type_id, ordernumber, validity_start_date, validity_end_date
-			from ml.measures_real_end_dates m
-			where m.validity_start_date >= '2019-11-01' and m.geographical_area_id in (""" + country_codes + """)
-			and measure_type_id in ('142', 'x143', '145', 'x146')
-			order by m.goods_nomenclature_item_id
-			"""
+			if len(preferential_area.excluded_country_codes) == 0:
+				sql = """
+				select measure_sid, goods_nomenclature_item_id, measure_type_id, ordernumber,
+				validity_start_date, validity_end_date, geographical_area_id
+				from ml.measures_real_end_dates m
+				where m.validity_start_date >= '2019-11-01' and m.geographical_area_id in (""" + country_codes + """)
+				and measure_type_id in ('142', '143', '145', '146', '122', '123')
+				order by m.goods_nomenclature_item_id, ordernumber
+				"""
+			else:
+				sql = """
+				select measure_sid, goods_nomenclature_item_id, measure_type_id, ordernumber,
+				validity_start_date, validity_end_date, geographical_area_id
+				from ml.measures_real_end_dates m
+				where m.validity_start_date >= '2019-11-01' and m.geographical_area_id in (""" + country_codes + """)
+				and measure_type_id in ('142', '143', '145', '146', '122', '123')
+				and m.measure_sid not in (
+					select m.measure_sid from measure_excluded_geographical_areas mega, measures m
+					where mega.measure_sid = m.measure_sid
+					and m.validity_start_date >= '2019-11-01'
+					and m.geographical_area_id in (""" + country_codes + """)
+					and measure_type_id in ('142', '143', '145', '146', '122', '123')
+					and mega.excluded_geographical_area in (""" + excluded_country_codes + """)
+				)
+				order by m.goods_nomenclature_item_id, ordernumber
+				"""
+
 			cur = self.conn.cursor()
 			cur.execute(sql)
 			rows = cur.fetchall()
-			item.measure_list = []
-			item.measure_dict = {}
+			preferential_area.measure_list_preference	= []
+			preferential_area.measure_list_quota		= []
+
+			preferential_area.measure_dict_preference	= {}
+			preferential_area.measure_dict_quota		= {}
 			for rw in rows:
 				m = measure()
 				m.measure_sid					= rw[0]
@@ -599,21 +567,60 @@ class application(object):
 				m.ordernumber					= rw[3]
 				m.validity_start_date			= rw[4]
 				m.validity_end_date				= rw[5]
+				m.geographical_area_id			= rw[6]
 				
-				item.measure_list.append(m)
+				if m.measure_type_id in ('142', '145'):
+					preferential_area.measure_list_preference.append(m)
+				elif m.measure_type_id in ('143', '146', '122', '123'):
+					preferential_area.measure_list_quota.append(m)
+
 
 			# Assign the duties to the measures
-			for d in item.duty_list:
-				for m in item.measure_list:
+			for d in preferential_area.duty_list:
+				for m in preferential_area.measure_list_preference:
+					if d.measure_sid == m.measure_sid:
+						m.duty_list.append(d)
+						break
+				for m in preferential_area.measure_list_quota:
 					if d.measure_sid == m.measure_sid:
 						m.duty_list.append(d)
 						break
 			
-			for m in item.measure_list:
+			for m in preferential_area.measure_list_preference:
 				m.combine_duties()
-				item.measure_dict[m.goods_nomenclature_item_id] = m.combined_duty
+				preferential_area.measure_dict_preference[m.goods_nomenclature_item_id] = m.combined_duty
 
-			
+			# Simplify the list of quota measures and replace the duplicates
+			"""
+			for m in preferential_area.measure_list_quota:
+				print ("Before", m.goods_nomenclature_item_id, m.geographical_area_id)
+			"""
+
+			temp_list = []
+
+			for m in preferential_area.measure_list_quota:
+				item = m.goods_nomenclature_item_id + "|" + m.geographical_area_id
+				if item in temp_list:
+					m.mark_for_removal = True
+				else:
+					temp_list.append (item)
+					m.mark_for_removal = False
+
+			for i in range(len(preferential_area.measure_list_quota) -1, -1, -1):
+				m = preferential_area.measure_list_quota[i]
+				if m.mark_for_removal == True:
+					preferential_area.measure_list_quota.pop(i)
+
+			"""
+			for m in preferential_area.measure_list_quota:
+				print ("After", m.goods_nomenclature_item_id, m.geographical_area_id, m.ordernumber)
+			"""
+			#sys.exit()
+
+			# Combine duties into a single string for quota measures
+			for m in preferential_area.measure_list_quota:
+				m.combine_duties()
+				preferential_area.measure_dict_quota[m.goods_nomenclature_item_id] = m.combined_duty
 
 
 	def get_significant_digits(self, code):		
@@ -632,7 +639,13 @@ class application(object):
 
 
 	def get_full_nomenclature(self):
-		print ("Getting a full list of all nomenclature")
+		"""
+		This function is used to get a full list of commodities from an external CSV file, that needs to be re-run on a periodic basis
+		from ml.goods_nomenclature_export_new
+		The function puts the data into a variable self.full_commodity_list
+		and then goes on to find the direct children of every commodity code
+		"""
+		self.d("Getting a full list of all nomenclature", True)
 		self.full_commodity_list = []
 		filename = os.path.join(self.SOURCE_DIR, "commodities.csv")
 		with open(filename, "r") as f:
@@ -644,12 +657,12 @@ class application(object):
 				if significant_digits != 2:
 					number_indents += 1
 				obj = dict(commodity_code = row[1], productline_suffix = int(row[2]), number_indents = number_indents,
-				significant_digits = significant_digits, parentage = "", children = "")
+				significant_digits = significant_digits, parentage = "", children = "", description = row[5], leaf = row[9])
 				self.full_commodity_list.append (obj)
 
 		commodity_count = len(self.full_commodity_list)
 
-		print ("Getting ancestry & children for nomenclature")
+		self.d("Getting ancestry & children for nomenclature", True)
 		for loop1 in range(1, commodity_count):
 			commodity_code1		= self.full_commodity_list[loop1]["commodity_code"]
 			productline_suffix1	= int(self.full_commodity_list[loop1]["productline_suffix"])
@@ -684,12 +697,11 @@ class application(object):
 				if number_indents2 <= my_indents:
 					self.full_commodity_list[loop1]["children"] = self.full_commodity_list[loop1]["children"].strip(",")
 					break
-
-
+		
 
 
 	def get_preferential_equivalent_for_mfn(self):
-		print ("Getting preferential equivalents for MFN duties")
+		self.d("Getting preferential equivalents for MFN duties", True)
 
 		"""
 		Loop through all of the MFN measures that are not zero-rated, i.e. those that would be listed in the Excel spreadsheet
@@ -699,20 +711,24 @@ class application(object):
 		- not applicable at all (i.e. there is no coverage / reduction from the base non-zero MFN rate)
 		"""
 		"""
-		Loop through all MFN measures thare not zero
+		Loop through all MFN measures that are not zero
 			Loop through all pref areas (say, Fiji)
 			Then loop through all preferential rates in those areas
 
 		"""
 		for preferential_area in self.preferential_areas:
-			print (" - Working out preferential equivalent for", preferential_area.name)
-			preferential_area.preferential_rates = {}
+			print (" - Working out preferential equivalent for", bcolors.OKBLUE, preferential_area.name, bcolors.ENDC)
+			preferential_area.preferential_rates		= {}
+			preferential_area.quota_order_numbers		= {}
+			preferential_area.quota_order_number_list	= []
 			for mfn_measure in self.mfn_measures:
 				if mfn_measure.is_zero == False:
+
+					# first do preferences
 					matched = False
 					
 					# First, check if there is a match against the actual commodity code for the preferential agreement
-					for m2 in preferential_area.measure_list:
+					for m2 in preferential_area.measure_list_preference:
 						if matched == False:
 							if m2.goods_nomenclature_item_id == mfn_measure.goods_nomenclature_item_id:
 								# There is a direct match between the trade agreement and the non-zero MFN
@@ -726,7 +742,7 @@ class application(object):
 						for g in self.full_commodity_list:
 							if g["commodity_code"] == mfn_measure.goods_nomenclature_item_id and int(g["productline_suffix"]) == 80:
 								ancestry = g["parentage"].split(",")
-								for m2 in preferential_area.measure_list:
+								for m2 in preferential_area.measure_list_preference:
 									if m2.goods_nomenclature_item_id in ancestry:
 										m2.combine_duties()
 										preferential_area.preferential_rates[mfn_measure.goods_nomenclature_item_id] = m2.combined_duty
@@ -735,7 +751,7 @@ class application(object):
 
 								break
 					
-					# Thirdly, look at the children
+					# Thirdly, look at the children
 					if matched == False:
 						for g in self.full_commodity_list:
 							if g["commodity_code"] == mfn_measure.goods_nomenclature_item_id and int(g["productline_suffix"]) == 80:
@@ -749,8 +765,8 @@ class application(object):
 								if child_count > 0:
 									child_duties = []
 									for child in children:
-										if child in preferential_area.measure_dict:
-											child_duties.append (preferential_area.measure_dict[child])
+										if child in preferential_area.measure_dict_preference:
+											child_duties.append (preferential_area.measure_dict_preference[child])
 
 									child_duties2 = set(child_duties)
 									if len(child_duties2) == 0:
@@ -761,3 +777,511 @@ class application(object):
 										preferential_area.preferential_rates[mfn_measure.goods_nomenclature_item_id] = "Variable"
 
 								break
+
+
+
+					# Second, do quotas
+					# At this point, I am looping first through every preferential area, and then through every MFN non-zero commodity
+					# The variables are   "preferential_area"   and   "mfn_measure"
+
+					matched = False
+					
+					# First, check if there is a match against the actual commodity code for the preferential agreement
+					for m2 in preferential_area.measure_list_quota:
+						if 1 > 0 : # matched == False:
+
+							if m2.goods_nomenclature_item_id == mfn_measure.goods_nomenclature_item_id:
+								# There is a direct match between the trade agreement and the non-zero MFN
+								preferential_area.quota_order_numbers[m2.goods_nomenclature_item_id] = m2.ordernumber
+								quota_measure = measure()
+								quota_measure.goods_nomenclature_item_id	= mfn_measure.goods_nomenclature_item_id
+								quota_measure.ordernumber					= m2.ordernumber
+								quota_measure.geographical_area_id			= m2.geographical_area_id
+
+								preferential_area.quota_order_number_list.append (quota_measure)
+								matched = True
+								#break
+
+					# Second, look at the parentage for downward inheritance
+					# At this point I am looping first round the preferential areas and then round the non-zero MFN measures
+
+					if matched == False:
+						for g in self.full_commodity_list:
+							if g["commodity_code"] == mfn_measure.goods_nomenclature_item_id and int(g["productline_suffix"]) == 80:
+								ancestry = g["parentage"].split(",")
+
+								for m2 in preferential_area.measure_list_quota:
+									if m2.goods_nomenclature_item_id in ancestry:
+										preferential_area.quota_order_numbers[mfn_measure.goods_nomenclature_item_id] = m2.ordernumber
+										quota_measure = measure()
+										quota_measure.goods_nomenclature_item_id	= mfn_measure.goods_nomenclature_item_id
+										quota_measure.ordernumber					= m2.ordernumber
+										quota_measure.geographical_area_id			= m2.geographical_area_id
+
+										preferential_area.quota_order_number_list.append (quota_measure)
+										matched = True
+
+								break
+					
+					# Thirdly, look at the children
+					if matched == False:
+						for g in self.full_commodity_list:
+							if g["commodity_code"] == mfn_measure.goods_nomenclature_item_id and int(g["productline_suffix"]) == 80:
+								children = g["children"].split(",")
+								if children == "":
+									child_count = 0
+									break
+								else:
+									child_count = len(children)
+
+								if child_count > 0:
+									child_duties = []
+									for child in children:
+										if child in preferential_area.measure_dict_quota:
+											child_duties.append (preferential_area.measure_dict_quota[child])
+
+									child_duties2 = set(child_duties)
+									if len(child_duties2) == 0:
+										preferential_area.quota_order_numbers[mfn_measure.goods_nomenclature_item_id] = "-"
+									elif len(child_duties2) == 1:
+										preferential_area.quota_order_numbers[mfn_measure.goods_nomenclature_item_id] = child_duties[0]
+									else:
+										preferential_area.quota_order_numbers[mfn_measure.goods_nomenclature_item_id] = "Variable"
+
+								break
+				
+			"""
+			for quota_measure in preferential_area.quota_order_number_list:
+				print ("Assigned", quota_measure.goods_nomenclature_item_id, quota_measure.ordernumber, quota_measure.geographical_area_id)
+
+			# Simplify the list of quota measures and replace the duplicates
+			for m in preferential_area.quota_order_number_list:
+				print ("Before", m.goods_nomenclature_item_id, m.geographical_area_id)
+			"""
+
+			temp_list = []
+
+			for m in preferential_area.quota_order_number_list:
+				item = m.goods_nomenclature_item_id + "|" + m.ordernumber + "|" + m.geographical_area_id
+				if item in temp_list:
+					m.mark_for_removal = True
+				else:
+					temp_list.append (item)
+					m.mark_for_removal = False
+
+				#print ("Before", m.goods_nomenclature_item_id, m.geographical_area_id)
+
+			for i in range(len(preferential_area.quota_order_number_list) -1, -1, -1):
+				m = preferential_area.quota_order_number_list[i]
+				if m.mark_for_removal == True:
+					preferential_area.quota_order_number_list.pop(i)
+
+			"""
+			for m in preferential_area.quota_order_number_list:
+				print ("After", m.goods_nomenclature_item_id, m.geographical_area_id)
+			"""
+
+
+	def create_excel_styles(self, workbook):
+		self.column_header = workbook.add_format()
+		self.column_header.set_bold()
+		self.column_header.set_bg_color('#cccccc')
+		self.column_header.set_align('vcenter')
+		self.column_header.set_text_wrap()
+		self.column_header.set_border(1)
+		self.column_header.set_font_name('Times New Roman')
+		self.column_header.set_indent(1)
+
+		self.column_header_centre = workbook.add_format()
+		self.column_header_centre.set_bold()
+		self.column_header_centre.set_bg_color('#cccccc')
+		self.column_header_centre.set_align('vcenter')
+		self.column_header_centre.set_text_wrap()
+		self.column_header_centre.set_border(1)
+		self.column_header_centre.set_align('center')
+		self.column_header_centre.set_font_name('Times New Roman')
+
+		self.cell = workbook.add_format()
+		self.cell.set_text_wrap()
+		self.cell.set_indent(1)
+		self.cell.set_align('top')
+		self.cell.set_border(1)
+		self.cell.set_font_name('Times New Roman')
+
+		self.cell_left = workbook.add_format()
+		self.cell_left.set_text_wrap()
+		self.cell_left.set_indent(1)
+		self.cell_left.set_align('top')
+		self.cell_left.set_align('left')
+		self.cell_left.set_border(0)
+		self.cell_left.set_font_name('Times New Roman')
+		self.cell_left.set_font_size(12)
+
+		self.cell_bold = workbook.add_format()
+		self.cell_bold.set_text_wrap()
+		self.cell_bold.set_align('top')
+		self.cell_bold.set_align('left')
+		self.cell_bold.set_border(0)
+		self.cell_bold.set_font_name('Times New Roman')
+		self.cell_bold.set_indent(1)
+		self.cell_bold.set_bold()
+		self.cell_bold.set_font_size(12)
+
+		self.cell_blue = workbook.add_format()
+		self.cell_blue.set_text_wrap()
+		self.cell_blue.set_align('top')
+		self.cell_blue.set_bg_color('cceeff')
+		self.cell_blue.set_border(1)
+		self.cell_blue.set_align('center')
+		self.cell_blue.set_font_name('Times New Roman')
+
+		self.cell_centre = workbook.add_format()
+		self.cell_centre.set_text_wrap()
+		self.cell_centre.set_align('top')
+		self.cell_centre.set_border(1)
+		self.cell_centre.set_align('center')
+		self.cell_centre.set_font_name('Times New Roman')
+
+		self.category = workbook.add_format()
+		self.category.set_bg_color('black')
+		self.category.set_color('white')
+		self.category.set_bold()
+		self.category.set_align('vcenter')
+		self.category.set_font_name('Times New Roman')
+		self.category.set_font_size(12)
+		self.category.set_indent(1)
+
+		self.guidance_black = workbook.add_format()
+		self.guidance_black.set_bg_color('black')
+		self.guidance_black.set_color('white')
+		self.guidance_black.set_bold()
+		self.guidance_black.set_align('vcenter')
+		self.guidance_black.set_font_size(14)
+		self.guidance_black.set_font_name('Times New Roman')
+
+		self.description_indents = []
+		for i in range(0, 20):
+			obj = workbook.add_format()
+			obj.set_text_wrap()
+			obj.set_indent(i)
+			obj.set_align('top')
+			obj.set_border(1)
+			obj.set_font_name('Times New Roman')
+			if i < 2:
+				obj.set_bold()
+			
+			self.description_indents.append(obj)
+
+
+
+	def write_mfns_to_excel(self):
+		print ("Write data to Excel spreadsheet")
+
+		path			= os.path.join(self.ODS_DIR, "mfn_and_preferential_duties.xlsx")
+		workbook		= xlsxwriter.Workbook(path)
+
+		self.create_excel_styles(workbook)
+
+		# Create worksheets
+		worksheet_guidance	= workbook.add_worksheet("guidance")
+		worksheet			= workbook.add_worksheet("tariff_preferences")
+		worksheet2			= workbook.add_worksheet("tariff_rate_quotas")
+
+		self.populate_guidance_sheet(worksheet_guidance)
+
+		preferential_area_count = len(self.preferential_areas)
+		worksheet.set_column(0, 0, 15)
+		worksheet.set_column(1, 1, 60) 
+		worksheet.set_column(2, 3, 20)
+		worksheet.set_column(4, preferential_area_count + 4, 20)
+
+		worksheet2.set_column(0, 0, 15)
+		worksheet2.set_column(1, 1, 60) 
+		worksheet2.set_column(2, 3, 20)
+		worksheet2.set_column(4, preferential_area_count + 4, 20)
+
+		my_row = 0
+		current_category = ""
+
+		for m in self.mfn_measures:
+			if m.is_zero == False:
+				quota_matched = False
+				if m.category != "Unspecified":
+					if m.category != current_category and m.category != "Unspecified":
+						# Write the self.category row 
+						my_row += 1
+						worksheet.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
+						worksheet.set_row(my_row - 1, 30)
+						worksheet2.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
+						worksheet2.set_row(my_row - 1, 30)
+
+						# Write the columns headers for the MFN sheet
+						my_row += 1
+						worksheet.set_row(my_row - 1, 45)
+						worksheet.write('A' + str(my_row), 'Commodity code', self.column_header)
+						worksheet.write('B' + str(my_row), 'Description', self.column_header)
+						worksheet.write('C' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+						worksheet.write('D' + str(my_row), 'MFN TRQ', self.column_header_centre)
+
+						# Write the columns headers for the quotas sheet
+						worksheet2.set_row(my_row - 1, 45)
+						worksheet2.write('A' + str(my_row), 'Commodity code', self.column_header)
+						worksheet2.write('B' + str(my_row), 'Description', self.column_header)
+						worksheet2.write('C' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+						worksheet2.write('D' + str(my_row), 'MFN TRQ', self.column_header_centre)
+
+						my_col = 4
+						for item in self.preferential_areas:
+							# Write the preferential area name
+							worksheet.write(my_row - 1, my_col, item.name, self.column_header_centre)
+							worksheet2.write(my_row - 1, my_col, item.name, self.column_header_centre)
+							my_col += 1
+
+					my_row += 1
+					if m.mfn_quota == "":
+						m.mfn_quota = "-"
+
+					# Write the commodity code, description, duty and MFN quota data to the MFN sheet
+					worksheet.write('A' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
+					worksheet.write('B' + str(my_row), m.combined_description, self.cell)
+					worksheet.write('C' + str(my_row), m.combined_duty, self.cell_blue)
+					worksheet.write('D' + str(my_row), m.mfn_quota, self.cell_blue)
+
+					# Write the commodity code, description, duty and MFN quota data to the quotas sheet
+					worksheet2.write('A' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
+					worksheet2.write('B' + str(my_row), m.combined_description, self.cell)
+					worksheet2.write('C' + str(my_row), m.combined_duty, self.cell_blue)
+					worksheet2.write('D' + str(my_row), m.mfn_quota, self.cell_blue)
+
+					# Write the preferential rates, and the quota rates
+					my_col = 4
+					preferential_rate	= "-"
+					for preferential_area in self.preferential_areas:
+						if m.goods_nomenclature_item_id in preferential_area.preferential_rates:
+							preferential_rate = preferential_area.preferential_rates[m.goods_nomenclature_item_id]
+
+						quota_order_number_string = ""
+						for quota_measure in preferential_area.quota_order_number_list:
+							if m.goods_nomenclature_item_id == quota_measure.goods_nomenclature_item_id:
+								quota_order_number_string += self.format_quota_order_number(quota_measure.ordernumber)
+								if quota_measure.geographical_area_id != preferential_area.primary_country_code:
+									quota_order_number_string += " (" + quota_measure.geographical_area_id + ")"
+								
+								
+								quota_order_number_string += "\n "
+						
+							quota_order_number_string = quota_order_number_string.strip("")
+							quota_order_number_string = quota_order_number_string.strip("\n")
+
+						if quota_order_number_string == "":
+							quota_order_number_string = "-"
+						#print (m.goods_nomenclature_item_id, quota_order_number_string)
+
+						
+						worksheet.write(my_row - 1, my_col, preferential_rate, self.cell_centre)
+						worksheet2.write(my_row - 1, my_col, quota_order_number_string, self.cell_centre)
+						my_col += 1
+
+					current_category = m.category
+
+		workbook.close()
+
+
+	def write_full_mfns(self):
+		self.d ("Write data to Excel spreadsheet", True)
+
+		path			= os.path.join(self.ODS_DIR, "mfn_and_preferential_duties_full.xlsx")
+		workbook		= xlsxwriter.Workbook(path)
+
+		self.create_excel_styles(workbook)
+
+		# Create worksheets
+		worksheet_guidance	= workbook.add_worksheet("guidance")
+		worksheet			= workbook.add_worksheet("tariff_preferences")
+		worksheet2			= workbook.add_worksheet("tariff_rate_quotas")
+
+		self.populate_guidance_sheet(worksheet_guidance)
+
+		preferential_area_count = len(self.preferential_areas)
+		worksheet.set_column(0, 0, 15)
+		worksheet.set_column(1, 1, 90) 
+		worksheet.set_column(2, 2, 15)
+		worksheet.set_column(3, 4, 20)
+		worksheet.set_column(5, preferential_area_count + 5, 20)
+
+		worksheet2.set_column(0, 0, 15)
+		worksheet2.set_column(1, 1, 90) 
+		worksheet2.set_column(2, 2, 15)
+		worksheet2.set_column(3, 4, 20)
+		worksheet2.set_column(5, preferential_area_count + 5, 20)
+
+		my_row = 0
+
+		# Write the columns headers for the MFN sheet
+		my_row += 1
+		worksheet.set_row(my_row - 1, 45)
+		worksheet.write('A' + str(my_row), 'Commodity code', self.column_header)
+		worksheet.write('B' + str(my_row), 'Description', self.column_header)
+		worksheet.write('C' + str(my_row), 'End line', self.column_header_centre)
+		worksheet.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+		worksheet.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
+		worksheet.freeze_panes(1, 0)
+
+		# Write the columns headers for the quotas sheet
+		worksheet2.set_row(my_row - 1, 45)
+		worksheet2.write('A' + str(my_row), 'Commodity code', self.column_header)
+		worksheet2.write('B' + str(my_row), 'Description', self.column_header)
+		worksheet2.write('C' + str(my_row), 'End line', self.column_header)
+		worksheet2.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+		worksheet2.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
+		worksheet2.freeze_panes(1, 0)
+
+
+		my_col = 5
+		for item in self.preferential_areas:
+			# Write the preferential area name
+			worksheet.write(my_row - 1, my_col, item.name, self.column_header_centre)
+			worksheet2.write(my_row - 1, my_col, item.name, self.column_header_centre)
+			my_col += 1
+
+
+		for g in self.full_commodity_list:
+			my_row += 1
+			"""
+			if m.mfn_quota == "":
+				m.mfn_quota = "-"
+			"""
+
+			# Write the commodity code, description, duty and MFN quota data to the MFN sheet
+			worksheet.write('A' + str(my_row), self.format_goods_nomenclature(g["commodity_code"], g["productline_suffix"]), self.cell)
+			worksheet.write('B' + str(my_row), self.cleanse_description(g["description"]), self.description_indents[g["number_indents"]])
+			worksheet.write('C' + str(my_row), self.yn(g["leaf"], "Y", ""), self.cell_centre)
+			"""
+			worksheet.write('D' + str(my_row), m.combined_duty, self.cell_blue)
+			worksheet.write('E' + str(my_row), m.mfn_quota, self.cell_blue)
+
+			# Write the commodity code, description, duty and MFN quota data to the quotas sheet
+			worksheet2.write('A' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
+			worksheet2.write('B' + str(my_row), m.combined_description, self.cell)
+			worksheet2.write('D' + str(my_row), m.combined_duty, self.cell_blue)
+			worksheet2.write('E' + str(my_row), m.mfn_quota, self.cell_blue)
+			"""
+
+
+		workbook.close()
+
+	def yn(self, s, yes, no):
+		s = str(s).lower()
+		if s in ("1", "Y"):
+			s = yes
+		else:
+			s = no
+		return s
+
+
+	def format_goods_nomenclature(self, s, productline_suffix):
+		productline_suffix = str(productline_suffix)
+		if productline_suffix != "80":
+			commodity_code_formatted = ""
+		else:
+			if s[4:10] == "000000":
+				commodity_code_formatted = s[0:4]
+			elif s[6:10] == "0000":
+				commodity_code_formatted = s[0:4] + ' ' + s[4:6]
+			elif s[8:10] == "00":
+				commodity_code_formatted = s[0:4] + ' ' + s[4:6] + ' ' + s[6:8]
+			else:
+				commodity_code_formatted = s[0:4] + ' ' + s[4:6] + ' ' + s[6:8] + ' ' + s[8:10]
+		return (commodity_code_formatted)
+
+	def select_document_type(self):
+		try:
+			if sys.argv[1] == "full":
+				self.document_type = "full"
+			else:
+				self.document_type = "mfn"
+		except:
+			self.document_type = "mfn"
+
+	def cleanse_description(self, s):
+		s = s.replace(" <br>", "<br>")
+		s = s.replace("<p/>", "<br>")
+		s = s.replace("<br />", "<br>")
+		s = s.replace("<br/>", "<br>")
+		for i in range(1, 5):
+			s = s.replace("<br><br>", "<br>")
+
+		if s[-4:] == "<br>":
+			s = s[:-4]
+
+		s = s.replace("<br>", "\n")
+		s = s.replace("<br />", "\n")
+		s = s.replace("<br/>", "\n")
+
+		s = s.replace("<sup>", ' ')
+		s = s.replace("</sup>", ' ')
+
+		s = s.replace("<sub>", ' ')
+		s = s.replace("</sub>", ' ')
+
+		s = s.replace("|of the CN", "")
+		s = s.replace("liters", "litres")
+		s = s.replace("|%|", "% ")
+		s = s.replace("|gram", " gram")
+		s = s.replace("|g", "g")
+		s = s.replace("|kg", "kg")
+		s = s.replace("|", " ")
+		s = re.sub("([0-9]) %", "\\1%", s)
+		s = s.replace("!x!", "x")
+		s = s.replace(" kg", "kg")
+		s = s.replace(" -goods", " - goods")
+
+		if s[-3:] == "!1!":
+			s = s[:-3]
+		s = s.replace("\r\r", "\r")
+		s = s.replace("\r\n", "\n")
+		s = s.replace("\n\r", "\n")
+		s = s.replace("\n\n", "\n")
+		s = s.replace("\r", "\n")
+		s = s.replace("!1!", "\n")
+		s = s.replace("!o!", chr(176))
+		s = s.replace("\xA0", " ")
+		s = s.replace(" %", "%")
+		s = re.sub("arcases", "arcasses", s, flags=re.MULTILINE)
+
+
+		s = re.sub(" ([0-9]{1,4}),([0-9]{1,4}) ", " \\1.\\2 ", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]{1,4}),([0-9]{1,4})/", "\\1.\\2/", s, flags=re.MULTILINE)
+		s = re.sub(" ([0-9]{1,4}),([0-9]{1,4})%", " \\1.\\2%", s, flags=re.MULTILINE)
+		s = re.sub(" ([0-9]{1,4}),([0-9]{1,4})\\)", " \\1.\\2)", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9])%", "\\1.\\2%", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]) kg", "\\1.\\2 kg", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]) Kg", "\\1.\\2 kg", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]) C", "\\1.\\2 C", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9])kg", "\\1.\\2kg", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) g", "\\1.\\2 g", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3})g", "\\1.\\2g", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) dl", "\\1.\\2 dl", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) m", "\\1.\\2 m", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3})m", "\\1.\\2m", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) decitex", "\\1.\\2 decitex", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) l", "\\1.\\2 l", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) kW", "\\1.\\2 kW", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) W", "\\1.\\2 W", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) V", "\\1.\\2 V", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) Ah", "\\1.\\2 Ah", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) bar", "\\1.\\2 bar", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) cm", "\\1.\\2 cm", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) Nm", "\\1.\\2 Nm", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) kV", "\\1.\\2 kV", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) kHz", "\\1.\\2 kHz", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) kV", "\\1.\\2 kV", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) MHz", "\\1.\\2 MHz", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) μm", "\\1.\\2 μm", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) Ohm", "\\1.\\2 Ohm", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) dB", "\\1.\\2 dB", s, flags=re.MULTILINE)
+		s = re.sub("([0-9]),([0-9]{1,3}) kvar", "\\1.\\2 kvar", s, flags=re.MULTILINE)
+		s = re.sub("±([0-9]),([0-9]{1,3})", "±\\1.\\2", s, flags=re.MULTILINE)
+		s = re.sub("€ ([0-9]{1,3}),([0-9]{1,3})", "€ \\1.\\2", s, flags=re.MULTILINE)
+
+		return s

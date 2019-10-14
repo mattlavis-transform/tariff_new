@@ -6,12 +6,12 @@ class profile_36010_quota_order_number_origin(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                      = app.getTimestamp()
-		quota_order_number_origin_sid		= app.getNumberValue(oMessage, ".//oub:quota.order.number.origin.sid", True)
-		quota_order_number_sid				= app.getNumberValue(oMessage, ".//oub:quota.order.number.sid", True)
-		geographical_area_id				= app.getValue(oMessage, ".//oub:geographical.area.id", True)
-		validity_start_date					= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		geographical_area_sid				= app.getNumberValue(oMessage, ".//oub:geographical.area.sid", True)
+		quota_order_number_origin_sid		= app.get_number_value(oMessage, ".//oub:quota.order.number.origin.sid", True)
+		quota_order_number_sid				= app.get_number_value(oMessage, ".//oub:quota.order.number.sid", True)
+		geographical_area_id				= app.get_value(oMessage, ".//oub:geographical.area.id", True)
+		validity_start_date					= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date					= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		geographical_area_sid				= app.get_number_value(oMessage, ".//oub:geographical.area.sid", True)
 
 		if g.app.perform_taric_validation == True:
 			if geographical_area_sid not in g.app.geographical_area_sids:

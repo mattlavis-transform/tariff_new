@@ -5,11 +5,11 @@ class profile_12000_additional_code_type(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date                      = app.getTimestamp()
-		additional_code_type_id				= app.getValue(oMessage, ".//oub:additional.code.type.id", True)
-		validity_start_date					= app.getDateValue(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date					= app.getDateValue(oMessage, ".//oub:validity.end.date", True)
-		application_code					= app.getValue(oMessage, ".//oub:application.code", True)
-		meursing_table_plan_id				= app.getValue(oMessage, ".//oub:meursing.table.plan.id", True)
+		additional_code_type_id				= app.get_value(oMessage, ".//oub:additional.code.type.id", True)
+		validity_start_date					= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+		validity_end_date					= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+		application_code					= app.get_value(oMessage, ".//oub:application.code", True)
+		meursing_table_plan_id				= app.get_value(oMessage, ".//oub:meursing.table.plan.id", True)
 
 		additional_code_types = g.app.get_additional_code_types()
 

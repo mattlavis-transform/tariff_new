@@ -5,11 +5,11 @@ class profile_29505_prorogation_regulation_action(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date						= app.getTimestamp()
-		prorogation_regulation_role		= app.getValue(oMessage, ".//oub:prorogation.regulation.role", True)
-		prorogation_regulation_id		= app.getValue(oMessage, ".//oub:prorogation.regulation.id", True)
-		prorogated_regulation_role		= app.getValue(oMessage, ".//oub:prorogated.regulation.role", True)
-		prorogated_regulation_id		= app.getValue(oMessage, ".//oub:prorogated.regulation.id", True)
-		prorogated_date					= app.getDateValue(oMessage, ".//oub:prorogated.date", True)
+		prorogation_regulation_role		= app.get_value(oMessage, ".//oub:prorogation.regulation.role", True)
+		prorogation_regulation_id		= app.get_value(oMessage, ".//oub:prorogation.regulation.id", True)
+		prorogated_regulation_role		= app.get_value(oMessage, ".//oub:prorogated.regulation.role", True)
+		prorogated_regulation_id		= app.get_value(oMessage, ".//oub:prorogated.regulation.id", True)
+		prorogated_date					= app.get_date_value(oMessage, ".//oub:prorogated.date", True)
 
 		if update_type == "1":		# UPDATE
 			operation = "U"

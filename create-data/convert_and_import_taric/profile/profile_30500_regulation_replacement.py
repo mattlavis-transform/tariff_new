@@ -5,13 +5,13 @@ class profile_30500_regulation_replacement(object):
 	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
 		g.app.message_count += 1
 		operation_date				= app.getTimestamp()
-		replacing_regulation_role	= app.getValue(oMessage, ".//oub:replacing.regulation.role", True)
-		replacing_regulation_id		= app.getValue(oMessage, ".//oub:replacing.regulation.id", True)
-		replaced_regulation_role	= app.getValue(oMessage, ".//oub:replaced.regulation.role", True)
-		replaced_regulation_id		= app.getValue(oMessage, ".//oub:replaced.regulation.id", True)
-		measure_type_id				= app.getValue(oMessage, ".//oub:measure.type.id", True)
-		geographical_area_id		= app.getValue(oMessage, ".//oub:geographical.area.id", True)
-		chapter_heading				= app.getValue(oMessage, ".//oub:chapter.heading", True)
+		replacing_regulation_role	= app.get_value(oMessage, ".//oub:replacing.regulation.role", True)
+		replacing_regulation_id		= app.get_value(oMessage, ".//oub:replacing.regulation.id", True)
+		replaced_regulation_role	= app.get_value(oMessage, ".//oub:replaced.regulation.role", True)
+		replaced_regulation_id		= app.get_value(oMessage, ".//oub:replaced.regulation.id", True)
+		measure_type_id				= app.get_value(oMessage, ".//oub:measure.type.id", True)
+		geographical_area_id		= app.get_value(oMessage, ".//oub:geographical.area.id", True)
+		chapter_heading				= app.get_value(oMessage, ".//oub:chapter.heading", True)
 
 		if update_type == "1":	# Update
 			operation = "U"

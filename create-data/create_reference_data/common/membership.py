@@ -24,18 +24,18 @@ class membership(object):
 	def writeXML(self, app):
 		out = app.membership_XML
 
-		out = out.replace("{GEOGRAPHICAL_AREA_SID}", self.CHILD_SID)
-		out = out.replace("{GEOGRAPHICAL_AREA_GROUP_SID}", self.PARENT_SID)
-		out = out.replace("{UPDATE_TYPE}", self.UPDATE_TYPE)
-		out = out.replace("{VALIDITY_START_DATE}", self.START_DATE)
-		out = out.replace("{VALIDITY_END_DATE}", self.END_DATE)
-		out = out.replace("{TRANSACTION_ID}", str(app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}", str(app.message_id))
-		out = out.replace("{MESSAGE_ID2}", str(app.message_id + 1))
-		out = out.replace("{MESSAGE_ID3}", str(app.message_id + 2))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}", str(app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER2}", str(app.message_id + 1))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER3}", str(app.message_id + 2))
+		out = out.replace("[GEOGRAPHICAL_AREA_SID]", self.CHILD_SID)
+		out = out.replace("[GEOGRAPHICAL_AREA_GROUP_SID]", self.PARENT_SID)
+		out = out.replace("[UPDATE_TYPE]", self.UPDATE_TYPE)
+		out = out.replace("[VALIDITY_START_DATE]", self.START_DATE)
+		out = out.replace("[VALIDITY_END_DATE]", self.END_DATE)
+		out = out.replace("[TRANSACTION_ID]", str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]", str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]", str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]", str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]", str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]", str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]", str(app.message_id + 2))
 
 		out = out.replace("\t\t\t\t<oub:validity.end.date></oub:validity.end.date>\n", "")
 		self.xml = out

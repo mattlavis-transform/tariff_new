@@ -88,17 +88,20 @@ class application(object):
 			print ("No profile specified")
 			sys.exit()
 		
+
 	def get_config(self):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		self.DBASE			= my_dict['dbase']
-		self.p				= my_dict['p']
-		self.transaction_id	= my_dict["minimum_sids"][self.DBASE]["last_transaction_id"]
+		self.DBASE							= my_dict['dbase']
+		self.p								= my_dict['p']
+		self.transaction_id					= my_dict["minimum_sids"][self.DBASE]["last_transaction_id"]
 
-		critical_date = my_dict['critical_date']
-		self.critical_date			= datetime.strptime(critical_date, '%Y-%m-%d')
-		self.critical_date_plus_one	= self.critical_date + timedelta(days = 1)
+		critical_date						= my_dict['critical_date']
+		self.critical_date					= datetime.strptime(critical_date, '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
+
 
 	def get_templates(self):
 		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.xml")
@@ -377,7 +380,7 @@ class application(object):
 		clause = clause.strip(",")
 		sql = """SELECT goods_nomenclature_item_id, validity_start_date, validity_end_date FROM goods_nomenclatures
 		WHERE goods_nomenclature_item_id IN (""" + clause + """)
-		AND (validity_end_date IS NULL or validity_end_date > '2019-11-01')
+		AND (validity_end_date IS NULL or validity_end_date > '""" + self.critical_date_plus_one_string + """')
 		ORDER BY 1"""
 
 		cur = self.conn.cursor()

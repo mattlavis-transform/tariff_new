@@ -76,7 +76,7 @@ class master_commodity(object):
 		s = s.replace("[ADDITIONAL_CODE_ID]",					"")
 		s = s.replace("[ORDERNUMBER]",							"")
 		s = s.replace("[REDUCTION_INDICATOR]",					"")
-		s = s.replace("[VALIDITY_START_DATE]",					"2019-11-01")
+		s = s.replace("[VALIDITY_START_DATE]",					o.app.critical_date_plus_one_string)
 		s = s.replace("[MEASURE_GENERATING_REGULATION_ROLE]", 	"1")
 		s = s.replace("[MEASURE_GENERATING_REGULATION_ID]", 	"M1900010")
 		s = s.replace("[VALIDITY_END_DATE]",					"")

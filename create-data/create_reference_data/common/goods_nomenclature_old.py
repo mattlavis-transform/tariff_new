@@ -23,11 +23,14 @@ class goods_nomenclature(object):
 		self.check_still_exists()
 
 	def check_still_exists(self):
-		sql = """SELECT validity_end_date FROM goods_nomenclatures WHERE producline_suffix = '""" + self.productline_suffix + """' AND
-		goods_nomenclature_item_id = '""" + self.goods_nomenclature_item_id + """' ORDER BY validity_end_date DESC;"""
-		#print (sql)
+		sql = """SELECT validity_end_date FROM goods_nomenclatures WHERE producline_suffix = %s AND
+		goods_nomenclature_item_id = %s ORDER BY validity_end_date DESC;"""
+		params = []
+		params.append (self.productline_suffix)
+		params.append (self.goods_nomenclature_item_id)
+		
 		cur = o.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		#print ("Here")
 		for row in rows:
@@ -61,20 +64,20 @@ class goods_nomenclature(object):
 			out = app.insert_goods_nomenclature_description_XML
 		
 		self.description = fn.cleanse(self.description)
-		out = out.replace("{GOODS_NOMENCLATURE_ITEM_ID}", self.goods_nomenclature_item_id)
-		out = out.replace("{PRODUCTLINE_SUFFIX}", self.productline_suffix)
-		out = out.replace("{DESCRIPTION}", self.description)
-		out = out.replace("{GOODS_NOMENCLATURE_DESCRIPTION_PERIOD_SID}", str(self.goods_nomenclature_description_period_sid))
-		out = out.replace("{GOODS_NOMENCLATURE_SID}", str(self.goods_nomenclature_sid))
-		out = out.replace("{VALIDITY_START_DATE}", "2019-03-30")
-		out = out.replace("{LANGUAGE_ID}", "EN")
-		out = out.replace("{TRANSACTION_ID}", str(app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}", str(app.message_id))
-		out = out.replace("{MESSAGE_ID2}", str(app.message_id + 1))
-		out = out.replace("{MESSAGE_ID3}", str(app.message_id + 2))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}", str(app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER2}", str(app.message_id + 1))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER3}", str(app.message_id + 2))
+		out = out.replace("[GOODS_NOMENCLATURE_ITEM_ID]", self.goods_nomenclature_item_id)
+		out = out.replace("[PRODUCTLINE_SUFFIX]", self.productline_suffix)
+		out = out.replace("[DESCRIPTION]", self.description)
+		out = out.replace("[GOODS_NOMENCLATURE_DESCRIPTION_PERIOD_SID]", str(self.goods_nomenclature_description_period_sid))
+		out = out.replace("[GOODS_NOMENCLATURE_SID]", str(self.goods_nomenclature_sid))
+		out = out.replace("[VALIDITY_START_DATE]", "2019-03-30")
+		out = out.replace("[LANGUAGE_ID]", "EN")
+		out = out.replace("[TRANSACTION_ID]", str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]", str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]", str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]", str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]", str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]", str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]", str(app.message_id + 2))
 
 		self.xml = out
 

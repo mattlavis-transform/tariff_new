@@ -18,7 +18,7 @@ except:
 
 app = o.app
 app.d("Writing regulation XML", False)
-app.getTemplates()
+app.get_templates()
 app.get_regulation_profile(profile)
 
 
@@ -61,13 +61,13 @@ for i in range(2, row_count + 1):
 
 app.d("Writing XML file to " + filename)
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for obj in app.base_regulations_list:
 	obj.writeXML(app)
 	out += obj.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 f = open(filename, "w", encoding="utf-8")
 f.write(out)
 f.close()

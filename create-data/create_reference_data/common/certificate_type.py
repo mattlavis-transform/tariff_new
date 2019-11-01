@@ -23,17 +23,17 @@ class certificate_type(object):
 			out = app.insert_certificate_type_XML
 		
 		self.description = fn.cleanse(self.description)
-		out = out.replace("{CERTIFICATE_TYPE_CODE}",	self.certificate_type_code)
-		out = out.replace("{DESCRIPTION}",				self.description)
-		out = out.replace("{VALIDITY_START_DATE}",		self.validity_start_date)
-		out = out.replace("{LANGUAGE_ID}",				"EN")
-		out = out.replace("{TRANSACTION_ID}",			str(app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}",				str(app.message_id))
-		out = out.replace("{MESSAGE_ID2}",				str(app.message_id + 1))
-		out = out.replace("{MESSAGE_ID3}",				str(app.message_id + 2))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}",	str(app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER2}",	str(app.message_id + 1))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER3}",	str(app.message_id + 2))
+		out = out.replace("[CERTIFICATE_TYPE_CODE]",	self.certificate_type_code)
+		out = out.replace("[DESCRIPTION]",				self.description)
+		out = out.replace("[VALIDITY_START_DATE]",		self.validity_start_date)
+		out = out.replace("[LANGUAGE_ID]",				"EN")
+		out = out.replace("[TRANSACTION_ID]",			str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]",				str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]",				str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]",				str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]",	str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]",	str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]",	str(app.message_id + 2))
 
 		self.xml = out
 

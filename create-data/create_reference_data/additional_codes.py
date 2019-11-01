@@ -13,7 +13,7 @@ from common.additional_code import additional_code
 from common.application import application
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 
 fname = os.path.join(app.SOURCE_DIR, "additional_codes.xlsx")
 wb = load_workbook(filename=fname, read_only=True)
@@ -48,13 +48,13 @@ for i in range(2, row_count + 1):
 	app.certificates_list.append(obj)
 
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for obj in app.certificates_list:
 	obj.writeXML(app)
 	out += obj.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 filename = os.path.join(app.XML_DIR, "certificates.xml")
 f = open(filename, "w", encoding="utf-8") 
 f.write(out)

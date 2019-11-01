@@ -25,18 +25,18 @@ class footnote_type(object):
 		
 		self.description = fn.cleanse(self.description)
 
-		out = out.replace("{FOOTNOTE_TYPE_ID}",			self.footnote_type_id)
-		out = out.replace("{DESCRIPTION}",				self.description)
-		out = out.replace("{VALIDITY_START_DATE}",		self.validity_start_date)
-		out = out.replace("{LANGUAGE_ID}",				"EN")
-		out = out.replace("{APPLICATION_CODE}",			self.application_code)
-		out = out.replace("{TRANSACTION_ID}",			str(app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}",				str(app.message_id))
-		out = out.replace("{MESSAGE_ID2}",				str(app.message_id + 1))
-		out = out.replace("{MESSAGE_ID3}",				str(app.message_id + 2))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}",	str(app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER2}",	str(app.message_id + 1))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER3}",	str(app.message_id + 2))
+		out = out.replace("[FOOTNOTE_TYPE_ID]",			self.footnote_type_id)
+		out = out.replace("[DESCRIPTION]",				self.description)
+		out = out.replace("[VALIDITY_START_DATE]",		self.validity_start_date)
+		out = out.replace("[LANGUAGE_ID]",				"EN")
+		out = out.replace("[APPLICATION_CODE]",			self.application_code)
+		out = out.replace("[TRANSACTION_ID]",			str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]",				str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]",				str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]",				str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]",	str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]",	str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]",	str(app.message_id + 2))
 
 		self.xml = out
 

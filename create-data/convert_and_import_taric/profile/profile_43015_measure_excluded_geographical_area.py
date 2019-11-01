@@ -1,4 +1,5 @@
 import psycopg2
+import sys
 import common.globals as g
 
 class profile_43015_measure_excluded_geographical_area(object):
@@ -8,6 +9,7 @@ class profile_43015_measure_excluded_geographical_area(object):
 		measure_sid					= app.get_number_value(oMessage, ".//oub:measure.sid", True)
 		excluded_geographical_area	= app.get_value(oMessage, ".//oub:excluded.geographical.area", True)
 		geographical_area_sid	    = app.get_number_value(oMessage, ".//oub:geographical.area.sid", True)
+
 
 		if update_type == "1":	# Update
 			operation = "U"
@@ -19,13 +21,24 @@ class profile_43015_measure_excluded_geographical_area(object):
 			operation = "C"
 			app.doprint ("Creating measure excluded geographical area " + str(measure_sid))
 
-		if update_type in ("1", "2", "3"):
-			sql = "select measure_sid from measures where measure_sid = " + str(measure_sid)
+
+		# Check the measure exists before approving
+		if update_type in ("1", "3"):
+			sql = "select measure_sid from measures where measure_sid = %s limit 1"
+			params = [
+				str(measure_sid)
+			]
 			cur = g.app.conn.cursor()
-			cur.execute(sql)
+			cur.execute(sql, params)
 			rows = cur.fetchall()
-			if len(rows) == 0:
-				g.app.log_error("DBFK: measure excluded geographical area", operation, measure_sid, None, transaction_id, message_id)
+			try:
+				row = rows[0]
+				measure_exists = True
+			except:
+				measure_exists = False
+
+			if measure_exists == False:
+				g.app.add_load_error("DBFK: measure excluded geographical area - please revert database.  No measure with SID " + str(measure_sid))
 
 		cur = app.conn.cursor()
 		try:

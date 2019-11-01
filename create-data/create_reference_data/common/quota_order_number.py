@@ -19,14 +19,12 @@ class quota_order_number(object):
 
 
 	def get_data_from_id(self):
-		sql = """
-		select quota_order_number_sid, validity_start_date, validity_end_date
-		from quota_order_numbers
-		where quota_order_number_id = '""" + self.quota_order_number_id + """'
-		order by validity_start_date desc limit 1
-		"""
+		sql = """select quota_order_number_sid, validity_start_date, validity_end_date
+		from quota_order_numbers where quota_order_number_id = %s order by validity_start_date desc limit 1"""
+		params = []
+		params.append ()
 		cur = o.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		if len(rows) > 0:
 			self.quota_order_number_sid	= rows[0][0]
@@ -63,15 +61,15 @@ class quota_order_number(object):
 	def xml(self):
 		out = o.app.quota_order_number_XML
 
-		out = out.replace("{QUOTA_ORDER_NUMBER_ID}",			str(self.quota_order_number_id))
-		out = out.replace("{QUOTA_ORDER_NUMBER_SID}",			str(self.quota_order_number_sid))
-		out = out.replace("{VALIDITY_START_DATE}",				self.date_to_string(self.validity_start_date))
-		out = out.replace("{VALIDITY_END_DATE}",				self.date_to_string(self.validity_end_date))
+		out = out.replace("[QUOTA_ORDER_NUMBER_ID]",			str(self.quota_order_number_id))
+		out = out.replace("[QUOTA_ORDER_NUMBER_SID]",			str(self.quota_order_number_sid))
+		out = out.replace("[VALIDITY_START_DATE]",				self.date_to_string(self.validity_start_date))
+		out = out.replace("[VALIDITY_END_DATE]",				self.date_to_string(self.validity_end_date))
 
-		out = out.replace("{UPDATE_TYPE}",						self.update_type)
-		out = out.replace("{TRANSACTION_ID}",					str(o.app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}",						str(o.app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}",			str(o.app.message_id))
+		out = out.replace("[UPDATE_TYPE]",						self.update_type)
+		out = out.replace("[TRANSACTION_ID]",					str(o.app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]",						str(o.app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]",			str(o.app.message_id))
 
 		out = out.replace("\t\t\t\t\t<oub:validity.end.date></oub:validity.end.date>\n", "")
 		self.xml = out

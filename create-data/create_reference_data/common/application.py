@@ -185,13 +185,14 @@ class application(object):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		self.DBASE					= my_dict['dbase']
-		self.p						= my_dict['p']
-		self.last_transaction_id	= my_dict["minimum_sids"][self.DBASE]["last_transaction_id"]
+		self.DBASE						= my_dict['dbase']
+		self.p							= my_dict['p']
+		self.last_transaction_id		= my_dict["minimum_sids"][self.DBASE]["last_transaction_id"]
 		
-		critical_date = my_dict['critical_date']
-		self.critical_date			= datetime.strptime(critical_date, '%Y-%m-%d')
-		self.critical_date_plus_one	= self.critical_date + timedelta(days = 1)
+		critical_date 						= my_dict['critical_date']
+		self.critical_date					= datetime.strptime(critical_date, '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
 		
 		self.debug					= my_dict['debug']
 		self.connect()
@@ -216,7 +217,7 @@ class application(object):
 	def connect(self):
 		self.conn = psycopg2.connect("dbname=" + self.DBASE + " user=postgres password=" + self.p)
 
-	def getTemplates(self):
+	def get_templates(self):
 		# Get envelope XML
 		filename = os.path.join(self.TEMPLATE_DIR, "envelope.xml")
 		handle = open(filename, "r")
@@ -337,10 +338,30 @@ class application(object):
 		handle = open(filename, "r")
 		self.quota_order_number_origin_XML = handle.read()
 
+		# Get quota order number origin exclusions XML
+		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.origin.exclusions.xml")
+		handle = open(filename, "r")
+		self.quota_order_number_origin_exclusions_XML = handle.read()
+
+		# Get measure excluded geographical area XML
+		filename = os.path.join(self.TEMPLATE_DIR, "measure.excluded.geographical.area.xml")
+		handle = open(filename, "r")
+		self.measure_excluded_geographical_area_XML = handle.read()
+
 		# Get quota order number XML
 		filename = os.path.join(self.TEMPLATE_DIR, "quota.order.number.xml")
 		handle = open(filename, "r")
 		self.quota_order_number_XML = handle.read()
+
+		# Get quota definition XML
+		filename = os.path.join(self.TEMPLATE_DIR, "quota.definition.xml")
+		handle = open(filename, "r")
+		self.quota_definition_XML = handle.read()
+
+		# Get measure condition XML
+		filename = os.path.join(self.TEMPLATE_DIR, "measure.condition.xml")
+		handle = open(filename, "r")
+		self.measure_condition_XML = handle.read()
 
 
 	def writeResults(self):
@@ -392,28 +413,6 @@ class application(object):
 			self.footnotes_list.append(f)
 
 
-	def getCertificates(self):
-		self.connect()
-		sql = """
-		SELECT DISTINCT c.certificate_type_code, c.certificate_code, c.description
-		FROM ml.ml_certificate_codes c, ml.measures_real_end_dates m, measure_conditions mc
-		WHERE m.measure_sid = mc.measure_sid
-		AND mc.certificate_type_code = c.certificate_type_code
-		AND mc.certificate_code = c.certificate_code
-		and (m.validity_end_date is null or m.validity_end_date < '""" + datetime.strftime(self.critical_date_plus_one, "%Y-%m-%d") + """')
-		and m.validity_start_date < '""" + datetime.strftime(self.critical_date_plus_one, "%Y-%m-%d") + """'
-		ORDER BY 1, 2
-		"""
-		cur = self.conn.cursor()
-		cur.execute(sql)
-		rows = cur.fetchall()
-		for r in rows:
-			certificate_type_code = fn.mstr(r[0])
-			certificate_code = fn.mstr(r[1])
-			description = fn.mstr(r[2])
-			f = certificate(certificate_type_code, certificate_code, "", description, "")
-			self.certificates_list.append(f)
-
 	def resolveFootnotes(self):
 		i = 1
 		for oF in self.footnotes_list:
@@ -436,16 +435,17 @@ class application(object):
 			c = goods_nomenclature(goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix, description)
 			self.commodities.append(c)
 
+
 	def write_commodities(self):
 		env = self.envelope_XML
-		env = env.replace("{ENVELOPE_ID}", str(self.base_envelope_id))
+		env = env.replace("[ENVELOPE_ID]", str(self.base_envelope_id))
 		out = ""
 		for obj in self.commodities:
 			if obj.requires_update:
 				obj.writeXML()
 				out += obj.xml
 
-		out = env.replace("{BODY}", out)
+		out = env.replace("[BODY]", out)
 		filename = os.path.join(self.XML_DIR, "goods_nomenclature.xml")
 		f = open(filename, "w", encoding="utf-8") 
 		f.write(out)

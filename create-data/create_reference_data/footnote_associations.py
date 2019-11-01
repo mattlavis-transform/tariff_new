@@ -18,7 +18,7 @@ except:
 	profile = "footnote_associations"
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 app.get_profile(profile)
 
 fname = os.path.join(app.SOURCE_DIR, profile + ".xlsx")
@@ -40,13 +40,13 @@ for i in range(2, row_count + 1):
 
 
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for f in app.footnote_associations_list:
 	f.writeXML(app)
 	out += f.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 filename = os.path.join(app.XML_DIR, profile + ".xml")
 f = open(filename, "w", encoding="utf-8")
 f.write(out)

@@ -12,10 +12,13 @@ class quota_order_number_origin_exclusion(object):
 
 	def get_geography(self):
 		sql = """SELECT geographical_area_sid, geographical_code FROM geographical_areas WHERE
-		geographical_area_id = '""" + self.geographical_area_id.strip() + """' ORDER BY validity_start_date DESC LIMIT 1"""
+		geographical_area_id = %s ORDER BY validity_start_date DESC LIMIT 1"""
+		params = [
+			self.geographical_area_id.strip()
+		]
 
 		cur = g.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		if len(rows) > 0:
 			self.geographical_area_sid	= rows[0][0]

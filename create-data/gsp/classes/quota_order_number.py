@@ -76,13 +76,12 @@ class quota_order_number(object):
 			self.origin_list.append (obj_quota_order_number_origin)
 
 
-
-
-
 	def check_existence(self):
-		sql = "SELECT quota_order_number_sid FROM quota_order_numbers WHERE quota_order_number_id = '" + self.quota_order_number_id + "' ORDER BY validity_start_date DESC LIMIT 1"
+		sql = "SELECT quota_order_number_sid FROM quota_order_numbers WHERE quota_order_number_id = %s ORDER BY validity_start_date DESC LIMIT 1"
+		params = []
+		params.append (self.quota_order_number_id)
 		cur = g.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		if len(rows) > 0:
 			self.exists = True

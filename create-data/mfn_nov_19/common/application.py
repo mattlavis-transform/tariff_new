@@ -13,6 +13,8 @@ from common.master_commodity import master_commodity
 from common.measure import measure
 from common.goods_nomenclature import goods_nomenclature
 from progressbar import ProgressBar
+from datetime import datetime
+from datetime import timedelta
 
 class application(object):
 	def __init__(self):
@@ -411,7 +413,11 @@ class application(object):
 		self.DBASE					= my_dict['dbase']
 		self.p						= my_dict['p']
 		self.last_transaction_id	= my_dict["minimum_sids"][self.DBASE]["last_transaction_id"]
-		self.critical_date			= my_dict['critical_date']
+
+		critical_date 						= my_dict['critical_date']
+		self.critical_date					= datetime.strptime(critical_date, '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
 
 		self.debug					= my_dict['debug']
 		self.connect()

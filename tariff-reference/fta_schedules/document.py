@@ -522,6 +522,7 @@ class document(object):
 			return
 
 		workbook = xlrd.open_workbook(g.app.BALANCE_FILE_EXCEL)
+
 		worksheet  = workbook.sheet_by_name("Sheet1")
 		row_count = worksheet.nrows
 		self.balance_list = []
@@ -794,8 +795,10 @@ class document(object):
 								row_string = re.sub("<!--19VStartc//-->.*<!--19VEndc//-->", "", row_string, flags=re.DOTALL)
 							else:
 								row_string = row_string.replace("{2019_QUOTA_VOLUME}", str(qon.initial_volume).strip() + " (2019)")
+								"""
 								row_string = row_string.replace("{QUOTA_OPEN_DATE_2019}",	datetime.strftime(qon.validity_start_date_2019, '%d/%m/%Y'))
 								row_string = row_string.replace("{QUOTA_CLOSE_DATE_2019}",	datetime.strftime(qon.validity_end_date_2019, '%d/%m/%Y'))
+								"""
 							
 							insert_divider = True
 

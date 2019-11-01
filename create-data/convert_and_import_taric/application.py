@@ -16,7 +16,7 @@ from shutil import copyfile
 import os.path
 import shutil
 
-
+from datetime import timedelta
 from datetime import datetime
 from log import log
 
@@ -175,6 +175,8 @@ class application(object):
 		self.LOG_FILE_MEASURE_COMPONENT				= os.path.join(self.LOG_DIR,	"log_measure_component_deleted.csv")
 		self.LOG_FILE_MEASURE_CONDITION				= os.path.join(self.LOG_DIR,	"log_measure_condition_deleted.csv")
 		self.LOG_FILE_MEASURE_CONDITION_COMPONENT	= os.path.join(self.LOG_DIR,	"log_measure_condition_component_deleted.csv")
+		self.LOG_QUOTA_ORDER_NUMBER_ORIGIN			= os.path.join(self.LOG_DIR,	"log_quota_order_number_origin_deleted.csv")
+		self.LOG_QUOTA_DEFINITION					= os.path.join(self.LOG_DIR,	"log_quota_definition_deleted.csv")
 
 		self.MERGE_DIR			= os.path.join(self.XML_IN_DIR,	"custom")
 		self.DUMP_DIR			= os.path.join(self.BASE_DIR,	"dump")
@@ -210,7 +212,7 @@ class application(object):
 		self.get_config()
 		self.get_minimum_sids()
 
-		if self.DBASE in ("tariff_eu", "tariff_fta"):
+		if self.DBASE in ("tariff_eu"):
 			self.IMPORT_DIR			= self.XML_IN_DIR
 		else:
 			self.IMPORT_DIR			= self.IMPORT_DIR
@@ -232,13 +234,16 @@ class application(object):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		critical_date			= my_dict['critical_date']
-		nomenclature_date		= my_dict['nomenclature_date']
+		critical_date						= my_dict['critical_date']
+		self.critical_date					= datetime.strptime(critical_date, '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
 
-		self.critical_date		= datetime.strptime(critical_date, '%Y-%m-%d')
-		self.nomenclature_date	= datetime.strptime(nomenclature_date, '%Y-%m-%d')
-		self.DBASE				= my_dict['dbase']
-		self.p					= my_dict['p']
+		nomenclature_date					= my_dict['nomenclature_date']
+		self.nomenclature_date				= datetime.strptime(nomenclature_date, '%Y-%m-%d')
+
+		self.DBASE							= my_dict['dbase']
+		self.p								= my_dict['p']
 
 		my_script = sys.argv[0]
 		my_script = os.path.basename(my_script)
@@ -390,11 +395,39 @@ class application(object):
 
 		print ("Envelope ID of source file", self.envelope_id)
 
-		# Loop through the transactions, looking for items to delete or amend
-		quota_order_number_origin_list	= []
-		quota_order_definition_list		= []
+
+		# Load existing measure list (the list of items that have been removed)
 		measure_list					= []
+		with open(self.LOG_FILE_MEASURE, 'r') as csvfile:
+			csv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+			for row in csv_reader:
+				measure_list.append (row[0])
+
+
+		# Load existing measure condition list (the list of items that have been removed)
 		measure_condition_list			= []
+		with open(self.LOG_FILE_MEASURE_CONDITION, 'r') as csvfile:
+			csv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+			for row in csv_reader:
+				measure_condition_list.append (row[0])
+
+
+		# Load existing quota order number origin list (the list of items that have been removed)
+		quota_order_number_origin_list	= []
+		with open(self.LOG_QUOTA_ORDER_NUMBER_ORIGIN, 'r') as csvfile:
+			csv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+			for row in csv_reader:
+				quota_order_number_origin_list.append (row[0])
+
+
+		# Load existing quota definition list (the list of items that have been removed)
+		quota_definition_list	= []
+		with open(self.LOG_QUOTA_DEFINITION, 'r') as csvfile:
+			csv_reader = csv.reader(csvfile, delimiter = ',', quotechar = '"')
+			for row in csv_reader:
+				quota_definition_list.append (row[0])
+
+
 		action_list = ["update", "delete", "insert"]
 		self.regulation_log_filename	= os.path.join(self.REG_LOG_DIR, "reg_log_" + xml_file.replace("xml", "csv"))
 		self.regulation_list = []
@@ -473,16 +506,21 @@ class application(object):
 				# 36100	QUOTA ORDER NUMBER ORIGIN
 				if record_code == "360" and sub_record_code == "10": # and update_type in ("1", "3"):
 					validity_start_date		= self.get_date_value(oMessage, ".//oub:validity.start.date")
+					quota_order_number_origin_sid = self.get_value(oMessage, ".//oub:quota.order.number.origin.sid")
 					if validity_start_date >= self.critical_date:
+						quota_order_number_origin_list.append(quota_order_number_origin_sid)
 						oTransaction.remove (oMessage)
+						self.register_update("360", "10", "delete", update_type_string, quota_order_number_origin_sid, xml_file, "Delete instruction to quota order number origin " + str(quota_order_number_origin_sid))
 						if transaction_id not in self.transactions_to_kill:
 							self.transactions_to_kill.append(transaction_id)
 
 				# 36150	QUOTA ORDER NUMBER ORIGIN EXCLUSION
 				if record_code == "360" and sub_record_code == "15": # and update_type in ("1", "3"):
-					oTransaction.remove (oMessage)
-					if transaction_id not in self.transactions_to_kill:
-						self.transactions_to_kill.append(transaction_id)
+					quota_order_number_origin_sid = self.get_value(oMessage, ".//oub:quota.order.number.origin.sid")
+					if quota_order_number_origin_sid in quota_order_number_origin_list:
+						oTransaction.remove (oMessage)
+						if transaction_id not in self.transactions_to_kill:
+							self.transactions_to_kill.append(transaction_id)
 
 				# 37000	QUOTA DEFINITION
 				# We actually do want to delete quota definitions
@@ -496,7 +534,7 @@ class application(object):
 					if validity_start_date >= self.critical_date:
 						if transaction_id not in self.transactions_to_kill:
 							self.transactions_to_kill.append(transaction_id)
-						quota_order_definition_list.append (quota_definition_sid)
+						quota_definition_list.append (quota_definition_sid)
 						oTransaction.remove (oMessage)
 						self.register_update("370", "00", "delete", update_type_string, quota_definition_sid, xml_file, "Delete instruction to create quota order definition " + quota_definition_sid)
 					else:
@@ -578,7 +616,7 @@ class application(object):
 					measure_type_id						= self.get_value(oMessage, ".//oub:measure.type")
 					measure_sid							= self.get_value(oMessage, ".//oub:measure.sid")
 
-					if measure_type_id != "490":
+					if measure_type_id not in ("488", "489", "490"):
 						# Don't put end dates on 490s (Standard Import Value) measures
 						self.regulation_list.append (measure_generating_regulation_id)
 
@@ -589,9 +627,12 @@ class application(object):
 									self.transactions_to_kill.append(transaction_id)
 
 						if update_type in ("1", "3"):
-							sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = '" + goods_nomenclature_item_id + "'"
+							sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = %s"
+							params = [
+								goods_nomenclature_item_id
+							]
 							cur = self.conn.cursor()
-							cur.execute(sql)
+							cur.execute(sql, params)
 							rows = cur.fetchall()
 							if len(rows) == 0:
 								oTransaction.remove (oMessage)
@@ -625,6 +666,10 @@ class application(object):
 								self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:validity.end.date", measure_generating_regulation_role)
 
 								self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure that starts before EU Exit and ends after EU Exit to end on the critical date - measure_sid: " + measure_sid)
+					else:
+						oTransaction.remove (oMessage)
+						measure_list.append(measure_sid)
+						self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
 
 
 
@@ -706,7 +751,7 @@ class application(object):
 					if record_code == "370" and sub_record_code == "05" and update_type in ("1", "3"):
 						main_quota_definition_sid	= self.get_value(oMessage, ".//oub:main.quota.definition.sid")
 						sub_quota_definition_sid	= self.get_value(oMessage, ".//oub:sub.quota.definition.sid")
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (main_quota_definition_sid == sid) or (sub_quota_definition_sid == sid):
 								oTransaction.remove (oMessage)
 								self.register_update("370", "05", "delete", update_type_string, sid, xml_file, "Delete quota association with quota definition: " + sid)
@@ -734,7 +779,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the blocking period too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -767,7 +812,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the suspension period too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -788,7 +833,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the suspension period too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									self.register_update("375", "05", "delete", update_type_string, quota_definition_sid, xml_file, "Delete quota unblocking event with quota definition: " + sid)
@@ -809,7 +854,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the suspension period too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -831,7 +876,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the suspension period too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -852,7 +897,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the reopening event too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -873,7 +918,7 @@ class application(object):
 
 						# Action - search through this file's quota definitions and look for any items that have been deleted
 						# If the quota definition has been deleted, then delete the unsuspension event too
-						for sid in quota_order_definition_list:
+						for sid in quota_definition_list:
 							if (quota_definition_sid == sid):
 								try:
 									oTransaction.remove (oMessage)
@@ -884,15 +929,15 @@ class application(object):
 
 				# 43005	MEASURE COMPONENT
 				if record_code == "430" and sub_record_code == "05":
-					if update_type in ("1", "3"):
+					if update_type in ("1", "2", "3"):
 						measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 						removed_node = False
-						for sid in measure_list:
-							if (measure_sid == sid):
-								oTransaction.remove (oMessage)
-								self.register_update("430", "05", "delete", update_type_string, sid, xml_file, "Delete measure component for deleted measure with sid " + sid)
-								removed_node = True
-								break
+						if measure_sid in measure_list:
+							oTransaction.remove (oMessage)
+							self.register_update("430", "05", "delete", update_type_string, measure_sid, xml_file, "Delete measure component for deleted measure with sid " + measure_sid)
+							removed_node = True
+
+						"""
 						if not(removed_node):
 							for s in self.log_list:
 								if s.record_code == "430" and s.sub_record_code == "05" and (s.update_type_string in ("insert", "update")):
@@ -900,6 +945,7 @@ class application(object):
 										oTransaction.remove (oMessage)
 										self.register_update("430", "05", "delete", update_type_string, measure_sid, xml_file, "Delete measure component for deleted measure with sid " + measure_sid)
 										break
+						"""
 
 				# 43010	MEASURE CONDITION
 				# Look for any measure conditions in the current file that have a measure_sid that matches
@@ -916,6 +962,7 @@ class application(object):
 							removed_node = True
 							break
 
+					"""
 					# Look in the log for any matching measure conditions that map to this one
 					# If found, then delete the measure condition
 					if not(removed_node):
@@ -925,20 +972,20 @@ class application(object):
 									oTransaction.remove (oMessage)
 									self.register_update("430", "10", "delete", update_type_string, measure_sid, xml_file, "Delete measure condition for deleted measure with sid " + measure_sid)
 									break
+					"""
 
 				# 43015	MEASURE EXCLUDED GEOGRAPHICAL AREA
 				# Look in the current file for any excluded geo areas that map to any of the measure sids that have been removed.
 				# If found, then delete them from the XML file
-				if record_code == "430" and sub_record_code == "15" and update_type in ("1", "3"):
+				if record_code == "430" and sub_record_code == "15": # and update_type in ("1", "3"):
 					measure_sid	= self.get_value(oMessage, ".//oub:measure.sid")
 					removed_node = False
-					for sid in measure_list:
-						if (measure_sid == sid):
-							oTransaction.remove (oMessage)
-							self.register_update("430", "15", "delete", update_type_string, sid, xml_file, "Delete geographical area exclusion for deleted measure with sid " + sid)
-							removed_node = True
-							break
+					if measure_sid in measure_list:
+						oTransaction.remove (oMessage)
+						self.register_update("430", "15", "delete", update_type_string, measure_sid, xml_file, "Delete geographical area exclusion for deleted measure with sid " + measure_sid)
+						removed_node = True
 
+					"""
 					# Look in the log file for any measure sids that match this measure component:
 					# If found, then delete them from the XML file
 					if not(removed_node):
@@ -948,6 +995,7 @@ class application(object):
 									oTransaction.remove (oMessage)
 									self.register_update("430", "15", "delete", update_type_string, measure_sid, xml_file, "Delete geographical area exclusion for deleted measure with sid " + measure_sid)
 									break
+					"""
 
 				# 43020	FOOTNOTE ASSOCIATION (MEASURE)
 				if record_code == "430" and sub_record_code == "20" and update_type in ("1", "3"):
@@ -960,6 +1008,7 @@ class application(object):
 							removed_node = True
 							break
 
+					"""
 					if not(removed_node):
 						for s in self.log_list:
 							if s.record_code == "430" and s.sub_record_code == "20" and (s.update_type_string in ("insert", "update")):
@@ -967,6 +1016,7 @@ class application(object):
 									oTransaction.remove (oMessage)
 									self.register_update("430", "20", "delete", update_type_string, measure_sid, xml_file, "Delete footnote association (measure) for deleted measure with sid " + measure_sid)
 									break
+					"""
 
 				# 43025	MEASURE PARTIAL TEMPORARY STOP
 				if record_code == "430" and sub_record_code == "25" and update_type in ("1", "3"):
@@ -979,6 +1029,7 @@ class application(object):
 							removed_node = True
 							break
 
+					"""
 					if not(removed_node):
 						for s in self.log_list:
 							if s.record_code == "430" and s.sub_record_code == "25" and (s.update_type_string in ("insert", "update")):
@@ -986,6 +1037,7 @@ class application(object):
 									oTransaction.remove (oMessage)
 									self.register_update("430", "25", "delete", update_type_string, measure_sid, xml_file, "Delete partial temporary stop for deleted measure with sid " + measure_sid)
 									break
+					"""
 
 		# The third pass through looks at measure condition components
 		# This removes meaure condition components that are created as a result of the measure conditions that have already been
@@ -1025,7 +1077,6 @@ class application(object):
 
 
 		for transaction_to_kill in self.transactions_to_kill:
-			print (transaction_to_kill)
 			for oTransaction in root.findall('.//env:transaction', self.namespaces):
 				transaction_id = oTransaction.attrib["id"]
 				if transaction_to_kill == transaction_id:
@@ -1134,6 +1185,43 @@ class application(object):
 							if not("<?xml" in line) and not("<env:envelope" in line):
 								outfile.write(line)
 
+			outfile.close()
+				
+
+			# Now check to see if any prepend files need to be added, as signified by the ue of a plus at the start
+			prepend_file_count = len(self.files_prepend)
+			print ("There are", str(prepend_file_count), " prepend files to insert")
+			if prepend_file_count > 0:
+				print ("Found a prepend file")
+				prepend_temp = "<!-- Begin prepend files //-->"
+				for fname in self.files_prepend:
+					fname = fname.replace("+", "")
+					fname = os.path.join(self.MERGE_DIR, fname)
+					print (fname)
+					with open(fname) as infile:
+						for line in infile:
+							if not("</env:envelope" in line) and not("<?xml" in line) and not("<env:envelope" in line):
+								prepend_temp += line
+				prepend_temp += "<!-- End prepend files //-->"
+
+				# Now insert the prepend files after line 2
+				out = ""
+				f = open(self.xml_file_out, 'r')
+				contents = f.readlines()
+				f.close()
+
+				contents.insert(2, prepend_temp)
+
+				f = open(self.xml_file_out, "w")
+				contents = "".join(contents)
+				f.write(contents)
+				f.close()
+
+
+
+
+
+
 		self.validate()
 		s = "What's in the output file" # (" + self.xml_file_out + ")"
 		self.document_report += "\n\n" + s + "\n".upper()
@@ -1166,12 +1254,17 @@ class application(object):
 			productline_suffix			= item[2]
 			sql = """
 			INSERT INTO ml.deleted_goods_nomenclatures (goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix)
-			VALUES  (""" + str(goods_nomenclature_sid) + """, '""" + goods_nomenclature_item_id + """', '""" + productline_suffix + """')
+			VALUES  (%s, %s, %s)
 			ON CONFLICT ON CONSTRAINT deleted_goods_nomenclatures_pk
 			DO NOTHING
 			"""
+			params = [
+				str(goods_nomenclature_sid),
+				goods_nomenclature_item_id,
+				productline_suffix
+			]
 			cur = self.conn.cursor()
-			cur.execute(sql)
+			cur.execute(sql, params)
 			self.conn.commit()
 
 	def write_document_report(self):
@@ -1261,7 +1354,6 @@ class application(object):
 	def get_index(self, node, xpath):
 		index = -1
 		for child in node.iter():
-			#print (child.tag)
 			index += 1
 			s = child.tag.replace("{urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0}", "")
 			if s == xpath:
@@ -1291,7 +1383,6 @@ class application(object):
 				s = "- " + s
 			else:
 				s = "\n" + s.upper()
-			#print (s + "\n")
 			print (s)
 
 	def register_update(self, record_code, sub_record_code, python_action_string, update_type_string, sid, filename, desc):
@@ -1317,11 +1408,29 @@ class application(object):
 					f.close()
 
 			elif record_code == "430" and sub_record_code == "10":
-			# And then for measure conditions
+				# And then for measure conditions
 				with open (self.LOG_FILE_MEASURE_CONDITION, "r") as myfile:
 					LOG_FILE_MEASURE_CONDITION_content = myfile.read()
 				if sid not in LOG_FILE_MEASURE_CONDITION_content:
 					f = open(self.LOG_FILE_MEASURE_CONDITION, "a")
+					f.write(sid + "\n")
+					f.close()
+
+			elif record_code == "360" and sub_record_code == "10":
+				# And then for quota order number origins
+				with open (self.LOG_QUOTA_ORDER_NUMBER_ORIGIN, "r") as myfile:
+					LOG_QUOTA_ORDER_NUMBER_ORIGIN_content = myfile.read()
+				if sid not in LOG_QUOTA_ORDER_NUMBER_ORIGIN_content:
+					f = open(self.LOG_QUOTA_ORDER_NUMBER_ORIGIN, "a")
+					f.write(sid + "\n")
+					f.close()
+
+			elif record_code == "370" and sub_record_code == "00":
+				# And then for quota definitons
+				with open (self.LOG_QUOTA_DEFINITION, "r") as myfile:
+					LOG_QUOTA_DEFINITION_content = myfile.read()
+				if sid not in LOG_QUOTA_DEFINITION_content:
+					f = open(self.LOG_QUOTA_DEFINITION, "a")
 					f.write(sid + "\n")
 					f.close()
 
@@ -1431,6 +1540,8 @@ class application(object):
 		s = "Error - " + object + " " + action + " " + str(sid_key) + " " + str(id_key) + " " + str(transaction_id) + " " + str(message_id)
 		self.db_errors.append(s)
 		self.log_handle.write (s + "\n")
+		print (s)
+		sys.exit()
 
 
 	def load_classification_trees(self):
@@ -1539,10 +1650,13 @@ class application(object):
 			chapter = str(i).zfill(2)
 			filename = os.path.join(self.CSV_DIR, chapter + ".csv")
 			sql = """select goods_nomenclature_item_id, producline_suffix, number_indents, leaf, significant_digits
-			from ml.goods_nomenclature_export_generic('""" + chapter + """%', '2019-11-01')
-			order by goods_nomenclature_item_id, producline_suffix"""
+			from ml.goods_nomenclature_export_generic(%s, %s) order by goods_nomenclature_item_id, producline_suffix"""
+			params = [
+				chapter + "%",
+				self.critical_date_plus_one_string
+			]
 			cur = self.conn.cursor()
-			cur.execute(sql)
+			cur.execute(sql, params)
 			rows = cur.fetchall()
 			if len(rows) > 0:
 				with open(filename, 'w+') as csvFile:
@@ -1595,9 +1709,12 @@ class application(object):
 				sys.exit()
 
 		# Check that this file has not already been imported
-		sql = "SELECT import_file FROM ml.import_files WHERE import_file = '" + xml_file + "'"
+		sql = "SELECT import_file FROM ml.import_files WHERE import_file = %s"
+		params = [
+			xml_file
+		]
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 
 		if self.debug_mode == False:
@@ -2087,18 +2204,15 @@ class application(object):
 		my_string = my_string.strip(",")
 
 		if my_string != "":
-			sql = """
-			select m.measure_sid, count(mc.*) as component_count
-			from measures m
-			left outer join measure_components mc
-			on m.measure_sid = mc.measure_sid
-			where m.measure_sid in
-			(""" + my_string + """)
-			group by m.measure_sid
-			order by m.measure_sid
-			"""
+			sql = """select m.measure_sid, count(mc.*) as component_count
+			from measures m left outer join measure_components mc
+			on m.measure_sid = mc.measure_sid where m.measure_sid in (%s)
+			group by m.measure_sid order by m.measure_sid"""
+			params = [
+				my_string
+			]
 			cur = self.conn.cursor()
-			cur.execute(sql)
+			cur.execute(sql, params)
 			rows = cur.fetchall()
 			my_list = []
 			for row in rows:
@@ -2144,21 +2258,26 @@ class application(object):
 		self.import_start_time = self.getTimestamp()
 		sql = """
 		INSERT INTO ml.import_files (import_file, import_started, status)
-		VALUES  ('""" + xml_file + """', '""" + self.import_start_time + """', 'Started')
+		VALUES  (%s, %s, 'Started')
 		"""
+		params = [
+			xml_file,
+			self.import_start_time
+		]
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		self.conn.commit()
 
 	def register_import_complete(self, xml_file):
 		self.import_complete_time = self.getTimestamp()
-		sql = """
-		UPDATE ml.import_files SET import_completed = '""" + self.import_complete_time + """',
-		status = 'Completed'
-		WHERE import_file = '""" + xml_file + """'
-		"""
+		sql = """UPDATE ml.import_files SET import_completed = %s,
+		status = 'Completed' WHERE import_file = %s"""
+		params = [
+			self.import_complete_time,
+			xml_file
+		]
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		self.conn.commit()
 
 	def larger(self, a, b):
@@ -2327,10 +2446,14 @@ class application(object):
 		return (r)
 
 	def rollback(self):
-		sql = "select * from ml.clear_data('"+ self.to_nice_time(self.import_start_time) + "', '" + self.import_file + "')"
+		sql = "select * from ml.clear_data(%s, %s)"
+		params = [
+			self.to_nice_time(self.import_start_time),
+			self.import_file
+		]
 
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		self.conn.commit()
 
 	# Functions required for rule checks for import scripts
@@ -2441,10 +2564,13 @@ class application(object):
 
 	def get_all_goods_nomenclatures(self):
 		sql = "select goods_nomenclature_item_id from goods_nomenclatures " \
-		"where (validity_end_date is null or validity_end_date > '2019-11-01') " \
+		"where (validity_end_date is null or validity_end_date > %s) " \
 		"and producline_suffix = '80' order by 1;"
+		params = [
+			self.critical_date_plus_one_string
+		]
 		cur = self.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		my_list = []
 		for row in rows:
@@ -2553,7 +2679,6 @@ class application(object):
 
 	def get_my_regulation(self, regulation_code):
 		for item in self.all_regulations_with_dates:
-			#print (item[0], regulation_code)
 			if item[0] == regulation_code:
 				return (item)
 				break
@@ -2695,7 +2820,16 @@ class application(object):
 		self.d("Copying file to import directory", False)
 		# Copy from self.output_filename to dest
 		file_from	= os.path.join(self.XML_OUT_DIR,	self.output_filename)
-		file_to		= os.path.join(self.IMPORT_DIR,	self.output_filename)
-		#print (file_from)
-		#print (file_to)
+		file_to		= os.path.join(self.IMPORT_DIR,		self.output_filename)
+		print (file_from)
+		print (file_to)
 		shutil.copy (file_from, file_to)
+
+
+	def get_update_string(self, operation):
+		if operation == "D":
+			return "delete"
+		elif operation == "C":
+			return "create"
+		elif operation == "U":
+			return "update"

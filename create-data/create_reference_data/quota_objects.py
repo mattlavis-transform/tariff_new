@@ -19,7 +19,7 @@ except:
 
 app = o.app
 app.d("Writing quota object XML", False)
-app.getTemplates()
+app.get_templates()
 app.get_regulation_profile(profile)
 
 
@@ -59,8 +59,8 @@ for i in range(2, row_count + 1):
 filename = os.path.join(app.XML_DIR, profile + ".xml")
 app.d("Writing XML file to " + filename)
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
-out = env.replace("{BODY}", out)
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
+out = env.replace("[BODY]", out)
 f = open(filename, "w", encoding="utf-8")
 f.write(out)
 f.close()

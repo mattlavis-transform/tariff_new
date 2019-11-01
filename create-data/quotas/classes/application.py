@@ -15,14 +15,13 @@ from datetime import timedelta
 # Custom code
 
 from classes.progressbar							import ProgressBar
-from classes.quota_order_number						import quota_order_number
 from classes.quota_order_number_origin				import quota_order_number_origin
 from classes.quota_order_number_origin_exclusion	import quota_order_number_origin_exclusion
 from classes.quota_definition						import quota_definition
 from classes.quota_association						import quota_association
 from classes.geographical_area						import geographical_area
 from classes.measure								import measure
-from classes.fta_quota								import fta_quota
+from classes.quota_order_number								import quota_order_number
 from classes.measurement_unit						import measurement_unit
 
 import classes.functions as fn
@@ -72,7 +71,6 @@ class application(object):
 		self.namespaces = {'oub': 'urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0', 'env': 'urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0', } # add more as needed
 
 		self.measure_list						= []
-		self.quota_definition_list				= []
 		self.quota_order_number_list			= []
 		self.completed_quota_definition_list	= []
 
@@ -80,29 +78,23 @@ class application(object):
 		self.connect()
 		self.get_minimum_sids()
 		self.get_templates()
-		self.transaction_id = 100000
 		self.message_id = 1
+		self.origins_added = []
 
-		if "real_quota_excel.py" in sys.argv[0]:
-			self.input_profile	= sys.argv[1]
-			self.output_profile = sys.argv[2]
-			self.output_file	= os.path.join(self.XML_OUT_DIR, self.output_profile)
-			self.input_file		= os.path.join(self.SOURCE_DIR,  self.input_profile)
+		self.input_profile	= sys.argv[1]
+		self.output_profile = sys.argv[2]
+		self.output_file	= os.path.join(self.XML_OUT_DIR, self.output_profile)
+		self.input_file		= os.path.join(self.SOURCE_DIR,  self.input_profile)
 
-			print ("Input profile =", self.input_profile)
-			print ("Output profile =", self.output_profile)
-			print ("Input file =", self.input_file)
-			print ("Output file =", self.output_file)
+		if "safeguard" in self.input_profile:
+			self.is_safeguard = True
 		else:
-			if len(sys.argv) > 1:
-				self.output_profile = sys.argv[1]
-				self.CSV_DIR = os.path.join(self.CSV_DIR, self.output_profile)
-				self.output_filename = os.path.join(self.XML_OUT_DIR, "quotas_" + self.output_profile.strip() + ".xml")
-			else:
-				print ("No profile specified")
-				sys.exit()
+			self.is_safeguard = False
 
-			self.d("Writing XML data for profile " + self.output_profile, False)
+		print ("Input profile =", self.input_profile)
+		print ("Output profile =", self.output_profile)
+		print ("Input file =", self.input_file)
+		print ("Output file =", self.output_file)
 
 
 	def d(self, s, include_indent = True):
@@ -121,10 +113,11 @@ class application(object):
 		
 		self.p						= my_dict['p']
 		self.DBASE					= my_dict['dbase_migrate_measures']
-		#self.DBASE					= my_dict['dbase']
+		self.DBASE					= my_dict['dbase']
 		self.d ("Creating quotas, using database " + self.DBASE, False)
-		self.critical_date			= datetime.strptime(my_dict['critical_date'], '%Y-%m-%d')
-		self.critical_date_plus_one	= self.critical_date + timedelta(days = 1)
+		self.critical_date					= datetime.strptime(my_dict['critical_date'], '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
 
 
 	def get_templates(self):
@@ -333,127 +326,10 @@ class application(object):
 						monetary_unit_code, measurement_unit_code, measurement_unit_qualifier_code, start_date_override, end_date_override)
 						self.measure_list.append(obj)
 
-	"""
-	def get_quota_order_numbers_from_csv(self):
-		self.d("Getting order numbers from quota_order_numbers.csv", True)
-		# Think about countries other than China
-		self.quota_order_number_list = []
-		my_file = os.path.join(self.CSV_DIR, "quota_order_numbers.csv")
-		with open(my_file, 'r', encoding='latin-1') as csv_file:
-			csv_reader = csv.reader(csv_file, delimiter = ",")
-			for row in csv_reader:
-				if (len(row) > 0):
-					quota_order_number_id	= row[0]
-					regulation_id 			= row[1]
-					method					= row[2]
-					measure_type_id	 		= row[3]
-					origin_string			= row[4]
-					origin_exclusion_string = row[5]
-					validity_start_date		= row[6]
-					subject					= row[7]
-
-					try:
-						status = row[8]
-					except:
-						status = "New"
-
-					obj = quota_order_number(quota_order_number_id, regulation_id, method, measure_type_id, origin_string,
-					origin_exclusion_string, validity_start_date, subject, status)
-
-					self.quota_order_number_list.append(obj)
-	"""
-
-	def compare_order_number_origins(self):
-		for obj in self.quota_order_number_list:
-			try:
-				obj.origin_list.sort(key=lambda x: x.geographical_area_id, reverse = False)
-			except:
-				print (obj.quota_order_number_id)
-				sys.exit()
-
-			obj.actual_origin_string = ""
-			for origin in obj.origin_list:
-				obj.actual_origin_string += " " + origin.geographical_area_id
-			obj.actual_origin_string = obj.actual_origin_string.strip()
-
-			match_count = 0
-
-			my_origin = obj.origin_list
-			db_match_list = []
-			for db_origin in self.db_origin_list:
-				if db_origin.quota_order_number_id == obj.quota_order_number_id:
-					db_match_list.append (db_origin.geographical_area_id)
-
-			db_match_list.sort()
-			matched = True
-			db_match_string = ""
-
-			# First, check that all the quota order numbers match
-			# We do not care about exchanging 1008 for 1011, though we shoudl stick with
-			# what is already there
-
-			# I cannot remember why this was there: now commented out
-			
-			"""
-			if len(obj.origin_list) == 1 and obj.origin_list[0] == "1011":
-				if len(db_match_list == 1):
-					if db_match_list[0] == "1008":
-						obj.origin_list[0] == "1008"
-			"""
-			
-			for item in db_match_list:
-				db_match_string += " " + item
-				if item not in obj.actual_origin_string:
-					matched = False
-					match_fail = item
-			
-
-			for item in obj.origin_list:
-				if item.geographical_area_id not in db_match_list:
-					matched = False
-					match_fail = item.geographical_area_id
-
-			
-			db_match_string = db_match_string.strip()
-
-			if matched == False:
-				if obj.quota_order_number_id[0:3] != "094":
-					pass
 
 
-	def get_quota_definitions_from_csv(self):
-		self.d("Getting quota definitions from quota_definitions.csv", True)
-		self.quota_definition_list = []
-		my_file = os.path.join(self.CSV_DIR, "quota_definitions.csv")
-		with open(my_file) as csv_file:
-			csv_reader = csv.reader(csv_file, delimiter = ",")
-			for row in csv_reader:
-				if (len(row) > 0):
-					quota_order_number_id			= row[0]
-					measure_type					= row[1]
-					quota_method					= row[2]
-					validity_start_date				= row[3]
-					validity_end_date				= row[4]
-					length							= row[5]
-					initial_volume 					= row[6]
-					measurement_unit_code			= row[7]
-					maximum_precision				= row[8]
-					critical_state					= row[9]
-					critical_threshold				= row[10]
-					monetary_unit_code				= row[11]
-					measurement_unit_qualifier_code	= row[12]
-					blocking_period_start			= "" # row[13]
-					blocking_period_end				= "" # row[14]
-					origin_identifier				= row[15]
 
-					obj = quota_definition(quota_order_number_id, measure_type, quota_method, validity_start_date, validity_end_date, length, initial_volume,
-					measurement_unit_code, maximum_precision, critical_state, critical_threshold, monetary_unit_code,
-					measurement_unit_qualifier_code, blocking_period_start, blocking_period_end, origin_identifier)
-
-					self.quota_definition_list.append(obj)
-
-
-	def insert_quota_order_number(self, quota_order_number_id):
+	def insert_quota_order_number(self, quota_order_number_id, measure_type_id = "122"):
 		#print ("Inserting new quota order number", quota_order_number_id)
 		validity_start_date = datetime.strftime(self.critical_date_plus_one, "%Y-%m-%d")
 		validity_end_date		= ""
@@ -466,9 +342,8 @@ class application(object):
 		units					= ""
 		preferential			= ""
 		include_interim_period	= "N"
-		measure_type_id			= "122"
 
-		obj_quota = fta_quota(country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
+		obj_quota = quota_order_number(country_name, measure_type_id, quota_order_number_id, annual_volume, increment, \
 		eu_period_starts, eu_period_ends, interim_volume, units, preferential, include_interim_period)
 		self.quota_list.append (obj_quota)
 
@@ -487,13 +362,13 @@ class application(object):
 					self.measurement_units.append (obj)
 
 
-
 	def get_minimum_sids(self):
-		self.override_minimum_sids_node = "tariff_staging"
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 		
-		self.min_list = my_dict['minimum_sids'][self.override_minimum_sids_node]
+		self.min_list = my_dict['minimum_sids'][self.DBASE]
+
+		self.transaction_id									= self.min_list['last_transaction_id'] + 1
 
 		self.last_additional_code_description_period_sid	= self.larger(self.get_scalar("SELECT MAX(additional_code_description_period_sid) FROM additional_code_description_periods_oplog;"), self.min_list['additional.code.description.periods']) + 1
 		self.last_additional_code_sid						= self.larger(self.get_scalar("SELECT MAX(additional_code_sid) FROM additional_codes_oplog;"), self.min_list['additional.codes']) + 1
@@ -515,6 +390,7 @@ class application(object):
 		self.last_quota_definition_sid						= self.larger(self.get_scalar("SELECT MAX(quota_definition_sid) FROM quota_definitions_oplog"), self.min_list['quota.definitions']) + 1
 		self.last_quota_suspension_period_sid				= self.larger(self.get_scalar("SELECT MAX(quota_suspension_period_sid) FROM quota_suspension_periods_oplog"), self.min_list['quota.suspension.periods']) + 1
 		self.last_quota_blocking_period_sid					= self.larger(self.get_scalar("SELECT MAX(quota_blocking_period_sid) FROM quota_blocking_periods_oplog"), self.min_list['quota.blocking.periods']) + 1
+
 
 	def larger(self, a, b):
 		if a > b:
@@ -578,72 +454,19 @@ class application(object):
 		if not(success):
 			my_schema.validate(fname)
 
-	def get_all_origins_from_db(self):
-		self.d("Getting origins from database", True)
-		self.db_origin_list = []
-		sql = """SELECT qono.quota_order_number_origin_sid, qon.quota_order_number_id,
-		qon.quota_order_number_id, geographical_area_id
-		FROM quota_order_number_origins qono, quota_order_numbers qon
-		WHERE qon.quota_order_number_sid = qono.quota_order_number_sid
-		AND qon.validity_end_date IS NULL
-		AND qono.validity_end_date IS NULL ORDER BY 2, 3"""
-		cur = self.conn.cursor()
-		cur.execute(sql)
-		rows = cur.fetchall()
-		for row in rows:
-			quota_order_number_origin_sid	= row[0]
-			quota_order_number_id			= row[1]
-			quota_order_number_sid			= row[2]
-			geographical_area_id			= row[3].strip()
-			if geographical_area_id == "":
-				print ("blank")
-				sys.exit()
 
-			qono = quota_order_number_origin(quota_order_number_sid, geographical_area_id, "")
-			qono.quota_order_number_id = quota_order_number_id
-			self.db_origin_list.append (qono)
-			"""
-			if geographical_area_id == "CH":
-				qono2 = quota_order_number_origin(quota_order_number_sid, "LI", "")
-				qono2.quota_order_number_id = quota_order_number_id
-				self.db_origin_list.append (qono2)
-			"""
-		
-		self.db_origin_exclusion_list = []
-		sql = """SELECT quota_order_number_id, qon.quota_order_number_sid, excluded_geographical_area_sid,
-		gad.geographical_area_id, gad.description /*, qonoe.* */
-		FROM quota_order_number_origin_exclusions qonoe, quota_order_number_origins qono,
-		quota_order_numbers qon, geographical_area_descriptions gad
-		WHERE qono.quota_order_number_origin_sid = qonoe.quota_order_number_origin_sid
-		AND qon.quota_order_number_sid = qono.quota_order_number_sid
-		AND gad.geographical_area_sid = qonoe.excluded_geographical_area_sid
-		ORDER BY 1, 3"""
-		cur = self.conn.cursor()
-		cur.execute(sql)
-		rows = cur.fetchall()
-		for row in rows:
-			quota_order_number_id			= row[0]
-			quota_order_number_sid			= row[1]
-			excluded_geographical_area_sid	= row[2]
-			geographical_area_id			= row[3]
-			description						= row[4]
-			qonoe = quota_order_number_origin_exclusion(quota_order_number_sid, geographical_area_id) # (quota_order_number_sid, geographical_area_id, "")
-			qonoe.quota_order_number_id				= quota_order_number_id
-			qonoe.excluded_geographical_area_sid	= excluded_geographical_area_sid
-			qonoe.description						= description
-			self.db_origin_exclusion_list.append (qonoe)
 
 	def set_config(self):
 		jsonFile = open(self.CONFIG_FILE, "r")	# Open the JSON file for reading
 		data = json.load(jsonFile)				# Read the JSON into the buffer
 		jsonFile.close()						# Close the JSON file
 
-		data["minimum_sids"][self.override_minimum_sids_node]["last_transaction_id"] = self.transaction_id
-		data["minimum_sids"][self.override_minimum_sids_node]["measures"] = self.last_measure_sid
-		data["minimum_sids"][self.override_minimum_sids_node]["measure.conditions"] = self.last_measure_condition_sid
-		data["minimum_sids"][self.override_minimum_sids_node]["quota.definitions"] = self.last_quota_definition_sid
-		data["minimum_sids"][self.override_minimum_sids_node]["quota.order.numbers"] = self.last_quota_order_number_sid
-		data["minimum_sids"][self.override_minimum_sids_node]["quota.order.number.origins"] = self.last_quota_order_number_origin_sid
+		data["minimum_sids"][self.DBASE]["last_transaction_id"] = self.transaction_id
+		data["minimum_sids"][self.DBASE]["measures"] = self.last_measure_sid
+		data["minimum_sids"][self.DBASE]["measure.conditions"] = self.last_measure_condition_sid
+		data["minimum_sids"][self.DBASE]["quota.definitions"] = self.last_quota_definition_sid
+		data["minimum_sids"][self.DBASE]["quota.order.numbers"] = self.last_quota_order_number_sid
+		data["minimum_sids"][self.DBASE]["quota.order.number.origins"] = self.last_quota_order_number_origin_sid
 
 		jsonFile = open(self.CONFIG_FILE, "w+")
 		jsonFile.write(json.dumps(data, indent=4, sort_keys=True))
@@ -687,8 +510,12 @@ class application(object):
 			self.quota_associations_list.append(qa)
 
 		# Then add Bosnia * 2
-		self.add_quota_association("092017", "092190", "EQ", 1.81)
-		self.add_quota_association("092017", "092191", "EQ", 1.67)
+		self.add_quota_association("092017", "092018", "EQ", 1.67)
+		self.add_quota_association("092017", "092020", "EQ", 1.81)
+
+		# Then add Macedonia * 2
+		self.add_quota_association("092021", "092022", "EQ", 1.67)
+		self.add_quota_association("092021", "092023", "EQ", 1.81)
 
 
 	def add_quota_association(self, main_quota_order_number_id, sub_quota_order_number_id, relation_type, coefficient):

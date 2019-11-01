@@ -26,11 +26,13 @@ class measure(object):
 
 		# Get the goods nomenclature SID and its end date; this will override anything else
 		sql = """SELECT goods_nomenclature_sid, validity_end_date FROM goods_nomenclatures WHERE producline_suffix = '80'
-		AND goods_nomenclature_item_id = '""" + self.goods_nomenclature_item_id + """'
-		ORDER BY validity_start_date DESC LIMIT 1"""
+		AND goods_nomenclature_item_id = %s ORDER BY validity_start_date DESC LIMIT 1"""
+		params = [
+			self.goods_nomenclature_item_id
+		]
 
 		cur = g.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 
 		if len(rows) > 0:

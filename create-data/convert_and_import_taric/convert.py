@@ -5,7 +5,6 @@ import sys
 files = []
 for i in range(1, len(sys.argv)):
 	my_arg = sys.argv[i]
-	print (my_arg)
 	files.append(my_arg)
 
 app = g.app

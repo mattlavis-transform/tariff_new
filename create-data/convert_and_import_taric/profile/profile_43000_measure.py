@@ -39,9 +39,12 @@ class profile_43000_measure(object):
 			# Not a Taric error, but just simple referential integrity
 			# Check if a delete is being made, and if so, check that the measure exists before actually deleting
 			if int(update_type) == 2:
-				sql = "select measure_sid from measures where measure_sid = " + str(measure_sid)
+				sql = "select measure_sid from measures where measure_sid = %s"
+				params = [
+					str(measure_sid)
+				]
 				cur = g.app.conn.cursor()
-				cur.execute(sql)
+				cur.execute(sql, params)
 				rows = cur.fetchall()
 				if len(rows) == 0:
 					g.app.add_load_error("DBFK error on measures - Attempt to delete measure SID that does not exist. " + str(measure_sid))
@@ -166,9 +169,11 @@ class profile_43000_measure(object):
 				else:
 					# Step 2 - check for when the measure end date is specified
 					if regulation_end_date == None:
-						if validity_start_date < regulation_start_date: 
+						if validity_start_date < regulation_start_date:
+							print (validity_start_date, regulation_start_date, measure_sid)
 							g.app.add_load_error("ROIMB8(b) - Explicit dates of related measures must be within the " \
 							"validity period of the base regulation, when dealing with measure SID " + str(measure_sid))
+							sys.exit()
 						
 					else:
 						pass
@@ -181,98 +186,97 @@ class profile_43000_measure(object):
 			# Not a business rule, but a major flaw in Taric - this prevents a SID being inserted
 			# if it already exists
 			if int(update_type) == 3:
-				sql = "select measure_sid from measures_oplog where measure_sid = " + str(measure_sid)
+				sql = "select measure_sid from measures_oplog where measure_sid = %s"
+				params = [
+					str(measure_sid)
+				]
 				cur = g.app.conn.cursor()
-				cur.execute(sql)
+				cur.execute(sql, params)
 				rows = cur.fetchall()
 				if len(rows) > 0:
 					g.app.add_load_error("ML1 - Measure SID already exists on insert operation. " + str(measure_sid) + " already exists. Please roll back.")
 			
-			# run ME32 check - get relations of this commodity code up and down the tree
-			if int(update_type) == 3:
-				my_node = g.app.find_node(goods_nomenclature_item_id)
-				relation_string = "'" + goods_nomenclature_item_id + "', "
-				for relation in my_node.relations:
-					relation_string += "'" + relation + "', "
-				relation_string = relation_string.strip(", ")
-				
-				sql = "select measure_sid from ml.measures_real_end_dates m \n" \
-				"where \n" \
-				"(\n" \
-				"	measure_type_id = '" + measure_type + "' \n"  \
-				"	and goods_nomenclature_item_id in (" + relation_string + ") \n"
-				
 
-				if geographical_area == None:
-					sql += "	and geographical_area_id is Null \n"
-				else:
-					sql += "	and geographical_area_id = '" + geographical_area + "' \n"
+			check_me32 = True
+			if check_me32 == True:
+				# run ME32 check - get relations of this commodity code up and down the tree
+				if int(update_type) == 3:
+					#print ("Checking ME32 on goods_nomenclature item ID", goods_nomenclature_item_id)
+					my_node = g.app.find_node(goods_nomenclature_item_id)
+					relation_string = "'" + goods_nomenclature_item_id + "', "
+					for relation in my_node.relations:
+						relation_string += "'" + relation + "', "
+					relation_string = relation_string.strip(", ")
+					
+					sql = "select measure_sid from ml.measures_real_end_dates m \n" \
+					"where \n" \
+					"(\n" \
+					"	measure_type_id = '" + measure_type + "' \n"  \
+					"	and goods_nomenclature_item_id in (" + relation_string + ") \n"
+					
 
-				if ordernumber == None:
-					sql += "	and ordernumber is Null \n"
-				else:
-					sql += "	and ordernumber = '" + ordernumber + "' \n"
+					if geographical_area == None:
+						sql += "	and geographical_area_id is Null \n"
+					else:
+						sql += "	and geographical_area_id = '" + geographical_area + "' \n"
 
-				if reduction_indicator == None:
-					sql += "	and reduction_indicator is Null \n"
-				else:
-					sql += "	and reduction_indicator = '" + str(reduction_indicator) + "' \n"
+					if ordernumber == None:
+						sql += "	and ordernumber is Null \n"
+					else:
+						sql += "	and ordernumber = '" + ordernumber + "' \n"
 
-				if additional_code_type == None:
-					sql += "	and additional_code_type_id is Null \n"
-				else:
-					sql += "	and additional_code_type_id = '" + additional_code_type + "' \n"
+					if reduction_indicator == None:
+						sql += "	and reduction_indicator is Null \n"
+					else:
+						sql += "	and reduction_indicator = '" + str(reduction_indicator) + "' \n"
 
-				if additional_code == None:
-					sql += "	and additional_code_id is Null \n"
-				else:
-					sql += "	and additional_code_id = '" + additional_code + "' \n"
+					if additional_code_type == None:
+						sql += "	and additional_code_type_id is Null \n"
+					else:
+						sql += "	and additional_code_type_id = '" + additional_code_type + "' \n"
 
-				sql += ")\nand\n(\n"
+					if additional_code == None:
+						sql += "	and additional_code_id is Null \n"
+					else:
+						sql += "	and additional_code_id = '" + additional_code + "' \n"
 
-				if validity_end_date == None:
-					# The new measure does not have an end date
-					sql += """  (validity_end_date is null or (validity_start_date <= '""" + validity_start_date_string + """'
-					and validity_end_date >= '""" + validity_start_date_string + """')))"""
-				else:
-					# The new measure has an end date
-					sql += """
-	(
-		validity_end_date is not Null and
+					sql += ")\nand\n(\n"
+
+					if validity_end_date == None:
+						# The new measure does not have an end date
+						sql += """  (validity_end_date is null or (validity_start_date <= '""" + validity_start_date_string + """'
+						and validity_end_date >= '""" + validity_start_date_string + """')))"""
+					else:
+						# The new measure has an end date
+						sql += """
 		(
-			('""" + validity_start_date_string + """' <= validity_start_date and '""" + validity_end_date_string + """' >= validity_start_date)
-			or
-			('""" + validity_start_date_string + """' <= validity_end_date and '""" + validity_end_date_string + """' >= validity_end_date)
+			validity_end_date is not Null and
+			(
+				('""" + validity_start_date_string + """' <= validity_start_date and '""" + validity_end_date_string + """' >= validity_start_date)
+				or
+				('""" + validity_start_date_string + """' <= validity_end_date and '""" + validity_end_date_string + """' >= validity_end_date)
+			)
 		)
-	)
-	or
-	(
-		validity_end_date is Null and
+		or
 		(
-			'""" + validity_start_date_string + """' >= validity_start_date or '""" + validity_end_date_string + """' >= validity_start_date
+			validity_end_date is Null and
+			(
+				'""" + validity_start_date_string + """' >= validity_start_date or '""" + validity_end_date_string + """' >= validity_start_date
+			)
 		)
-	)
-"""
+	"""
 
-					sql += ")\n"
+						sql += ")\n"
 
-
-				cur = g.app.conn.cursor()
-				cur.execute(sql)
-				rows = cur.fetchall()
-				if len(rows) > 0:
-					rw = rows[0]
-					offended_measure_sid = rw[0]
-					g.app.add_load_error("ME32 conflict caused - please revert database.  Conflict caused on measure " \
-					+ str(measure_sid) + " with start date " + str(validity_start_date) + " on commodity " +  goods_nomenclature_item_id + " (order number - " + str(ordernumber) + ") with existing measure_sid " + str(offended_measure_sid))
-
-					"""
-					if str(measure_sid) == "3702511":
-						print (sql)
-						sys.exit()
-					"""
-
-			
+					cur = g.app.conn.cursor()
+					cur.execute(sql)
+					rows = cur.fetchall()
+					if len(rows) > 0:
+						rw = rows[0]
+						offended_measure_sid = rw[0]
+						g.app.add_load_error("ME32 conflict caused - please revert database.  Conflict caused on measure " \
+						+ str(measure_sid) + " with start date " + str(validity_start_date) + " on commodity " +  goods_nomenclature_item_id + " (order number - " + str(ordernumber) + ") with existing measure_sid " + str(offended_measure_sid))
+				
 		tariff_measure_number = goods_nomenclature_item_id
 		if goods_nomenclature_item_id != None:
 			if tariff_measure_number[-2:] == "00":

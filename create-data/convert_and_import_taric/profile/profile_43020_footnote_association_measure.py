@@ -23,6 +23,25 @@ class profile_43020_footnote_association_measure(object):
 			operation = "C"
 			app.doprint ("Creating footnote association with measure " + str(measure_sid))
 
+
+		if update_type in ("1", "3"):
+			sql = "select measure_sid from measures where measure_sid = %s limit 1"
+			params = [
+				str(measure_sid)
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			try:
+				row = rows[0]
+				measure_exists = True
+			except:
+				measure_exists = False
+
+			if measure_exists == False:
+				g.app.add_load_error("DBFK: measure footnote association - please revert database.  No measure with SID " + str(measure_sid))
+
+
 		cur = app.conn.cursor()
 		try:
 			cur.execute("""INSERT INTO footnote_association_measures_oplog (measure_sid,

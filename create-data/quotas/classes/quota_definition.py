@@ -53,6 +53,7 @@ class quota_definition(object):
 
 		if self.description == "":
 			print ("Missing quota description on quota", self.quota_order_number_id)
+			sys.exit()
 
 		self.description += " - from " + str(self.validity_start_date)  + " to " + str(self.validity_end_date)
 

@@ -13,7 +13,7 @@ from common.goods_nomenclature import goods_nomenclature
 from common.application import application
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 
 # Get arguments
 if len(sys.argv) > 0:
@@ -40,7 +40,7 @@ for i in range(2, row_count + 1):
 	print (goods_nomenclature_item_id)
 
 	if change_date == "":
-		change_date = "01/11/2019"
+		change_date = self.critical_date_plus_one_string
 
 	obj = goods_nomenclature(goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix, description, force = True)
 	app.goods_nomenclature_list.append(obj)
@@ -48,13 +48,13 @@ for i in range(2, row_count + 1):
 
 #sys.exit()
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for obj in app.goods_nomenclature_list:
 	obj.writeXML()
 	out += obj.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 filename = os.path.join(app.XML_DIR, fname_out)
 f = open(filename, "w", encoding="utf-8") 
 f.write(out)

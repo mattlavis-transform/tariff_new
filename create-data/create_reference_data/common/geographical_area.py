@@ -29,19 +29,19 @@ class geographical_area(object):
 			pass
 
 		self.description = fn.cleanse(self.description)
-		out = out.replace("{GEOGRAPHICAL_AREA_SID}", self.geographical_area_sid)
-		out = out.replace("{GEOGRAPHICAL_AREA_ID}", self.geographical_area_id)
-		out = out.replace("{GEOGRAPHICAL_AREA_CODE}", self.geographical_area_code)
-		out = out.replace("{DESCRIPTION}", self.description)
-		out = out.replace("{VALIDITY_START_DATE}", fn.mdate(app.critical_date_plus_one))
-		out = out.replace("{GEOGRAPHICAL_AREA_DESCRIPTION_PERIOD_SID}", str(app.last_geographical_area_description_period_sid))
-		out = out.replace("{TRANSACTION_ID}", str(app.transaction_id))
-		out = out.replace("{MESSAGE_ID1}", str(app.message_id))
-		out = out.replace("{MESSAGE_ID2}", str(app.message_id + 1))
-		out = out.replace("{MESSAGE_ID3}", str(app.message_id + 2))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER1}", str(app.message_id))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER2}", str(app.message_id + 1))
-		out = out.replace("{RECORD_SEQUENCE_NUMBER3}", str(app.message_id + 2))
+		out = out.replace("[GEOGRAPHICAL_AREA_SID]", self.geographical_area_sid)
+		out = out.replace("[GEOGRAPHICAL_AREA_ID]", self.geographical_area_id)
+		out = out.replace("[GEOGRAPHICAL_AREA_CODE]", self.geographical_area_code)
+		out = out.replace("[DESCRIPTION]", self.description)
+		out = out.replace("[VALIDITY_START_DATE]", fn.mdate(app.critical_date_plus_one))
+		out = out.replace("[GEOGRAPHICAL_AREA_DESCRIPTION_PERIOD_SID]", str(app.last_geographical_area_description_period_sid))
+		out = out.replace("[TRANSACTION_ID]", str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]", str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]", str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]", str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]", str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]", str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]", str(app.message_id + 2))
 
 		self.xml = out
 

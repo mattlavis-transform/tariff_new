@@ -14,15 +14,6 @@ class profile_40000_goods_nomenclature(object):
 		statistical_indicator				= app.get_value(oMessage, ".//oub:statistical.indicator", True)
 
 		# Check the SID exists
-		"""
-		sql = "select * from goods_nomenclatures where goods_nomenclature_sid = " + str(goods_nomenclature_sid)
-		cur = g.app.conn.cursor()
-		cur.execute(sql)
-		rows = cur.fetchall()
-		if len(rows) == 0:
-			g.app.log_error("goods nomenclature SID does not exist " + str(goods_nomenclature_sid), operation, goods_nomenclature_sid, goods_nomenclature_item_id, transaction_id, message_id)
-		"""
-
 		if update_type == "1":	# Update
 			operation = "U"
 			app.doprint ("Updating goods nomenclature " + str(goods_nomenclature_sid))

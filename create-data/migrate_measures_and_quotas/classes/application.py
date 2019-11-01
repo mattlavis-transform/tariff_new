@@ -85,6 +85,7 @@ class application(object):
 		self.get_arguments()
 		self.get_minimum_sids()
 
+
 	def get_all_quota_order_numbers(self):
         # Get the detail of all quota order numbers
 		self.quota_order_number_list = []
@@ -102,7 +103,6 @@ class application(object):
 			validity_end_date		= rw[3]
 			q = quota_order_number(quota_order_number_sid, quota_order_number_id, validity_start_date, validity_end_date)
 			self.quota_order_number_list.append(q)
-
 
 
 	def get_quota_order_numbers(self):
@@ -124,6 +124,7 @@ class application(object):
 			q = quota_order_number(rw[0], rw[1], rw[2], rw[3])
 			self.quota_order_number_list.append(q)
 
+
 	def get_quota_descriptions(self):
 		self.d("Getting UK quota descriptions")
 		self.quota_description_list = []
@@ -136,6 +137,7 @@ class application(object):
 
 				obj = quota_description(quota_order_number_id, description)
 				self.quota_description_list.append (obj)
+
 
 	def get_quota_balances(self):
 		self.d("Getting UK quota balances")
@@ -153,6 +155,7 @@ class application(object):
 
 				obj = quota_balance(quota_order_number_id, country, method, y1_balance, yx_balance, yx_start)
 				self.quota_balance_list.append (obj)
+
 
 	def get_minimum_sids(self):
 		with open(self.CONFIG_FILE, 'r') as f:
@@ -180,6 +183,7 @@ class application(object):
 		self.last_quota_definition_sid						= self.larger(self.get_scalar("SELECT MAX(quota_definition_sid) FROM quota_definitions_oplog"), min_list['quota.definitions']) + 1
 		self.last_quota_suspension_period_sid				= self.larger(self.get_scalar("SELECT MAX(quota_suspension_period_sid) FROM quota_suspension_periods_oplog"), min_list['quota.suspension.periods']) + 1
 		self.last_quota_blocking_period_sid					= self.larger(self.get_scalar("SELECT MAX(quota_blocking_period_sid) FROM quota_blocking_periods_oplog"), min_list['quota.blocking.periods']) + 1
+
 
 	def get_mfns(self):
 		self.mfn_master_list = []
@@ -1788,7 +1792,7 @@ class application(object):
 			for obj in self.enddated_measure_list:
 				proceed = False
 				if self.scope == "country":
-					if obj.measure_type_id in ["142", "145"]:
+					if obj.measure_type_id in ["142", "145", "143", "146"]:
 						proceed = True
 				else:
 					proceed = True
@@ -1863,6 +1867,7 @@ class application(object):
 
 	def connect(self):
 		self.conn			= psycopg2.connect("dbname=" + self.DBASE_MIGRATE_MEASURES + " user=postgres password=" + self.p)
+		#self.conn			= psycopg2.connect("dbname=" + self.DBASE + " user=postgres password=" + self.p)
 		self.conn_staging	= psycopg2.connect("dbname=" + self.DBASE + " user=postgres password=" + self.p)
 
 	def generate_xml_report(self):

@@ -13,7 +13,7 @@ from common.quota_order_number_origin import quota_order_number_origin
 from common.application import application
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 
 try:
 	profile = sys.argv[1]
@@ -37,14 +37,14 @@ for i in range(2, row_count + 1):
 	app.quota_order_number_origin_list.append(obj)
 
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for obj in app.quota_order_number_origin_list:
 	if obj.quota_order_number_id[0:3] != "094":
 		obj.writeXML(app)
 		out += obj.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 filename = os.path.join(app.XML_DIR, profile + ".xml")
 f = open(filename, "w", encoding="utf-8")
 f.write(out)

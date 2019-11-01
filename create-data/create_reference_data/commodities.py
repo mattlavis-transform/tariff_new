@@ -13,6 +13,6 @@ from common.goods_nomenclature import goods_nomenclature
 from common.application import application
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 app.get_current_commodities()
 app.write_commodities()

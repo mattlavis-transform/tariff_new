@@ -13,7 +13,7 @@ from common.regulation_group import regulation_group
 from common.application import application
 
 app = o.app
-app.getTemplates()
+app.get_templates()
 
 try:
 	arg = sys.argv[1]
@@ -52,13 +52,13 @@ for i in range(2, row_count + 1):
 	app.regulation_groups_list.append(obj)
 
 env = app.envelope_XML
-env = env.replace("{ENVELOPE_ID}", str(app.base_envelope_id))
+env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
 out = ""
 for obj in app.regulation_groups_list:
 	obj.writeXML()
 	out += obj.xml
 
-out = env.replace("{BODY}", out)
+out = env.replace("[BODY]", out)
 fname3 = fname.replace("xlsx", "xml")
 filename = os.path.join(app.XML_DIR, fname3)
 print (filename)

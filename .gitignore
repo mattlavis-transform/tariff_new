@@ -10,3 +10,4 @@ backup/
 create-data/_documentation
 create-data/convert_and_import_taric/documentation
 create-data/gsp/xml_out
+create-data/convert_and_import_taric/import_safe

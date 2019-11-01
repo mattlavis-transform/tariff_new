@@ -11,9 +11,11 @@ import re
 import codecs
 from datetime import datetime
 from datetime import timedelta
+import xlrd
 
 # Custom code
 
+from classes.condition_profile import condition_profile
 from classes.progressbar import ProgressBar
 from classes.quota_order_number import quota_order_number
 from classes.quota_order_number_origin import quota_order_number_origin
@@ -93,9 +95,10 @@ class application(object):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		critical_date = my_dict['critical_date']
-		self.critical_date			= datetime.strptime(critical_date, '%Y-%m-%d')
-		self.critical_date_plus_one	= self.critical_date + timedelta(days = 1)
+		critical_date 						= my_dict['critical_date']
+		self.critical_date					= datetime.strptime(critical_date, '%Y-%m-%d')
+		self.critical_date_plus_one			= self.critical_date + timedelta(days = 1)
+		self.critical_date_plus_one_string	= datetime.strftime(self.critical_date_plus_one, '%Y-%m-%d')
 
 		self.DBASE			= my_dict['dbase']
 		self.p				= my_dict['p']
@@ -173,9 +176,14 @@ class application(object):
 					specific2					= row[8]
 					date_from					= row[9]
 					date_to						= row[10]
+					try:
+						exclusions				= row[11]
+					except:
+						exclusions				= ""
 
 					if (goods_nomenclature_item_id != "goods nomenclature") and (goods_nomenclature_item_id != ""):
-						obj = measure(goods_nomenclature_item_id, regulation_id, geographical_area_id, measure_type_id, ad_valorem, specific1, ceiling, minimum, specific2, date_from, date_to)
+						obj = measure(goods_nomenclature_item_id, regulation_id, geographical_area_id, measure_type_id, ad_valorem, \
+						specific1, ceiling, minimum, specific2, date_from, date_to, exclusions)
 						self.measure_list.append(obj)
 						self.commodity_list.append(goods_nomenclature_item_id)
 
@@ -237,6 +245,7 @@ class application(object):
 					self.quota_definition_list.append(obj)
 
 	def get_geographical_areas(self):
+		self.d("Getting geographical areas", False)
 		sql = """SELECT geographical_area_id, geographical_area_sid FROM geographical_areas;"""
 		cur = self.conn.cursor()
 		cur.execute(sql)
@@ -485,7 +494,7 @@ class application(object):
 		select goods_nomenclature_sid, goods_nomenclature_item_id, producline_suffix
 		from goods_nomenclatures
 		where goods_nomenclature_item_id in (""" + commodity_string + """)
-		and (validity_end_date >= '2019-11-01' or validity_end_date is null)
+		and (validity_end_date >= '""" + self.critical_date_plus_one_string + """' or validity_end_date is null)
 		"""
 		cur = self.conn.cursor()
 		cur.execute(sql)
@@ -515,6 +524,7 @@ class application(object):
 
 	def get_preferences(self, geographical_area_id):
 		master_measure_list = []
+		# OLD
 		sql = """
 		select m.measure_sid, m.goods_nomenclature_item_id, m.validity_start_date, m.validity_end_date,
 		mc.duty_expression_id, mc.duty_amount, mc.monetary_unit_code, mc.measurement_unit_code, mc.measurement_unit_qualifier_code
@@ -522,6 +532,18 @@ class application(object):
 		on m.measure_sid = mc.measure_sid
 		where geographical_area_id = '""" + geographical_area_id + """'
 		and measure_type_id in ('142', '145')
+		order by goods_nomenclature_item_id, duty_expression_id
+		"""
+		# NEW
+		sql = """
+		select m.measure_sid, m.goods_nomenclature_item_id, m.validity_start_date, m.validity_end_date,
+		mc.duty_expression_id, mc.duty_amount, mc.monetary_unit_code, mc.measurement_unit_code, mc.measurement_unit_qualifier_code
+		from ml.measures_real_end_dates m left outer join measure_components mc
+		on m.measure_sid = mc.measure_sid
+		where geographical_area_id = '""" + geographical_area_id + """'
+		and measure_type_id in ('142', '145')
+		and validity_start_date <= '2019-12-31'
+		and validity_end_date >= '2019-01-01'
 		order by goods_nomenclature_item_id, duty_expression_id
 		"""
 		cur = self.conn.cursor()
@@ -717,6 +739,7 @@ class application(object):
 		jsonFile.write(json.dumps(data, indent=4, sort_keys=True))
 		jsonFile.close()
 
+
 	def get_nomenclature_dates(self):
 		clause = ""
 		for m in self.measure_list:
@@ -741,3 +764,81 @@ class application(object):
 				self.commodity_list.append (g)
 				self.valid_commodity_list.append (goods_nomenclature_item_id)
 
+
+	def get_export_controls(self):
+		self.get_geographical_areas()
+		self.get_export_profiles()
+		self.get_export_measures()
+
+
+	def get_export_profiles(self):
+		self.d("Getting export profiles", False)
+		file = os.path.join(self.SOURCE_DIR, self.output_profile + ".xlsx")
+		workbook	= xlrd.open_workbook(file)
+		wb			= workbook.sheet_by_name("profiles")
+		row_count	= wb.nrows
+		self.condition_profiles = []
+		
+		for row in range(1, row_count):
+			profile		= wb.cell(row, 0).value
+			condition1	= wb.cell(row, 1).value
+			condition2	= wb.cell(row, 2).value
+			condition3	= wb.cell(row, 3).value
+
+			my_condition_profile			= condition_profile()
+			my_condition_profile.profile	= profile
+
+			my_condition_profile.create_condition(1, condition1)
+			my_condition_profile.create_condition(2, condition2)
+			my_condition_profile.create_condition(3, condition3)
+
+			self.condition_profiles.append(my_condition_profile)
+
+
+	def get_export_measures(self):
+		self.d("Getting export measures", False)
+		file = os.path.join(self.SOURCE_DIR, self.output_profile + ".xlsx")
+		workbook				= xlrd.open_workbook(file)
+		wb						= workbook.sheet_by_name("measures")
+		row_count				= wb.nrows
+		self.export_measures	= []
+		
+		for row in range(1, row_count):
+			category					= wb.cell(row, 0).value
+			subcategory					= wb.cell(row, 1).value
+			goods_nomenclature_item_id	= self.convert_to_10_digit(wb.cell(row, 2).value)
+			footnote					= wb.cell(row, 3).value
+			measure_type_id				= str(wb.cell(row, 4).value)
+			geographical_area_id		= str(wb.cell(row, 5).value)
+			regulation_id				= wb.cell(row, 6).value
+			omit						= wb.cell(row, 7).value
+			condition_profile			= wb.cell(row, 8).value
+			validity_start_date			= str(wb.cell(row, 9).value)
+
+			if omit != "Y":
+				my_measure = measure(goods_nomenclature_item_id, regulation_id, geographical_area_id, measure_type_id, "", "", "", "", "", validity_start_date, "", "")
+				my_measure.apply_footnote(footnote)
+				my_condition = self.get_condition(condition_profile)
+				my_measure.apply_conditions(my_condition)
+
+			self.export_measures.append (my_measure)
+
+
+	def convert_to_10_digit(self, s):
+		s = str(s)
+		s = s + ("0" * (10-len(s)))
+		return (s)
+
+
+	def get_condition(self, condition_profile):
+		out = None
+		for item in self.condition_profiles:
+			if condition_profile == item.profile:
+				out = item
+				break
+
+		if out == None:
+			print ("No profile found")
+			sys.exit()
+		else:
+			return (out)

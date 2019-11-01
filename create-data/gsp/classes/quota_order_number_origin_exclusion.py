@@ -10,10 +10,10 @@ class quota_order_number_origin_exclusion(object):
 
 		self.get_geography()
 
+
 	def get_geography(self):
 		sql = """SELECT geographical_area_sid, geographical_code FROM geographical_areas WHERE
 		geographical_area_id = '""" + self.geographical_area_id + """' ORDER BY validity_start_date DESC LIMIT 1"""
-		#print (sql)
 		cur = g.app.conn.cursor()
 		cur.execute(sql)
 		rows = cur.fetchall()
@@ -23,6 +23,7 @@ class quota_order_number_origin_exclusion(object):
 		else:
 			print ("Missing geography", self.geographical_area_id, sql)
 			sys.exit()
+
 
 	def xml(self):
 		s = ""
@@ -38,6 +39,7 @@ class quota_order_number_origin_exclusion(object):
 		g.app.message_id += 1
 
 		return (s)
+
 
 	def measure_xml(self):
 		#print ("Creating XM for origin exclusion")

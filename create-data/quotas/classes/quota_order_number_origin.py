@@ -16,20 +16,28 @@ class quota_order_number_origin(object):
 		self.get_geography()
 
 	def get_geography(self):
+		geo_id = self.geographical_area_id.strip()
 		sql = """select geographical_area_sid, geographical_code from geographical_areas
-		where geographical_area_id = '""" + self.geographical_area_id.strip() + """' and validity_end_date is null
+		where geographical_area_id = %s and validity_end_date is null
 		order by validity_start_date desc
 		limit 1"""
+		params = [
+			geo_id
+		]
 
 		cur = g.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		if len(rows) > 0:
 			self.geographical_area_sid	= rows[0][0]
 			self.geographical_code		= rows[0][1] # 1 is a group and can therefore have exclusions
 		else:
-			print ("In QON Missing geography", self.geographical_area_id, sql)
-			sys.exit()
+			if geo_id == "5050":
+				self.geographical_area_sid	= 10005
+				self.geographical_code		= 1
+			else:
+				print ("In QON Missing geography", self.geographical_area_id, sql)
+				sys.exit()
 
 	def xml(self):
 		s = ""

@@ -421,24 +421,40 @@ class application(object):
 
 		worksheet_guidance.write(1, 3, "Guidance - Using this worksheet", self.guidance_black)
 		worksheet_guidance.set_row(1, 30)
-		worksheet_guidance.write(3, 3, "Tariff preferences", self.cell_bold)
+		worksheet_guidance.write(3, 3, "Tariffs", self.cell_bold)
+		"""
 		worksheet_guidance.write(4, 3, "To see information about applicable Tariff preferences after EU Exit, select the \"tariff_preferences\" tab below. " + \
 		"This tab lists each commodity against which an import duty will continue to apply after EU Exit. Additionally the tab " + \
 		"shows any WTO Quota or Autonomous Tariff Quota (ATQ) that is applicable to that commodity, as well as the applicable " + \
 		"Preferential Tariff for trading nations or blocs with which the UK has provisionally agreed a Trade Agreement.\n\n" + \
 		"Where there is no preference with the third country or if the preference is no more advantageous than the applicable MFN duty, " + \
 		"the third country preferential duty is listed as '-'", self.cell_left)
+		"""
+
+
+		worksheet_guidance.write(4, 3, "This document shows goods that have a Most Favoured Nation (MFN) tariff rate. " + \
+		"You can find them under the 'tariff_preferences' tab. If there is no trade agreement between the UK and another country " + \
+		"after Brexit, you will have to use MFN rates.\n\n" + \
+		"A preferential tariff rate will apply if the country you are importing from has a trade agreement with the UK or is " + \
+		"part of the Generalised Scheme of Preferences.\n\n" + \
+		"Any goods not listed have a zero MFN rate.\n\n" + \
+		"This tab also shows any WTO quotas or Autonomous Tariff Quota (ATQ) for each commodity code.", self.cell_left)
 
 
 		worksheet_guidance.write(5, 3, "\nQuotas", self.cell_bold)
+		"""
 		worksheet_guidance.write(6, 3, "To see information about applicable preferential Tariff Rate Quotas after EU Exit, select the \"tariff_rate_quotas\" tab below. " + \
 		"As with the Tariffs tab, this tab lists each commodity against which an import duty will continue to apply after EU Exit " + \
 		"and applicable WTO Quotas or Autonomous Tariff Quota (ATQ).\n\n" + \
 		"In addition, if a Preferential Tariff Rate Quota (TRQ) applies to a commodity code for a given exporting country, the order " + \
 		"number of that TRQ is displayed.\n\n" + \
 		"Where there is no preferential Tariff Rate Quota in place with the third country, the TRQ is listed as '-'", self.cell_left)
+		"""
 
-			
+		worksheet_guidance.write(6, 3, "You can find information about any applicable quotas for preferential tariffs under the 'tariff_rate_quotas' tab.\n\n" + \
+		"Where there is a preferential tariff rate quota you can find the order number for that commodity code.", self.cell_left)
+
+
 	def get_categories(self):
 		self.d("Get categories of products", True)
 		self.categories = []
@@ -990,15 +1006,20 @@ class application(object):
 		self.populate_guidance_sheet(worksheet_guidance)
 
 		preferential_area_count = len(self.preferential_areas)
-		worksheet.set_column(0, 0, 15)
-		worksheet.set_column(1, 1, 60) 
-		worksheet.set_column(2, 3, 20)
-		worksheet.set_column(4, preferential_area_count + 4, 20)
+		worksheet.set_column(0, 0, 20)
+		worksheet.set_column(1, 1, 15)
+		worksheet.set_column(2, 2, 60) 
+		worksheet.set_column(3, 4, 20)
+		worksheet.set_column(5, preferential_area_count + 5, 20)
 
-		worksheet2.set_column(0, 0, 15)
-		worksheet2.set_column(1, 1, 60) 
-		worksheet2.set_column(2, 3, 20)
-		worksheet2.set_column(4, preferential_area_count + 4, 20)
+		worksheet2.set_column(0, 0, 20)
+		worksheet2.set_column(1, 1, 15)
+		worksheet2.set_column(2, 2, 60) 
+		worksheet2.set_column(3, 4, 20)
+		worksheet2.set_column(5, preferential_area_count + 5, 20)
+
+		worksheet.freeze_panes(1, 0)
+		worksheet2.freeze_panes(1, 0)
 
 		my_row = 0
 		current_category = ""
@@ -1008,53 +1029,57 @@ class application(object):
 				quota_matched = False
 				if m.category != "Unspecified":
 					if m.category != current_category and m.category != "Unspecified":
-						# Write the self.category row 
-						my_row += 1
-						worksheet.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
-						worksheet.set_row(my_row - 1, 30)
-						worksheet2.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
-						worksheet2.set_row(my_row - 1, 30)
-
 						# Write the columns headers for the MFN sheet
 						my_row += 1
 						worksheet.set_row(my_row - 1, 45)
-						worksheet.write('A' + str(my_row), 'Commodity code', self.column_header)
-						worksheet.write('B' + str(my_row), 'Description', self.column_header)
-						worksheet.write('C' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
-						worksheet.write('D' + str(my_row), 'MFN TRQ', self.column_header_centre)
+						worksheet.write('A' + str(my_row), 'Category', self.column_header)
+						worksheet.write('B' + str(my_row), 'Commodity code', self.column_header)
+						worksheet.write('C' + str(my_row), 'Description', self.column_header)
+						worksheet.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+						worksheet.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
 
 						# Write the columns headers for the quotas sheet
 						worksheet2.set_row(my_row - 1, 45)
-						worksheet2.write('A' + str(my_row), 'Commodity code', self.column_header)
-						worksheet2.write('B' + str(my_row), 'Description', self.column_header)
-						worksheet2.write('C' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
-						worksheet2.write('D' + str(my_row), 'MFN TRQ', self.column_header_centre)
+						worksheet2.write('A' + str(my_row), 'Category', self.column_header)
+						worksheet2.write('B' + str(my_row), 'Commodity code', self.column_header)
+						worksheet2.write('C' + str(my_row), 'Description', self.column_header)
+						worksheet2.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
+						worksheet2.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
 
-						my_col = 4
+						my_col = 5
 						for item in self.preferential_areas:
 							# Write the preferential area name
 							worksheet.write(my_row - 1, my_col, item.name, self.column_header_centre)
 							worksheet2.write(my_row - 1, my_col, item.name, self.column_header_centre)
 							my_col += 1
 
+						# Write the self.category row 
+						my_row += 1
+						#worksheet.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
+						worksheet.set_row(my_row - 1, 30)
+						#worksheet2.merge_range(my_row - 1, 0, my_row -1, preferential_area_count + 3, m.category, self.category)
+						worksheet2.set_row(my_row - 1, 30)
+
 					my_row += 1
 					if m.mfn_quota == "":
 						m.mfn_quota = "-"
 
 					# Write the commodity code, description, duty and MFN quota data to the MFN sheet
-					worksheet.write('A' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
-					worksheet.write('B' + str(my_row), m.combined_description, self.cell)
-					worksheet.write('C' + str(my_row), m.combined_duty, self.cell_blue)
-					worksheet.write('D' + str(my_row), m.mfn_quota, self.cell_blue)
+					worksheet.write('A' + str(my_row), m.category, self.cell)
+					worksheet.write('B' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
+					worksheet.write('C' + str(my_row), m.combined_description, self.cell)
+					worksheet.write('D' + str(my_row), m.combined_duty, self.cell_blue)
+					worksheet.write('E' + str(my_row), m.mfn_quota, self.cell_blue)
 
 					# Write the commodity code, description, duty and MFN quota data to the quotas sheet
-					worksheet2.write('A' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
-					worksheet2.write('B' + str(my_row), m.combined_description, self.cell)
-					worksheet2.write('C' + str(my_row), m.combined_duty, self.cell_blue)
-					worksheet2.write('D' + str(my_row), m.mfn_quota, self.cell_blue)
+					worksheet2.write('A' + str(my_row), m.category, self.cell)
+					worksheet2.write('B' + str(my_row), m.goods_nomenclature_formatted(), self.cell)
+					worksheet2.write('C' + str(my_row), m.combined_description, self.cell)
+					worksheet2.write('D' + str(my_row), m.combined_duty, self.cell_blue)
+					worksheet2.write('E' + str(my_row), m.mfn_quota, self.cell_blue)
 
 					# Write the preferential rates, and the quota rates
-					my_col = 4
+					my_col = 5
 					preferential_rate	= "-"
 					for preferential_area in self.preferential_areas:
 						if m.goods_nomenclature_item_id in preferential_area.preferential_rates:
@@ -1125,7 +1150,7 @@ class application(object):
 		worksheet.write('C' + str(my_row), 'End line', self.column_header_centre)
 		worksheet.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
 		worksheet.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
-		worksheet.freeze_panes(1, 0)
+		worksheet.freeze_panes(2, 0)
 
 		# Write the columns headers for the quotas sheet
 		worksheet2.set_row(my_row - 1, 45)
@@ -1134,7 +1159,7 @@ class application(object):
 		worksheet2.write('C' + str(my_row), 'End line', self.column_header)
 		worksheet2.write('D' + str(my_row), 'Most favoured nation (MFN) rate', self.column_header_centre)
 		worksheet2.write('E' + str(my_row), 'MFN TRQ', self.column_header_centre)
-		worksheet2.freeze_panes(1, 0)
+		worksheet2.freeze_panes(2, 0)
 
 
 		my_col = 5
@@ -1147,10 +1172,6 @@ class application(object):
 
 		for g in self.full_commodity_list:
 			my_row += 1
-			"""
-			if m.mfn_quota == "":
-				m.mfn_quota = "-"
-			"""
 
 			# Write the commodity code, description, duty and MFN quota data to the MFN sheet
 			worksheet.write('A' + str(my_row), self.format_goods_nomenclature(g["commodity_code"], g["productline_suffix"]), self.cell)

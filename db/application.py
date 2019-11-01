@@ -22,13 +22,13 @@ class application(object):
 	def get_config(self):
 		self.database_name = "tariff_dev"
 		# Get name of database to backup
-		err_msg = '\nPlease enter a genuine database name - aborting\n\nUse one of the following - "tariff_dev", "tariff_eu", "t_eu", "tariff_staging", "tariff_cds", "tariff_load", "tariff_steve", "tariff_tap", "tariff_fta"'
+		err_msg = '\nPlease enter a genuine database name - aborting\n\nUse one of the following - "tariff_dev", "tariff_build", "tariff_eu", "t_eu", "tariff_staging", "tariff_cds", "tariff_load", "tariff_steve", "tariff_tap", "tariff_fta"'
 		try:
 			self.database_name = sys.argv[1]
 		except:
 			print (err_msg)
 			sys.exit()
-		if self.database_name not in ("tariff_dev", "t_eu", "tariff_eu", "tariff_staging", "tariff_national", "tariff_load", "tariff_cds", "tariff_steve", "tariff_tap", "tariff_fta"):
+		if self.database_name not in ("tariff_build", "tariff_dev", "t_eu", "tariff_eu", "tariff_staging", "tariff_national", "tariff_load", "tariff_cds", "tariff_steve", "tariff_tap", "tariff_fta"):
 			print (err_msg)
 			sys.exit()
 		# Optionally, you may choose to just back up a singel schema - this can be specified in the second parameter

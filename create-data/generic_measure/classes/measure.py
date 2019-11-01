@@ -3,11 +3,13 @@ import classes.globals as g
 import datetime
 import sys
 
+from classes.footnote_association_measure import footnote_association_measure
 from classes.measure_component import measure_component
-#from classes.measure_excluded_geographical_area import measure_excluded_geographical_area
+from classes.measure_excluded_geographical_area import measure_excluded_geographical_area
 
 class measure(object):
-	def __init__(self, goods_nomenclature_item_id, regulation_id, geographical_area_id, measure_type_id, ad_valorem, specific1, ceiling, minimum, specific2, date_from, date_to):
+	def __init__(self, goods_nomenclature_item_id, regulation_id, geographical_area_id, measure_type_id, ad_valorem, \
+		specific1, ceiling, minimum, specific2, date_from, date_to, exclusions):
 		# from parameters
 		self.goods_nomenclature_item_id			= goods_nomenclature_item_id
 		self.measure_generating_regulation_id	= regulation_id
@@ -22,6 +24,9 @@ class measure(object):
 
 		self.date_from							= date_from.strip()
 		self.date_to							= date_to.strip()
+
+		self.measure_footnote_list				= []
+		self.measure_condition_list				= []
 
 		if self.date_to == "":
 			self.justification_regulation_id		= ""
@@ -43,7 +48,15 @@ class measure(object):
 				self.geographical_area_sid = geo.geographical_area_sid
 				break
 
-		#sys.exit()
+		self.id_list	= ["CN", "IN", "TH", "TR", "UA", "AE", "VN"]
+		self.sid_list	= [439, 154, 98, 100, 388, 312, 392]
+		self.measure_excluded_geographical_area_list = []
+
+		exclusions_list = exclusions.split(",")
+		for exclusion in exclusions_list:
+			exclusion = measure_excluded_geographical_area(self.geographical_area_id, self.goods_nomenclature_item_id, exclusion)
+			self.measure_excluded_geographical_area_list.append(exclusion)
+
 
 		# Get the goods nomenclature SID
 		sql = """SELECT goods_nomenclature_sid FROM goods_nomenclatures WHERE producline_suffix = '80'
@@ -142,11 +155,11 @@ class measure(object):
 			obj.update_type = "3"
 			obj.measure_sid = self.measure_sid
 
-		"""
 		for obj in self.measure_excluded_geographical_area_list:
 			obj.measure_sid = self.measure_sid
 			obj.update_type = "3"
 
+		"""
 		for obj in self.measure_condition_list:
 			obj.action = "restart"
 			obj.update_type = "3"
@@ -184,7 +197,6 @@ class measure(object):
 		s = s.replace("[MEASURE_TYPE_ID]",                    f.mstr(self.measure_type_id))
 		s = s.replace("[GEOGRAPHICAL_AREA_ID]",               f.mstr(self.geographical_area_id))
 		s = s.replace("[GOODS_NOMENCLATURE_ITEM_ID]",         f.mstr(self.goods_nomenclature_item_id))
-		#s = s.replace("[VALIDITY_START_DATE]",                f.mdate(self.validity_start_date))
 		s = s.replace("[VALIDITY_START_DATE]",                self.validity_start_date)
 		s = s.replace("[MEASURE_GENERATING_REGULATION_ROLE]", f.mstr(self.measure_generating_regulation_role))
 		s = s.replace("[MEASURE_GENERATING_REGULATION_ID]",   f.mstr(self.measure_generating_regulation_id))
@@ -226,12 +238,12 @@ class measure(object):
 		for obj in self.measure_component_list:
 			self.component_content += obj.xml()
 
-		"""
 		for obj in self.measure_excluded_geographical_area_list:
 			#writeprint ("Printing exclusion")
 			obj.measure_sid = self.measure_sid
 			self.exclusion_content += obj.xml()
 
+		"""
 		for obj in self.measure_condition_list:
 			obj.action = self.action
 			self.condition_content += obj.xml()
@@ -258,3 +270,14 @@ class measure(object):
 
 		g.app.transaction_id += 1
 		return (s)
+
+	def apply_footnote(self, footnote_string):
+		footnote_type_id 	= footnote_string[0:2]
+		footnote_id			= footnote_string[2:5]
+		obj_footnote		= footnote_association_measure(footnote_type_id, footnote_id)
+		self.measure_footnote_list.append (obj_footnote)
+
+		
+	def apply_conditions(self, my_condition):
+		for item in my_condition.conditions:
+			self.measure_condition_list.append (item)

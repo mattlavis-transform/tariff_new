@@ -34,11 +34,11 @@ class profile_23500_measure_type(object):
 			national = None
 
 		if update_type == "1":	# Update
+			operation = "U"
 			if g.app.perform_taric_validation == True:
 				if measure_type_id not in measure_types:
 					g.app.add_load_error("MTx - The measure type code must exist for updates. Aborting while trying to update measure type " + measure_type_id + ".")
 
-				operation = "U"
 			app.doprint ("Updating measure type " + str(measure_type_id))
 		elif update_type == "2":	# DELETE
 			operation = "D"

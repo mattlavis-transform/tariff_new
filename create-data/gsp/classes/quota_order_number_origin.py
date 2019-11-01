@@ -15,9 +15,11 @@ class quota_order_number_origin(object):
 
 	def get_geography(self):
 		sql = """SELECT geographical_area_sid, geographical_code FROM geographical_areas WHERE
-		geographical_area_id = '""" + self.geographical_area_id + """' ORDER BY validity_start_date DESC LIMIT 1"""
+		geographical_area_id = %s ORDER BY validity_start_date DESC LIMIT 1"""
+		params = []
+		params.append (self.geographical_area_id)
 		cur = g.app.conn.cursor()
-		cur.execute(sql)
+		cur.execute(sql, params)
 		rows = cur.fetchall()
 		if len(rows) > 0:
 			self.geographical_area_sid	= rows[0][0]

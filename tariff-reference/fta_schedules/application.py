@@ -84,6 +84,12 @@ class application(object):
 		quota_scope, quota_staging
 		from ml.extended_trade_agreement_information where fta_name = '""" + self.country_profile + """'"""
 
+		"""
+		print (sql)
+		print (self.DBASE_EU)
+		print (self.DBASE_UK)
+		"""
+
 		cur = self.conn_uk.cursor()
 		cur.execute(sql)
 		rows = cur.fetchall()
@@ -151,9 +157,6 @@ class application(object):
 		with open(self.CONFIG_FILE, 'r') as f:
 			my_dict = json.load(f)
 
-		#self.DBASE	= my_dict['dbase']
-		#self.DBASE	= "tariff_eu"
-		
 		self.DBASE_EU	= my_dict['dbase_reference_documents']
 		self.DBASE_UK	= my_dict['dbase_reference_documents']
 		
@@ -166,7 +169,6 @@ class application(object):
 		self.all_country_profiles = my_dict['country_profiles']
 
 		# Connect to the database
-		#print (self.DBASE)
 		self.connect()
 
 	def get_country_list(self):
@@ -339,16 +341,12 @@ class application(object):
 					found = True
 					break
 		if found == False:
-			#print ("Error matching SIVs on", commodity_code, " for date", validity_start_date)
 			if commodity_code[8:10] != "00":
 				commodity_code = commodity_code[0:8] + "00"
-				#print (commodity_code)
-				#sys.exit()
 				mfn_rate = self.get_mfn_rate(commodity_code, validity_start_date, validity_end_date)
 			elif commodity_code[6:10] != "0000":
 				commodity_code = commodity_code[0:6] + "00"
 				mfn_rate = self.get_mfn_rate(commodity_code, validity_start_date, validity_end_date)
-				#pass
 		return (mfn_rate)
 
 	def get_meursing_components_for_erga_omnes(self):

@@ -13,8 +13,9 @@ class profile_37500_quota_balance_event(object):
 		last_import_date_in_allocation	= app.get_date_value(oMessage, ".//oub:last.import.date.in.allocation", True)
 
 
-		if quota_definition_sid not in g.app.quota_definitions:
-			g.app.add_load_error("Quota definition does not exist in loading quota balance for definition " + str(quota_definition_sid))
+		if g.app.perform_taric_validation == True:
+			if quota_definition_sid not in g.app.quota_definitions:
+				g.app.add_load_error("Quota definition does not exist in loading quota balance for definition " + str(quota_definition_sid))
 
 
 		if update_type == "1":	# Update

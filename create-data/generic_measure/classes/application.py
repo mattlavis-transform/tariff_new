@@ -524,17 +524,6 @@ class application(object):
 
 	def get_preferences(self, geographical_area_id):
 		master_measure_list = []
-		# OLD
-		sql = """
-		select m.measure_sid, m.goods_nomenclature_item_id, m.validity_start_date, m.validity_end_date,
-		mc.duty_expression_id, mc.duty_amount, mc.monetary_unit_code, mc.measurement_unit_code, mc.measurement_unit_qualifier_code
-		from ml.v5_2019 m left outer join measure_components mc
-		on m.measure_sid = mc.measure_sid
-		where geographical_area_id = '""" + geographical_area_id + """'
-		and measure_type_id in ('142', '145')
-		order by goods_nomenclature_item_id, duty_expression_id
-		"""
-		# NEW
 		sql = """
 		select m.measure_sid, m.goods_nomenclature_item_id, m.validity_start_date, m.validity_end_date,
 		mc.duty_expression_id, mc.duty_amount, mc.monetary_unit_code, mc.measurement_unit_code, mc.measurement_unit_qualifier_code

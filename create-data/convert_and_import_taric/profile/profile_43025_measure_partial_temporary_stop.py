@@ -25,21 +25,22 @@ class profile_43025_measure_partial_temporary_stop(object):
 			operation = "C"
 			app.doprint ("Creating measure partial temporary stop " + str(measure_sid))
 
-		sql = "select measure_sid from measures where measure_sid = %s limit 1"
-		params = [
-			str(measure_sid)
-		]
-		cur = g.app.conn.cursor()
-		cur.execute(sql, params)
-		rows = cur.fetchall()
-		try:
-			row = rows[0]
-			measure_exists = True
-		except:
-			measure_exists = False
+		if g.app.perform_taric_validation == True:
+			sql = "select measure_sid from measures where measure_sid = %s limit 1"
+			params = [
+				str(measure_sid)
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			try:
+				row = rows[0]
+				measure_exists = True
+			except:
+				measure_exists = False
 
-		if measure_exists == False:
-			g.app.add_load_error("DBFK: measure partial temporary stop - please revert database.  No measure with SID " + str(measure_sid))
+			if measure_exists == False:
+				g.app.add_load_error("DBFK: measure partial temporary stop - please revert database.  No measure with SID " + str(measure_sid))
 
 
 

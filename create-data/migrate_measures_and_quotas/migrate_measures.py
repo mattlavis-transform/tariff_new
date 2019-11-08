@@ -17,6 +17,7 @@ app.get_measure_partial_temporary_stops()
 
 app.terminate_measures()
 app.restart_measures()
+app.append_seasonal_goods()
 
 app.write_content()
 app.validate(app.output_filename)

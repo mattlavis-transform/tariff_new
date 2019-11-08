@@ -29,6 +29,7 @@ from classes.base_regulation import base_regulation
 from classes.business_rules import business_rules
 from classes.quota_balance import quota_balance
 from classes.quota_description import quota_description
+from classes.goods_nomenclature import goods_nomenclature
 
 from progressbar import ProgressBar
 import classes.functions as fn
@@ -1162,6 +1163,12 @@ class application(object):
 			s = s.strip(",")
 		return (s)
 
+
+	def list_to_tuple(self, my_list):
+		s = tuple(my_list)
+		return (s)
+
+
 	def get_siv_measures(self):
 		pass
 
@@ -1175,43 +1182,41 @@ class application(object):
 		# dq (self.scope)
 		country_clause = ""
 
-		#if self.country_limit != "":
-		#	country_clause = " AND geographical_area_id = '" + self.country_limit + "' "
-
-		# print ("function get_measures", self.scope)
-		#sys.exit()
-
 		
 		if self.scope == "country":
-			my_geo_ids = self.list_to_sql(self.country_codes)
+			self.my_geo_ids			= tuple(self.country_codes)
+			self.my_measure_types	= tuple(self.preferential_measure_list)
 
-			my_measure_types = self.list_to_sql(self.preferential_measure_list)
-
-			sql = """SELECT measure_sid, ordernumber, measure_type_id, validity_start_date, validity_end_date,
-			geographical_area_id, goods_nomenclature_item_id, additional_code_type_id,
-			additional_code_id, reduction_indicator, measure_generating_regulation_role,
-			measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
-			stopped_flag, geographical_area_sid, goods_nomenclature_sid,
-			additional_code_sid, export_refund_nomenclature_sid
-			FROM ml.get_current_measures m WHERE geographical_area_id IN (""" + my_geo_ids + """)
-			AND measure_type_id IN (""" + my_measure_types + """) ORDER BY measure_sid
-			"""
-
-			sql = """SELECT measure_sid, ordernumber, measure_type_id, m.validity_start_date, m.validity_end_date,
+			sql = """select measure_sid, ordernumber, measure_type_id, m.validity_start_date, m.validity_end_date,
 			geographical_area_id, m.goods_nomenclature_item_id, additional_code_type_id,
 			additional_code_id, reduction_indicator, measure_generating_regulation_role,
 			measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
 			stopped_flag, geographical_area_sid, m.goods_nomenclature_sid,
-			additional_code_sid, export_refund_nomenclature_sid
-			FROM ml.measures_real_end_dates m, goods_nomenclatures g
-			WHERE geographical_area_id IN (""" + my_geo_ids + """)
+			additional_code_sid, export_refund_nomenclature_sid,
+			case
+				when m.validity_end_date is null THEN 999
+				else (1 + (TO_DATE(m.validity_end_date, 'YYYY-MM-DD') - TO_DATE(m.validity_start_date, 'YYYY-MM-DD')))
+			end as measure_extent
+			from ml.measures_real_end_dates m, goods_nomenclatures g
+			where geographical_area_id IN %s
 			and m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
 			and g.producline_suffix = '80'
-			AND measure_type_id IN (""" + my_measure_types + """)
-			and (m.validity_end_date is null or m.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """')
+			and measure_type_id IN %s
+			--and m.validity_end_date is null
+			and (m.validity_end_date is null  or m.validity_start_date >= %s)
 			and g.validity_end_date is null
-			ORDER BY measure_sid
+			order BY measure_sid
 			"""
+
+
+			params = [
+				self.my_geo_ids,
+				self.my_measure_types,
+				"2018-01-01"
+			]
+			cur = self.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
 
 		elif self.scope == "quotas":
 			sql = """SELECT measure_sid, ordernumber, measure_type_id, validity_start_date, validity_end_date,
@@ -1219,10 +1224,13 @@ class application(object):
 			additional_code_id, reduction_indicator, measure_generating_regulation_role,
 			measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
 			stopped_flag, geographical_area_sid, goods_nomenclature_sid,
-			additional_code_sid, export_refund_nomenclature_sid
+			additional_code_sid, export_refund_nomenclature_sid, 999 as extent
 			FROM ml.measures_real_end_dates m WHERE ordernumber IS NOT NULL
 			ORDER BY measure_sid
 			"""
+			cur = self.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
 
 		elif self.scope == "measuretypes":
 			if self.measure_type_string in ("agri"):
@@ -1232,7 +1240,7 @@ class application(object):
 				additional_code_id, reduction_indicator, measure_generating_regulation_role,
 				measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
 				stopped_flag, geographical_area_sid, m.goods_nomenclature_sid,
-				additional_code_sid, export_refund_nomenclature_sid
+				additional_code_sid, export_refund_nomenclature_sid, 999 as extent
 				FROM ml.measures_real_end_dates m left outer join goods_nomenclatures g
 				on m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
 				WHERE measure_type_id IN (""" + self.list_to_string(self.measure_type_list) + """)
@@ -1241,6 +1249,9 @@ class application(object):
 				AND (m.validity_end_date is null or m.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """')
 				ORDER BY measure_sid
 				"""
+				cur = self.conn.cursor()
+				cur.execute(sql, params)
+				rows = cur.fetchall()
 			else:
 				sql = """
 				SELECT measure_sid, ordernumber, measure_type_id, m.validity_start_date, m.validity_end_date,
@@ -1248,7 +1259,7 @@ class application(object):
 				additional_code_id, reduction_indicator, measure_generating_regulation_role,
 				measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
 				stopped_flag, geographical_area_sid, m.goods_nomenclature_sid,
-				additional_code_sid, export_refund_nomenclature_sid
+				additional_code_sid, export_refund_nomenclature_sid, 999 as extent
 				FROM ml.measures_real_end_dates m, goods_nomenclatures g
 				WHERE measure_type_id IN (""" + self.list_to_string(self.measure_type_list) + """)
 				""" + country_clause + """
@@ -1258,6 +1269,9 @@ class application(object):
 				AND (m.validity_end_date is null or m.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """')
 				ORDER BY measure_sid
 				"""
+				cur = self.conn.cursor()
+				cur.execute(sql, params)
+				rows = list(cur.fetchall())
 
 		elif self.scope == "regulation":
 			if "," in self.regulation_string:
@@ -1284,7 +1298,7 @@ class application(object):
 			additional_code_id, reduction_indicator, measure_generating_regulation_role,
 			measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
 			stopped_flag, geographical_area_sid, m.goods_nomenclature_sid,
-			additional_code_sid, export_refund_nomenclature_sid
+			additional_code_sid, export_refund_nomenclature_sid, 999 as extent
 			FROM ml.get_current_measures m, ml.goods_nomenclatures gn
 			WHERE m.goods_nomenclature_item_id = gn.goods_nomenclature_item_id
 			AND (gn.validity_end_date IS NULL OR gn.validity_end_date > CURRENT_DATE) """ + clause + country_clause + """
@@ -1292,24 +1306,9 @@ class application(object):
 			"""
 
 
-		# Write the data retrieved to a CSV - just for debug purposes, this is actually not required
-		cur = self.conn.cursor()
-		cur.execute(sql)
-		rows = cur.fetchall()
-		m = list(rows)
-		filename = os.path.join(self.CSV_DIR, "measures.csv")
-		with open(filename, mode='w', newline='', encoding="utf-8") as file:
-			writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-			writer.writerow(["Measure SID", "Order number", "Measure type", "Start date", "End date",
-			"Geo", "Commodity", "additional_code_type_id",
-			"additional_code_id", "reduction_indicator", "measure_generating_regulation_role",
-			"measure_generating_regulation_id", "justification_regulation_role", "justification_regulation_id",
-			"stopped_flag", "geographical_area_sid", "goods_nomenclature_sid",
-			"additional_code_sid", "export_refund_nomenclature_sid"])
-
-			for item in m:
-				writer.writerow(item)
-		file.close()
+			cur = self.conn.cursor()
+			cur.execute(sql)
+			rows = cur.fetchall()
 
 		# Transfer the items retrieved from the database into a Python list entitles "measure_list"
 		self.d("Creating list of measures")
@@ -1320,26 +1319,27 @@ class application(object):
 		self.delete_count	= 0
 		self.recreate_count	= 0
 
-		for item in m:
-			measure_sid 						= item[0]
-			ordernumber							= item[1]
-			measure_type_id						= item[2]
-			validity_start_date					= item[3]
-			validity_end_date					= item[4]
-			geographical_area_id				= item[5]
-			goods_nomenclature_item_id			= item[6]
-			additional_code_type_id				= item[7]
-			additional_code_id					= item[8]
-			reduction_indicator					= item[9]
-			measure_generating_regulation_role	= item[10]
-			measure_generating_regulation_id	= item[11]
-			justification_regulation_role		= item[12]
-			justification_regulation_id			= item[13]
-			stopped_flag						= item[14]
-			geographical_area_sid				= item[15]
-			goods_nomenclature_sid				= item[16]
-			additional_code_sid					= item[17]
-			export_refund_nomenclature_sid		= item[18]
+		for row in rows:
+			measure_sid 						= row[0]
+			ordernumber							= row[1]
+			measure_type_id						= row[2]
+			validity_start_date					= row[3]
+			validity_end_date					= row[4]
+			geographical_area_id				= row[5]
+			goods_nomenclature_item_id			= row[6]
+			additional_code_type_id				= row[7]
+			additional_code_id					= row[8]
+			reduction_indicator					= row[9]
+			measure_generating_regulation_role	= row[10]
+			measure_generating_regulation_id	= row[11]
+			justification_regulation_role		= row[12]
+			justification_regulation_id			= row[13]
+			stopped_flag						= row[14]
+			geographical_area_sid				= row[15]
+			goods_nomenclature_sid				= row[16]
+			additional_code_sid					= row[17]
+			export_refund_nomenclature_sid		= row[18]
+			extent								= row[19]
 
 			measure_object = measure(measure_sid, ordernumber, measure_type_id,
 			validity_start_date, validity_end_date, geographical_area_id, goods_nomenclature_item_id,
@@ -1367,14 +1367,19 @@ class application(object):
 
 		# Very dull, but we need to check if the measures still exist on the staging database
 		# If they do not, then we need to omit them completely from processing
+		"""
 		for m in self.measure_list:
-			sql = "select * from measures where measure_sid = " + str(m.measure_sid)
+			sql = "select * from measures where measure_sid = %s"
+			params = [
+				str(m.measure_sid)
+			]
 			cur = self.conn_staging.cursor()
-			cur.execute(sql)
+			cur.execute(sql, params)
 			rows = cur.fetchall()
 			if len(rows) == 0:
 				m.omit = True
 				print ("Missing measure on ", str(m.measure_sid), m.goods_nomenclature_item_id, m.geographical_area_id)
+		"""
 		
 		# Get a list of all measures into a string for use in the SQL statements
 		self.measure_clause = ""
@@ -1385,6 +1390,129 @@ class application(object):
 
 		# So this function has literally just got hold of the measures and that's it
 		# no actions, and no presumptions based on terminate vs. restart
+
+
+	def append_seasonal_goods(self):
+		# This function is used to append the list of seasonal goods to the measures to be migrated
+		# 
+		self.d ("Getting seasonal products", False)
+		start_date = '2018-01-01'
+		
+		sql = """SELECT measure_sid, ordernumber, measure_type_id, m.validity_start_date, m.validity_end_date,
+		geographical_area_id, m.goods_nomenclature_item_id, additional_code_type_id,
+		additional_code_id, reduction_indicator, measure_generating_regulation_role,
+		measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
+		stopped_flag, geographical_area_sid, m.goods_nomenclature_sid,
+		additional_code_sid, export_refund_nomenclature_sid,
+		CASE
+			WHEN m.validity_end_date is null THEN 999
+			ELSE (1 + (TO_DATE(m.validity_end_date, 'YYYY-MM-DD') - TO_DATE(m.validity_start_date, 'YYYY-MM-DD')))
+		end as measure_extent
+		FROM ml.measures_real_end_dates m, goods_nomenclatures g
+		WHERE geographical_area_id IN %s
+		and m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
+		and g.producline_suffix = '80'
+		AND measure_type_id IN %s
+		and m.validity_end_date is not null
+		and m.validity_end_date >= %s
+		and g.validity_end_date is null
+		ORDER BY m.goods_nomenclature_item_id, m.validity_start_date desc;"""
+
+		params = [
+			self.my_geo_ids,
+			self.my_measure_types,
+			start_date
+		]
+		cur = self.conn.cursor()
+		cur.execute(sql, params)
+		rows = cur.fetchall()
+
+		self.seasonal_measures = []
+		for row in rows:
+			measure_sid 						= row[0]
+			ordernumber							= row[1]
+			measure_type_id						= row[2]
+			validity_start_date					= row[3]
+			validity_end_date					= row[4]
+			geographical_area_id				= row[5]
+			goods_nomenclature_item_id			= row[6]
+			additional_code_type_id				= row[7]
+			additional_code_id					= row[8]
+			reduction_indicator					= row[9]
+			measure_generating_regulation_role	= row[10]
+			measure_generating_regulation_id	= row[11]
+			justification_regulation_role		= row[12]
+			justification_regulation_id			= row[13]
+			stopped_flag						= row[14]
+			geographical_area_sid				= row[15]
+			goods_nomenclature_sid				= row[16]
+			additional_code_sid					= row[17]
+			export_refund_nomenclature_sid		= row[18]
+			extent								= row[19]
+			
+			measure_object = measure(measure_sid, ordernumber, measure_type_id,
+			validity_start_date, validity_end_date, geographical_area_id, goods_nomenclature_item_id,
+			additional_code_type_id, additional_code_id, reduction_indicator, measure_generating_regulation_role,
+			measure_generating_regulation_id, justification_regulation_role, justification_regulation_id,
+			stopped_flag, geographical_area_sid, goods_nomenclature_sid,
+			additional_code_sid, export_refund_nomenclature_sid)
+
+			self.seasonal_measures.append (measure_object)
+
+		self.seasonal_products = []
+		self.d ("Creating nomenclature objects")
+		for m in self.seasonal_measures:
+			commodity_found = False
+			for p in self.seasonal_products:
+				if m.goods_nomenclature_item_id == p.goods_nomenclature_item_id:
+					p.measure_list.append (m)
+					commodity_found = True
+					break
+			if commodity_found == False:
+				g = goods_nomenclature(m.goods_nomenclature_item_id)
+				g.measure_list.append(m)
+				self.seasonal_products.append (g)
+
+		self.d ("Rationalising nomenclature objects")
+		for p in self.seasonal_products:
+			p.seasonal_dates = []
+			for m in p.measure_list:
+				m.mark_for_deletion = False
+				d = m.validity_start_date
+				d2 = m.validity_end_date
+				m.validity_start_day	= d.day
+				m.validity_start_month	= d.month
+				m.validity_end_day		= d2.day
+				m.validity_end_month	= d2.month
+				date_period				= str(d.day).zfill(2) + "/" + str(d.month).zfill(2) + " - " + str(d2.day).zfill(2) + "/" + str(d2.month).zfill(2)
+				if date_period in p.seasonal_dates:
+					m.mark_for_deletion = True
+				else:
+					p.seasonal_dates.append (date_period)
+				#print (p.goods_nomenclature_item_id, str(len(p.measure_list)), date_period)
+
+			measure_count = len(p.measure_list)
+			for i in range(measure_count - 1, -1, -1):
+				m = p.measure_list[i]
+				if m.mark_for_deletion == True:
+					del p.measure_list[i]
+
+			for m in p.measure_list:
+				d = m.validity_start_date
+				d2 = m.validity_end_date
+				m.validity_start_day				= d.day
+				m.validity_start_month				= d.month
+				m.validity_end_day					= d2.day
+				m.validity_end_month				= d2.month
+				#print (self.future_regulation_id)
+				m.measure_generating_regulation_id	= self.future_regulation_id
+				m.justification_regulation_id		= self.future_regulation_id
+				date_period							= str(d.day).zfill(2) + "/" + str(d.month).zfill(2) + " - " + str(d2.day).zfill(2) + "/" + str(d2.month).zfill(2)
+				print (p.goods_nomenclature_item_id, str(len(p.measure_list)), date_period, m.measure_sid)
+				m.eu_component_list = m.get_components()
+				self.content += m.seasonal_xml()
+
+
 
 	def get_measure_components(self):
 		# Get components related to all these measures
@@ -1696,6 +1824,8 @@ class application(object):
 		# The following code hunts for SIVs and remove the threshold-based values / replace with standard component
 		#self.d("Checking for SIVs")
 		for obj in self.measure_list:
+			if obj.goods_nomenclature_item_id == "2204309800":
+				print ("Found 2204309800", obj.action, obj.validity_start_date)
 			if obj.omit == False:
 				my_duty_list = []
 				# Search through the measure conditions and if there is a "V" type condition code (an SIV)
@@ -1784,19 +1914,46 @@ class application(object):
 		
 		#self.content = ""
 
+		print (self.action_string, self.scope)
 		if self.action_string == "restart":
 			self.content += "\n<!-- RESTARTS //-->\n\n"
 			self.d("Writing script to restart end-dated measures", False)
 			p = ProgressBar(len(self.enddated_measure_list), sys.stdout)
 			cnt = 1
 			for obj in self.enddated_measure_list:
+				#print (obj.goods_nomenclature_item_id)
 				proceed = False
 				if self.scope == "country":
 					if obj.measure_type_id in ["142", "145", "143", "146"]:
-						proceed = True
+						if obj.validity_end_date == "": # This is new to deal with seasonal goods
+							proceed = True
 				else:
 					proceed = True
 				if proceed == True:
+					# First time round, mark the Meursing components for deletion
+					for component in obj.measure_component_list:
+						component.mark_for_deletion = False
+						if component.duty_expression_id in self.meursing_list:
+							component.mark_for_deletion = True
+
+					# Second, delete the marked components
+					component_count = len(obj.measure_component_list)
+					for i in range(component_count -1, -1, -1):
+						component = obj.measure_component_list[i]
+						if component.mark_for_deletion == True:
+							del obj.measure_component_list[i]
+
+					# Third, look for orphaned max / min components
+					component_count = len(obj.measure_component_list)
+					if component_count == 2:
+						component1 = obj.measure_component_list[0]
+						component2 = obj.measure_component_list[1]
+						if component1.duty_expression_id == "01":
+							if str(component1.measurement_unit_code != ""):
+								if component2.duty_expression_id in ('17', '35', '15'):
+									del obj.measure_component_list[1]
+
+
 					p.print_progress(cnt)
 					cnt += 1
 					obj.action = "restart"

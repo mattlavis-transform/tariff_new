@@ -41,18 +41,19 @@ class footnote(object):
 			out = app.insert_footnote_XML
 		
 		self.description = fn.cleanse(self.description)
-		out = out.replace("[FOOTNOTE_TYPE_ID]", self.footnote_type_id)
-		out = out.replace("[FOOTNOTE_ID]", self.footnote_id)
-		out = out.replace("[DESCRIPTION]", self.description)
-		out = out.replace("[VALIDITY_START_DATE]", "2019-11-01")
-		out = out.replace("[FOOTNOTE_DESCRIPTION_PERIOD_SID]", str(app.base_footnote_description_period_sid))
-		out = out.replace("[TRANSACTION_ID]", str(app.transaction_id))
-		out = out.replace("[MESSAGE_ID1]", str(app.message_id))
-		out = out.replace("[MESSAGE_ID2]", str(app.message_id + 1))
-		out = out.replace("[MESSAGE_ID3]", str(app.message_id + 2))
-		out = out.replace("[RECORD_SEQUENCE_NUMBER1]", str(app.message_id))
-		out = out.replace("[RECORD_SEQUENCE_NUMBER2]", str(app.message_id + 1))
-		out = out.replace("[RECORD_SEQUENCE_NUMBER3]", str(app.message_id + 2))
+
+		out = out.replace("[FOOTNOTE_TYPE_ID]", 				self.footnote_type_id)
+		out = out.replace("[FOOTNOTE_ID]", 						self.footnote_id)
+		out = out.replace("[DESCRIPTION]", 						self.description)
+		out = out.replace("[VALIDITY_START_DATE]", 				app.critical_date_plus_one_string)
+		out = out.replace("[FOOTNOTE_DESCRIPTION_PERIOD_SID]",	str(app.base_footnote_description_period_sid))
+		out = out.replace("[TRANSACTION_ID]",					str(app.transaction_id))
+		out = out.replace("[MESSAGE_ID1]",						str(app.message_id))
+		out = out.replace("[MESSAGE_ID2]",						str(app.message_id + 1))
+		out = out.replace("[MESSAGE_ID3]",						str(app.message_id + 2))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER1]",			str(app.message_id))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER2]",			str(app.message_id + 1))
+		out = out.replace("[RECORD_SEQUENCE_NUMBER3]",			str(app.message_id + 2))
 
 		self.xml = out
 

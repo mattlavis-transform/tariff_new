@@ -28,41 +28,42 @@ class profile_29000_modification_regulation(object):
 
 		
 		# Get the earlier of the 2 - effective or validity end dates
-		if validity_end_date != None and effective_end_date != None:
-			if validity_end_date < effective_end_date:
+		if g.app.perform_taric_validation == True:
+			if validity_end_date != None and effective_end_date != None:
+				if validity_end_date < effective_end_date:
+					my_end_date = validity_end_date
+				else:
+					my_end_date = effective_end_date
+			elif validity_end_date != None:
 				my_end_date = validity_end_date
-			else:
+			elif effective_end_date != None:
 				my_end_date = effective_end_date
-		elif validity_end_date != None:
-			my_end_date = validity_end_date
-		elif effective_end_date != None:
-			my_end_date = effective_end_date
-		else:
-			my_end_date = None
+			else:
+				my_end_date = None
 
-		if my_end_date != None:
-			my_end_date_string = my_end_date.strftime("%Y-%m-%d")
+			if my_end_date != None:
+				my_end_date_string = my_end_date.strftime("%Y-%m-%d")
 
-			if validity_end_date != None or effective_end_date != None:
-				sql = """select measure_sid from ml.measures_real_end_dates
-				where measure_generating_regulation_id = %s and measure_generating_regulation_role = %s'
-				and validity_end_date is not null and validity_end_date > %s order by measure_sid"""
-				
-				params = [
-					modification_regulation_id,
-					modification_regulation_role,
-					my_end_date_string
-				]
+				if validity_end_date != None or effective_end_date != None:
+					sql = """select measure_sid from ml.measures_real_end_dates
+					where measure_generating_regulation_id = %s and measure_generating_regulation_role = %s'
+					and validity_end_date is not null and validity_end_date > %s order by measure_sid"""
+					
+					params = [
+						modification_regulation_id,
+						modification_regulation_role,
+						my_end_date_string
+					]
 
-				cur = g.app.conn.cursor()
-				cur.execute(sql, params)
-				rows = cur.fetchall()
-				if len(rows) != 0:
-					offending_measures = ""
-					for row in rows:
-						offending_measures += str(row[0]) + ", "
+					cur = g.app.conn.cursor()
+					cur.execute(sql, params)
+					rows = cur.fetchall()
+					if len(rows) != 0:
+						offending_measures = ""
+						for row in rows:
+							offending_measures += str(row[0]) + ", "
 
-					g.app.add_load_error("Modification regulation found with a specific end date " + str(modification_regulation_id) + ". This clashes with existing measures - " + offending_measures)
+						g.app.add_load_error("Modification regulation found with a specific end date " + str(modification_regulation_id) + ". This clashes with existing measures - " + offending_measures)
 
 
 		if update_type == "1":	# Update

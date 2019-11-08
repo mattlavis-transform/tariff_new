@@ -29,30 +29,32 @@ class profile_43010_measure_condition(object):
 
 
 		# A measure must exist for a measure condition to be inserted or updated (not deleted, as this may have happened in the same transaction)
-		update_string = g.app.get_update_string(operation)
-		if update_type in ("1", "3"):
-			sql = "select count(measure_sid) from measures where measure_sid = %s"
-			params = [
-				str(measure_sid)
-			]
-			cur = g.app.conn.cursor()
-			cur.execute(sql, params)
-			row = cur.fetchone()
-			if row[0] == 1:
-				g.app.add_load_error("DBFK: attempt to " + update_string + " a measure condition for a measure_sid which does not exist (measure_sid = " + str(measure_sid) + ", measure_condition_sid = " + str(measure_condition_sid) + ")")
+		if g.app.perform_taric_validation == True:
+			update_string = g.app.get_update_string(operation)
+			if update_type in ("1", "3"):
+				sql = "select count(measure_sid) from measures where measure_sid = %s"
+				params = [
+					str(measure_sid)
+				]
+				cur = g.app.conn.cursor()
+				cur.execute(sql, params)
+				row = cur.fetchone()
+				if row[0] == 1:
+					g.app.add_load_error("DBFK: attempt to " + update_string + " a measure condition for a measure_sid which does not exist (measure_sid = " + str(measure_sid) + ", measure_condition_sid = " + str(measure_condition_sid) + ")")
 
 
 		# You must not be able to insert a new measure condition if that measure condition already exists
-		if update_type == "3":
-			sql = "select count(measure_sid) from measure_conditions where measure_condition_sid = %s"
-			params = [
-				str(measure_condition_sid)
-			]
-			cur = g.app.conn.cursor()
-			cur.execute(sql, params)
-			row = cur.fetchone()
-			if row[0] == 1:
-				g.app.add_load_error("DBFK: attempt to insert a measure condition which already exists (measure_condition_sid = " + str(measure_condition_sid))
+		if g.app.perform_taric_validation == True:
+			if update_type == "3":
+				sql = "select count(measure_sid) from measure_conditions where measure_condition_sid = %s"
+				params = [
+					str(measure_condition_sid)
+				]
+				cur = g.app.conn.cursor()
+				cur.execute(sql, params)
+				row = cur.fetchone()
+				if row[0] == 1:
+					g.app.add_load_error("DBFK: attempt to insert a measure condition which already exists (measure_condition_sid = " + str(measure_condition_sid))
 
 
 		cur = app.conn.cursor()

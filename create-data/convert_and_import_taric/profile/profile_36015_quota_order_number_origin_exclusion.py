@@ -9,16 +9,17 @@ class profile_36015_quota_order_number_origin_exclusion(object):
 		quota_order_number_origin_sid	= app.get_number_value(oMessage, ".//oub:quota.order.number.origin.sid", True)
 		excluded_geographical_area_sid	= app.get_number_value(oMessage, ".//oub:excluded.geographical.area.sid", True)
 
-		# Check the origin exists
-		sql = "select quota_order_number_origin_sid from quota_order_number_origins where quota_order_number_origin_sid = %s"
-		params = [
-			str(quota_order_number_origin_sid)
-		]
-		cur = g.app.conn.cursor()
-		cur.execute(sql, params)
-		rows = cur.fetchall()
-		if len(rows) == 0:
-			g.app.add_load_error("DBFK quota_order_number_origin_sid " + str(quota_order_number_origin_sid) + " does not exist.")
+		if g.app.perform_taric_validation == True:
+			# Check the origin exists
+			sql = "select quota_order_number_origin_sid from quota_order_number_origins where quota_order_number_origin_sid = %s"
+			params = [
+				str(quota_order_number_origin_sid)
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			if len(rows) == 0:
+				g.app.add_load_error("DBFK quota_order_number_origin_sid " + str(quota_order_number_origin_sid) + " does not exist.")
 
 		if update_type == "1":	# Update
 			operation = "U"

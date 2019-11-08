@@ -18,11 +18,13 @@ class measure_component(object):
 
 	def xml(self, measure_type_id = -1, goods_nomenclature_item_id = -1):
 		app = g.app
+		"""
 		if app.remove_Meursing == True:
 			if self.action == "restart":
 				if self.duty_expression_id in app.meursing_list:
 					#print ("Omitting a Meursing")
 					return ""
+		"""
 
 		# Get duty amounts for special cases
 

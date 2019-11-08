@@ -11,25 +11,26 @@ class profile_37005_quota_association(object):
 		relation_type				= app.get_value(oMessage, ".//oub:relation.type", True)
 		coefficient				    = app.get_value(oMessage, ".//oub:coefficient", True)
 
-		sql = "select quota_definition_sid from quota_definitions where quota_definition_sid = %s"
-		params = [
-			str(main_quota_definition_sid)
-		]
-		cur = g.app.conn.cursor()
-		cur.execute(sql, params)
-		rows = cur.fetchall()
-		if len(rows) == 0:
-			g.app.add_load_error("DBFK - On loading quota association, cannt find quota definition ID " + str(main_quota_definition_sid))
+		if g.app.perform_taric_validation == True:
+			sql = "select quota_definition_sid from quota_definitions where quota_definition_sid = %s"
+			params = [
+				str(main_quota_definition_sid)
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			if len(rows) == 0:
+				g.app.add_load_error("DBFK - On loading quota association, cannt find quota definition ID " + str(main_quota_definition_sid))
 
-		sql = "select quota_definition_sid from quota_definitions where quota_definition_sid = %s"
-		params = [
-			str(sub_quota_definition_sid)
-		]
-		cur = g.app.conn.cursor()
-		cur.execute(sql, params)
-		rows = cur.fetchall()
-		if len(rows) == 0:
-			g.app.add_load_error("DBFK - On loading quota association, cannt find quota definition ID " + str(sub_quota_definition_sid))
+			sql = "select quota_definition_sid from quota_definitions where quota_definition_sid = %s"
+			params = [
+				str(sub_quota_definition_sid)
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			if len(rows) == 0:
+				g.app.add_load_error("DBFK - On loading quota association, cannt find quota definition ID " + str(sub_quota_definition_sid))
 
 		if update_type == "1":		# Update
 			operation = "U"

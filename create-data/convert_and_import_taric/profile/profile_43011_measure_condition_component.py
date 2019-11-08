@@ -12,16 +12,17 @@ class profile_43011_measure_condition_component(object):
 		measurement_unit_code			= app.get_value(oMessage, ".//oub:measurement.unit.code", True)
 		measurement_unit_qualifier_code	= app.get_value(oMessage, ".//oub:measurement.unit.qualifier.code", True)
 
-		if update_type in ("1", "3"):	# Update or insert
-			sql = "select measure_condition_sid from measure_conditions where measure_condition_sid = %s "
-			params = [
-				str(measure_condition_sid)
-			]
-			cur = g.app.conn.cursor()
-			cur.execute(sql, params)
-			rows = cur.fetchall()
-			if len(rows) == 0:
-				g.app.add_load_error("DBFK: measure condition component tries to use SID " + str(measure_condition_sid))
+		if g.app.perform_taric_validation == True:
+			if update_type in ("1", "3"):	# Update or insert
+				sql = "select measure_condition_sid from measure_conditions where measure_condition_sid = %s "
+				params = [
+					str(measure_condition_sid)
+				]
+				cur = g.app.conn.cursor()
+				cur.execute(sql, params)
+				rows = cur.fetchall()
+				if len(rows) == 0:
+					g.app.add_load_error("DBFK: measure condition component tries to use SID " + str(measure_condition_sid))
 
 		if update_type == "1":	# Update
 			operation = "U"

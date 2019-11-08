@@ -2,6 +2,7 @@ import classes.functions as f
 import classes.globals as g
 import datetime
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import sys
 
 from classes.measure_component import measure_component
@@ -69,7 +70,7 @@ class measure(object):
 		# Get action required on this measure
 		# The action string is specified in the arguments to the script
 		app = g.app
-		#print (self.validity_end_date)
+
 		if app.action_string == "terminate":
 			if self.validity_start_date < app.critical_date:
 				if self.validity_end_date == None:					# Starts before Brexit, but has no end date, therefore needs stopping @ Brexit (and not restarting)
@@ -202,7 +203,6 @@ class measure(object):
 			self.justification_regulation_role = ""
 		else:
 			if self.action == "restart":
-				#print (self.measure_sid, self.action)
 				self.justification_regulation_id	= self.measure_generating_regulation_id
 				self.justification_regulation_role	= self.measure_generating_regulation_role
 			else:
@@ -331,3 +331,135 @@ class measure(object):
 		s = s.replace("[FOOTNOTES]\n", 				self.footnote_content)
 		s = s.replace("[PTS]\n",	 				self.pts_content)
 		return (s)
+
+	def get_components(self):
+		self.component_list = []
+		sql = """select duty_expression_id, duty_amount, monetary_unit_code,
+		measurement_unit_code, measurement_unit_qualifier_code from measure_components
+		where measure_sid = %s;"""
+		params = [
+			self.measure_sid
+		]
+		cur = g.app.conn.cursor()
+		cur.execute(sql, params)
+		rows = cur.fetchall()
+		if len(rows) == 0:
+			# This just pulls out the ad valorem part of the EPS duty
+			sql = """select duty_amount from measure_condition_components mcc, measure_conditions mc
+			where mcc.measure_condition_sid = mc.measure_condition_sid
+			and measure_sid = %s and duty_expression_id = '01';"""
+			params = [
+				self.measure_sid
+			]
+			cur = g.app.conn.cursor()
+			cur.execute(sql, params)
+			rows = cur.fetchall()
+			# print (len(rows))
+			duty_list = []
+			for row in rows:
+				duty_amount = row[0]
+				if duty_amount not in duty_list:
+					duty_list.append (duty_amount)
+			if len (duty_list) > 1:
+				print ("We have an EPS problem on measure", str(self.measure_sid))
+				sys.exit()
+			else:
+				mc = measure_component(self.measure_sid, "01", duty_list[0], "", "", "")
+
+				mc.measure_sid						= self.measure_sid
+				mc.duty_expression_id				= "01"
+				mc.duty_amount						= duty_list[0]
+				mc.measurement_unit_code			= ""
+				mc.measurement_unit_qualifier_code	= ""
+				mc.monetary_unit_code				= ""
+				self.measure_component_list.append (mc)
+		else:
+			# These are just standard measure components, not EPS rates
+			for row in rows:
+				mc = measure_component(self.measure_sid, row[0], row[1], row[2], row[3], row[4])
+				mc.measure_sid						= self.measure_sid
+				mc.duty_expression_id				= row[0]
+				mc.duty_amount						= row[1]
+				mc.monetary_unit_code				= row[2]
+				mc.measurement_unit_code			= row[3]
+				mc.measurement_unit_qualifier_code	= row[4]
+				self.measure_component_list.append (mc)				
+
+	def seasonal_xml(self):
+		g.app.transaction_id	+= 1
+		g.app.sequence_id		+= 1
+		out = ""
+		# How many years worth of data should we create?
+		# Initial view is 2 years
+		for i in range (0, 3):
+			s = g.app.template_measure
+			g.app.last_measure_sid += 1
+			self.measure_sid = g.app.last_measure_sid
+			s = s.replace("[UPDATE_TYPE]", 							"3")
+			s = s.replace("[TRANSACTION_ID]", 						str(g.app.transaction_id))
+			s = s.replace("[MESSAGE_ID]",             				str(g.app.sequence_id))
+			s = s.replace("[RECORD_SEQUENCE_NUMBER]", 				str(g.app.sequence_id))
+
+			s = s.replace("[MEASURE_SID]",							str(self.measure_sid))
+			s = s.replace("[MEASURE_TYPE_ID]",                  	f.mstr(self.measure_type_id))
+			s = s.replace("[GEOGRAPHICAL_AREA_ID]",             	f.mstr(self.geographical_area_id))
+			s = s.replace("[GOODS_NOMENCLATURE_ITEM_ID]",       	f.mstr(self.goods_nomenclature_item_id))
+			s = s.replace("[ADDITIONAL_CODE_TYPE_ID]", 				"")
+			s = s.replace("[ADDITIONAL_CODE_ID]",	 				"")
+			s = s.replace("[REDUCTION_INDICATOR]",	 				"")
+			s = s.replace("[ORDERNUMBER]",	 						"")
+			s = s.replace("[STOPPED_FLAG]",			 				"0")
+			s = s.replace("[ADDITIONAL_CODE_ID]",	 				"")
+			s = s.replace("[MEASURE_GENERATING_REGULATION_ID]",		self.measure_generating_regulation_id)
+			s = s.replace("[MEASURE_GENERATING_REGULATION_ROLE]",	"1")
+			s = s.replace("[JUSTIFICATION_REGULATION_ID]",			self.justification_regulation_id)
+			s = s.replace("[JUSTIFICATION_REGULATION_ROLE]",		"1")
+			s = s.replace("[GEOGRAPHICAL_AREA_SID]",                f.mstr(self.geographical_area_sid))
+			s = s.replace("[GOODS_NOMENCLATURE_SID]",             	f.mstr(self.goods_nomenclature_sid))
+			s = s.replace("[ADDITIONAL_CODE_SID]",       			"")
+			s = s.replace("[EXPORT_REFUND_NOMENCLATURE_SID]",      	"")
+
+			# Now do the dates
+			start_date			= self.validity_start_date
+			start_date			= start_date + relativedelta(years = i)
+			start_date_string	= datetime.strftime(start_date, "%Y-%m-%d")
+			if start_date_string < g.app.critical_date_plus_one_string:
+				start_date_string = g.app.critical_date_plus_one_string
+			
+			end_date		= self.validity_end_date
+			end_date		= end_date + relativedelta(years = i)
+			end_date_string	= datetime.strftime(end_date, "%Y-%m-%d")
+
+
+			s = s.replace("[VALIDITY_START_DATE]",			      	start_date_string)
+			s = s.replace("[VALIDITY_END_DATE]",			      	end_date_string)
+
+			s = s.replace("\t\t\t\t\t\t<oub:validity.end.date></oub:validity.end.date>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:goods.nomenclature.item.id></oub:goods.nomenclature.item.id>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:additional.code.type></oub:additional.code.type>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:additional.code></oub:additional.code>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:ordernumber></oub:ordernumber>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:reduction.indicator></oub:reduction.indicator>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:justification.regulation.role></oub:justification.regulation.role>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:justification.regulation.id></oub:justification.regulation.id>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:geographical.area.sid></oub:geographical.area.sid>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:goods.nomenclature.sid></oub:goods.nomenclature.sid>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:additional.code.sid></oub:additional.code.sid>\n", "")
+			s = s.replace("\t\t\t\t\t\t<oub:export.refund.nomenclature.sid></oub:export.refund.nomenclature.sid>\n", "")
+
+			self.component_content = ""
+			for obj in self.measure_component_list:
+				g.app.sequence_id += 1
+				obj.measure_sid = self.measure_sid
+				self.component_content += obj.xml(self.measure_type_id, self.goods_nomenclature_item_id)
+
+			s = s.replace("[COMPONENTS]\n", self.component_content)
+			s = s.replace("[CONDITIONS]\n", "")
+			s = s.replace("[CONDITION_COMPONENTS]\n", "")
+			s = s.replace("[EXCLUDED]\n", "")
+			s = s.replace("[FOOTNOTES]\n", "")
+			s = s.replace("[PTS]\n", "")
+
+			out += s
+
+		return (out)

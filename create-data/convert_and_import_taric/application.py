@@ -1,3 +1,4 @@
+
 import xml.etree.ElementTree as ET
 import xmlschema
 import psycopg2
@@ -94,6 +95,22 @@ from profile.profile_30500_regulation_replacement					import profile_30500_regul
 
 
 
+
+
+from profile.profile_32000_meursing_table_plan						import profile_32000_meursing_table_plan
+from profile.profile_32500_meursing_heading							import profile_32500_meursing_heading
+from profile.profile_32505_meursing_heading_text					import profile_32505_meursing_heading_text
+from profile.profile_32510_footnote_association_meursing_heading	import profile_32510_footnote_association_meursing_heading
+
+from profile.profile_33000_meursing_subheading		 				import profile_33000_meursing_subheading
+from profile.profile_34000_meursing_additional_code		 			import profile_34000_meursing_additional_code
+from profile.profile_34005_meursing_table_cell_component		 	import profile_34005_meursing_table_cell_component
+
+
+
+
+
+
 from profile.profile_35000_measure_condition_code					import profile_35000_measure_condition_code
 from profile.profile_35005_measure_condition_code_description		import profile_35005_measure_condition_code_description
 from profile.profile_35500_measure_action							import profile_35500_measure_action
@@ -121,6 +138,7 @@ from profile.profile_40005_goods_nomenclature_indent				import profile_40005_goo
 from profile.profile_40010_goods_nomenclature_description_period	import profile_40010_goods_nomenclature_description_period
 from profile.profile_40015_goods_nomenclature_description			import profile_40015_goods_nomenclature_description
 from profile.profile_40020_footnote_association_goods_nomenclature	import profile_40020_footnote_association_goods_nomenclature
+from profile.profile_40025_nomenclature_group_membership			import profile_40025_nomenclature_group_membership
 from profile.profile_40035_goods_nomenclature_origin				import profile_40035_goods_nomenclature_origin
 from profile.profile_40040_goods_nomenclature_successor				import profile_40040_goods_nomenclature_successor
 
@@ -151,10 +169,10 @@ class application(object):
 		self.reg_count = 0
 		self.clear()
 
-		self.perform_taric_validation = True
-		#self.perform_taric_validation = False
-		self.show_progress = True
-		#self.show_progress = False
+		#self.perform_taric_validation = True
+		self.perform_taric_validation = False
+		#self.show_progress = True
+		self.show_progress = False
 
 		self.BASE_DIR			= os.path.dirname(os.path.abspath(__file__))
 		self.TEMPLATE_DIR		= os.path.join(self.BASE_DIR,	"templates")
@@ -227,6 +245,11 @@ class application(object):
 				s2 = row[0] + "," + row[1] + "," + row[2] + "," + row[3] + "," + row[4] + "," + row[5]
 				self.log_list_string.append (s2)
 
+	def num_to_bool(self, num):
+		if num == 0:
+			return False
+		else:
+			return True
 
 
 	def get_config(self):
@@ -244,6 +267,10 @@ class application(object):
 
 		self.DBASE							= my_dict['dbase']
 		self.p								= my_dict['p']
+
+		self.perform_taric_validation		= self.num_to_bool(my_dict['perform_taric_validation'])
+		self.show_progress					= self.num_to_bool(my_dict['show_progress'])
+
 
 		my_script = sys.argv[0]
 		my_script = os.path.basename(my_script)
@@ -1735,7 +1762,7 @@ class application(object):
 		try:
 			tree = ET.parse(self.xml_file_In)
 		except:
-			print ("The selected file could not be found")
+			print ("The selected file could not be found or is not a valid, well-formed XML file")
 			sys.exit(0)
 		root = tree.getroot()
 
@@ -1999,6 +2026,45 @@ class application(object):
 					o = profile_30500_regulation_replacement()
 					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
 
+
+				# 32000	MEURSING TABLE PLAN
+				if record_code == "320" and sub_record_code == "00":
+					o = profile_32000_meursing_table_plan()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+
+				# 32500	MEURSING HEADING
+				if record_code == "325" and sub_record_code == "00":
+					o = profile_32500_meursing_heading()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+
+				# 32500	MEURSING HEADING TEXT
+				if record_code == "325" and sub_record_code == "05":
+					o = profile_32505_meursing_heading_text()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+				# 32510	MEURSING HEADING TEXT
+				if record_code == "325" and sub_record_code == "10":
+					o = profile_32510_footnote_association_meursing_heading()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+
+				# 33000	MEURSING SUBHEADING
+				if record_code == "330" and sub_record_code == "00":
+					o = profile_33000_meursing_subheading()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+				# 34000	MEURSING SUBHEADING
+				if record_code == "340" and sub_record_code == "00":
+					o = profile_34000_meursing_additional_code()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
+				# 34005	MEURSING TABLE CELL COMPONENT
+				if record_code == "340" and sub_record_code == "05":
+					o = profile_34005_meursing_table_cell_component()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
 				# 35000	MEASURE CONDITION
 				if record_code == "350" and sub_record_code == "00":
 					o = profile_35000_measure_condition_code()
@@ -2114,6 +2180,11 @@ class application(object):
 					o = profile_40020_footnote_association_goods_nomenclature()
 					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
 
+				# 40025 NOMENCLATURE GROUP MEMBERSHIP
+				if record_code == "400" and sub_record_code == "25":
+					o = profile_40025_nomenclature_group_membership()
+					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
 				# 40035	GOODS NOMENCLATURE ORIGIN
 				if record_code == "400" and sub_record_code == "35":
 					o = profile_40035_goods_nomenclature_origin()
@@ -2170,6 +2241,7 @@ class application(object):
 				if record_code == "440" and sub_record_code == "05":
 					o = profile_44005_monetary_exchange_rate()
 					o.import_xml(self, update_type, oMessage, transaction_id, message_id)
+
 
 		self.log_handle.close()
 

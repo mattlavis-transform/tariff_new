@@ -1,38 +1,32 @@
-import psycopg2
 import common.globals as g
 
+
 class profile_40040_goods_nomenclature_successor(object):
-	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
-		g.app.message_count += 1
-		operation_date				        = app.getTimestamp()
-		goods_nomenclature_sid		        = app.get_number_value(oMessage, ".//oub:goods.nomenclature.sid", True)
-		absorbed_goods_nomenclature_item_id	= app.get_value(oMessage, ".//oub:absorbed.goods.nomenclature.item.id", True)
-		absorbed_productline_suffix			= app.get_value(oMessage, ".//oub:absorbed.productline.suffix", True)
-		goods_nomenclature_item_id	        = app.get_value(oMessage, ".//oub:goods.nomenclature.item.id", True)
-		productline_suffix			        = app.get_value(oMessage, ".//oub:productline.suffix", True)
+    def import_node(self, app, update_type, omsg, transaction_id, message_id, record_code, sub_record_code):
+        g.app.message_count += 1
+        operation_date = app.get_timestamp()
+        goods_nomenclature_sid = app.get_number_value(omsg, ".//oub:goods.nomenclature.sid", True)
+        absorbed_goods_nomenclature_item_id = app.get_value(omsg, ".//oub:absorbed.goods.nomenclature.item.id", True)
+        absorbed_productline_suffix = app.get_value(omsg, ".//oub:absorbed.productline.suffix", True)
+        goods_nomenclature_item_id = app.get_value(omsg, ".//oub:goods.nomenclature.item.id", True)
+        productline_suffix = app.get_value(omsg, ".//oub:productline.suffix", True)
 
-		if update_type == "1":	# Update
-			operation = "U"
-			app.doprint ("Updating goods nomenclature successor " + str(goods_nomenclature_sid))
-		elif update_type == "2":	# DELETE
-			operation = "D"
-			app.doprint ("Deleting goods nomenclature successor " + str(goods_nomenclature_sid))
-		else:					# INSERT
-			operation = "C"
-			app.doprint ("Creating goods nomenclature successor " + str(goods_nomenclature_sid))
+        # Set operation types and print load message to screen
+        operation = g.app.get_loading_message(update_type, "goods nomenclature successor", goods_nomenclature_sid)
 
-		cur = app.conn.cursor()
-		try:
-			cur.execute("""INSERT INTO goods_nomenclature_successors_oplog (goods_nomenclature_sid,
-			absorbed_goods_nomenclature_item_id, absorbed_productline_suffix,
-			goods_nomenclature_item_id, productline_suffix,
-			operation, operation_date)
-			VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
-			(goods_nomenclature_sid,
-			absorbed_goods_nomenclature_item_id, absorbed_productline_suffix,
-			goods_nomenclature_item_id, productline_suffix,
-			operation, operation_date))
-			app.conn.commit()
-		except:
-			g.app.log_error("goods nomenclature successor", operation, goods_nomenclature_sid, goods_nomenclature_item_id, transaction_id, message_id)
-		cur.close()
+        # Load data
+        cur = app.conn.cursor()
+        try:
+            cur.execute("""INSERT INTO goods_nomenclature_successors_oplog (goods_nomenclature_sid,
+            absorbed_goods_nomenclature_item_id, absorbed_productline_suffix,
+            goods_nomenclature_item_id, productline_suffix,
+            operation, operation_date)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (goods_nomenclature_sid,
+            absorbed_goods_nomenclature_item_id, absorbed_productline_suffix,
+            goods_nomenclature_item_id, productline_suffix,
+            operation, operation_date))
+            app.conn.commit()
+        except:
+            g.app.record_business_rule_violation("DB", "DB failure", operation, transaction_id, message_id, record_code, sub_record_code, goods_nomenclature_item_id)
+        cur.close()

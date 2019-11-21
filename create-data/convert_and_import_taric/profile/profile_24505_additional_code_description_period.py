@@ -1,33 +1,28 @@
-import psycopg2
 import common.globals as g
 
+
 class profile_24505_additional_code_description_period(object):
-	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
-		g.app.message_count += 1
-		operation_date				            = app.getTimestamp()
-		additional_code_description_period_sid  = app.get_number_value(oMessage, ".//oub:additional.code.description.period.sid", True)
-		additional_code_sid                     = app.get_number_value(oMessage, ".//oub:additional.code.sid", True)
-		additional_code_type_id			        = app.get_value(oMessage, ".//oub:additional.code.type.id", True)
-		additional_code 					    = app.get_value(oMessage, ".//oub:additional.code", True)
-		validity_start_date			            = app.get_date_value(oMessage, ".//oub:validity.start.date", True)
+    def import_node(self, app, update_type, omsg, transaction_id, message_id, record_code, sub_record_code):
+        g.app.message_count += 1
+        operation_date = app.get_timestamp()
+        additional_code_description_period_sid = app.get_number_value(omsg, ".//oub:additional.code.description.period.sid", True)
+        additional_code_sid = app.get_number_value(omsg, ".//oub:additional.code.sid", True)
+        additional_code_type_id = app.get_value(omsg, ".//oub:additional.code.type.id", True)
+        additional_code = app.get_value(omsg, ".//oub:additional.code", True)
+        code = additional_code_type_id + additional_code
+        validity_start_date = app.get_date_value(omsg, ".//oub:validity.start.date", True)
 
-		if update_type == "1":	# UPDATE
-			operation = "U"
-			app.doprint ("Updating additional code description period " + str(additional_code_sid))
-		elif update_type == "2":	# DELETE
-			operation = "D"
-			app.doprint ("Deleting additional code description period " + str(additional_code_sid))
-		else:					# INSERT
-			operation = "C"
-			app.doprint ("Creating additional code description period " + str(additional_code_sid))
+        # Set operation types and print load message to screen
+        operation = g.app.get_loading_message(update_type, "additional code description period", additional_code_description_period_sid)
 
-		cur = app.conn.cursor()
-		try:
-			cur.execute("""INSERT INTO additional_code_description_periods_oplog (additional_code_description_period_sid,
-			additional_code_sid, additional_code_type_id, additional_code, validity_start_date, operation, operation_date)
-			VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
-			(additional_code_description_period_sid, additional_code_sid, additional_code_type_id, additional_code, validity_start_date, operation, operation_date))
-			app.conn.commit()
-		except:
-			g.app.log_error("additional code description period", operation, additional_code_description_period_sid, additional_code_type_id + "|" + additional_code, transaction_id, message_id)
-		cur.close()
+        # Load data
+        cur = app.conn.cursor()
+        try:
+            cur.execute("""INSERT INTO additional_code_description_periods_oplog (additional_code_description_period_sid,
+            additional_code_sid, additional_code_type_id, additional_code, validity_start_date, operation, operation_date)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (additional_code_description_period_sid, additional_code_sid, additional_code_type_id, additional_code, validity_start_date, operation, operation_date))
+            app.conn.commit()
+        except:
+            g.app.record_business_rule_violation("DB", "DB failure", operation, transaction_id, message_id, record_code, sub_record_code, code)
+        cur.close()

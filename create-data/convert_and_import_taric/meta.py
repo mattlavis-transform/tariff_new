@@ -4,7 +4,7 @@ import common.globals as g
 if len(sys.argv) > 1:
     xml_file = sys.argv[1]
 else:
-    print ("Please specify a file against which to create metadata - please use the DIT export format e.g. DIT190xxx.xml")
+    print("Please specify a file against which to create metadata - please use the DIT export format e.g. DIT190xxx.xml")
     sys.exit()
 
 g.app.output_filename = xml_file

@@ -1,4 +1,0 @@
-/Users/matt.admin/projects/tariffs/create-data/xsd/taric3.xsd:357: namespace warning : xmlns: URI taric-format is not absolute
-						<format xmlns="taric-format">AAA</format>
-						                            ^
-/Users/matt.admin/projects/tariffs/create-data/convert_and_import_taric/import/november_seed_ae.xml validates

@@ -4,8 +4,8 @@ import sys
 
 files = []
 for i in range(1, len(sys.argv)):
-	my_arg = sys.argv[i]
-	files.append(my_arg)
+    my_arg = sys.argv[i]
+    files.append(my_arg)
 
 app = g.app
 app.end_date_EU_measures(files)

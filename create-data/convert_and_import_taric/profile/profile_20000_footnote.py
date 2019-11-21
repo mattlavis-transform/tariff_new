@@ -1,57 +1,48 @@
-import psycopg2, sys
 import common.globals as g
 
+
 class profile_20000_footnote(object):
-	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
-		g.app.message_count += 1
-		operation_date				= app.getTimestamp()
-		footnote_type_id			= app.get_value(oMessage, ".//oub:footnote.type.id", True)
-		footnote_id					= app.get_value(oMessage, ".//oub:footnote.id", True)
-		code						= footnote_type_id + footnote_id
-		validity_start_date			= app.get_date_value(oMessage, ".//oub:validity.start.date", True)
-		validity_end_date			= app.get_date_value(oMessage, ".//oub:validity.end.date", True)
+    def import_node(self, app, update_type, omsg, transaction_id, message_id, record_code, sub_record_code):
+        g.app.message_count += 1
+        operation_date = app.get_timestamp()
+        footnote_type_id = app.get_value(omsg, ".//oub:footnote.type.id", True)
+        footnote_id = app.get_value(omsg, ".//oub:footnote.id", True)
+        code = footnote_type_id + footnote_id
+        validity_start_date = app.get_date_value(omsg, ".//oub:validity.start.date", True)
+        validity_end_date = app.get_date_value(omsg, ".//oub:validity.end.date", True)
 
-		if g.app.perform_taric_validation == True:
-			if validity_end_date != None:
-				if validity_end_date < validity_start_date:
-					g.app.add_load_error("FO3 - The start date of the footnote must be less than or equal to the end date, when loading footnote " + code)
+        footnote_types = g.app.get_footnote_types()
+        footnotes = g.app.get_footnotes()
 
+        if footnote_type_id in ('01', '02', '03', '05', '05', '06'):
+            national = True
+        else:
+            national = None
 
-		footnote_types	= g.app.get_footnote_types()
-		footnotes		= g.app.get_footnotes()
+        # Set operation types and print load message to screen
+        operation = g.app.get_loading_message(update_type, "footnote", footnote_type_id + str(footnote_id))
 
-		if footnote_type_id in ('01', '02', '03', '05', '05', '06'):
-			national = True
-		else:
-			national = None
+        # Perform business rule validation
+        if g.app.perform_taric_validation is True:
+            if validity_end_date is not None:
+                if validity_end_date < validity_start_date:
+                    g.app.record_business_rule_violation("FO3", "The start date must be less than or equal to the end date.", operation, transaction_id, message_id, record_code, sub_record_code, code)
 
-		if g.app.perform_taric_validation == True:
-			if footnote_type_id not in footnote_types: # This applies to all actions
-				g.app.add_load_error("FO1 - Footnote type " + footnote_type_id + " does not exist when loading footnote " + code)
+            if footnote_type_id not in footnote_types:  # This applies to all actions
+                g.app.record_business_rule_violation("FO1", "The referenced footnote type must exist.", operation, transaction_id, message_id, record_code, sub_record_code, code)
 
-		if update_type == "1":	# UPDATE
-			operation = "U"
-			app.doprint ("Updating footnote " + footnote_type_id + str(footnote_id))
+            if update_type == "3":  # INSERT
+                if code in footnotes:
+                    g.app.record_business_rule_violation("FO1", "The combination footnote type and code must be unique.", operation, transaction_id, message_id, record_code, sub_record_code, code)
 
-		elif update_type == "2":	# DELETE
-			operation = "D"
-			app.doprint ("Deleting footnote " + footnote_type_id + str(footnote_id))
-
-		else:					# INSERT
-			if g.app.perform_taric_validation == True:
-				if code in footnotes:
-					g.app.add_load_error("FO2 - The combination footnote type and code must be unique, when loading footnote " + footnote_type_id + footnote_id)
-
-			operation = "C"
-			app.doprint ("Creating footnote " + footnote_type_id + str(footnote_id))
-
-		cur = app.conn.cursor()
-		try:
-			cur.execute("""INSERT INTO footnotes_oplog (footnote_type_id, footnote_id, validity_start_date,
-			validity_end_date, operation, operation_date, national)
-			VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
-			(footnote_type_id, footnote_id, validity_start_date, validity_end_date, operation, operation_date, national))
-			app.conn.commit()
-		except:
-			g.app.log_error("footnote", operation, None, footnote_type_id + "|" + footnote_id, transaction_id, message_id)
-		cur.close()
+        # Load data
+        cur = app.conn.cursor()
+        try:
+            cur.execute("""INSERT INTO footnotes_oplog (footnote_type_id, footnote_id, validity_start_date,
+            validity_end_date, operation, operation_date, national)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (footnote_type_id, footnote_id, validity_start_date, validity_end_date, operation, operation_date, national))
+            app.conn.commit()
+        except:
+            g.app.record_business_rule_violation("DB", "DB failure", operation, transaction_id, message_id, record_code, sub_record_code, code)
+        cur.close()

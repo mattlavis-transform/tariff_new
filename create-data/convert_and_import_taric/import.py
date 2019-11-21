@@ -2,10 +2,21 @@
 import sys
 import common.globals as g
 
-if (len(sys.argv) > 1):
-	filename = sys.argv[1]
+# Get database into which to import from 1st argument
+if len(sys.argv) > 1:
+    dbase = sys.argv[1]
+    if "tariff_" not in dbase:
+        dbase = "tariff_" + dbase
 else:
-	sys.exit()
+    sys.exit()
+
+# Get name of file to import
+if len(sys.argv) > 2:
+    filename = sys.argv[2]
+else:
+    sys.exit()
 
 app = g.app
+app.DBASE = dbase
+app.get_config()
 app.import_xml(filename)

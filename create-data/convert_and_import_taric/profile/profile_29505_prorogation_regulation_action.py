@@ -1,36 +1,30 @@
-import psycopg2
 import common.globals as g
 
+
 class profile_29505_prorogation_regulation_action(object):
-	def import_xml(self, app, update_type, oMessage, transaction_id, message_id):
-		g.app.message_count += 1
-		operation_date						= app.getTimestamp()
-		prorogation_regulation_role		= app.get_value(oMessage, ".//oub:prorogation.regulation.role", True)
-		prorogation_regulation_id		= app.get_value(oMessage, ".//oub:prorogation.regulation.id", True)
-		prorogated_regulation_role		= app.get_value(oMessage, ".//oub:prorogated.regulation.role", True)
-		prorogated_regulation_id		= app.get_value(oMessage, ".//oub:prorogated.regulation.id", True)
-		prorogated_date					= app.get_date_value(oMessage, ".//oub:prorogated.date", True)
+    def import_node(self, app, update_type, omsg, transaction_id, message_id, record_code, sub_record_code):
+        g.app.message_count += 1
+        operation_date = app.get_timestamp()
+        prorogation_regulation_role = app.get_value(omsg, ".//oub:prorogation.regulation.role", True)
+        prorogation_regulation_id = app.get_value(omsg, ".//oub:prorogation.regulation.id", True)
+        prorogated_regulation_role = app.get_value(omsg, ".//oub:prorogated.regulation.role", True)
+        prorogated_regulation_id = app.get_value(omsg, ".//oub:prorogated.regulation.id", True)
+        prorogated_date = app.get_date_value(omsg, ".//oub:prorogated.date", True)
 
-		if update_type == "1":		# UPDATE
-			operation = "U"
-			app.doprint ("Updating prorogation regulation action " + str(prorogation_regulation_id))
-		elif update_type == "2":	# DELETE
-			operation = "D"
-			app.doprint ("Deleting prorogation regulation action " + str(prorogation_regulation_id))
-		else:						# INSERT
-			operation = "C"
-			app.doprint ("Creating prorogation regulation action " + str(prorogation_regulation_id))
+        # Set operation types and print load message to screen
+        operation = g.app.get_loading_message(update_type, "prorogation regulation action", prorogation_regulation_id)
 
-		cur = app.conn.cursor()
-		try:
-			cur.execute("""INSERT INTO prorogation_regulation_actions_oplog (prorogation_regulation_role,
-			prorogation_regulation_id, prorogated_regulation_role, prorogated_regulation_id, prorogated_date,
-			operation, operation_date)
-			VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
-			(prorogation_regulation_role,
-			prorogation_regulation_id, prorogated_regulation_role, prorogated_regulation_id, prorogated_date,
-			operation, operation_date))
-			app.conn.commit()
-		except:
-			g.app.log_error("prorogation regulation action", operation, None, prorogation_regulation_id, transaction_id, message_id)
-		cur.close()
+        # Load data
+        cur = app.conn.cursor()
+        try:
+            cur.execute("""INSERT INTO prorogation_regulation_actions_oplog (prorogation_regulation_role,
+            prorogation_regulation_id, prorogated_regulation_role, prorogated_regulation_id, prorogated_date,
+            operation, operation_date)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (prorogation_regulation_role,
+            prorogation_regulation_id, prorogated_regulation_role, prorogated_regulation_id, prorogated_date,
+            operation, operation_date))
+            app.conn.commit()
+        except:
+            g.app.record_business_rule_violation("DB", "DB failure", operation, transaction_id, message_id, record_code, sub_record_code, prorogation_regulation_id)
+        cur.close()

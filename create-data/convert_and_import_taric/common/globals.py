@@ -1,3 +1,3 @@
-from application import application
+from common.application import application
 
 app = application()

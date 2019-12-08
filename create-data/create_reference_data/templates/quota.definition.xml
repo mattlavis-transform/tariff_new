@@ -1,4 +1,5 @@
 	<env:transaction id="[TRANSACTION_ID]">
+		<!-- Begin quota definition -->
 		<env:app.message id="[MESSAGE_ID1]">
 			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
 			<oub:record>
@@ -24,4 +25,5 @@
 				</oub:record>
 			</oub:transmission>
 		</env:app.message>
+		<!-- End quota definition -->
 	</env:transaction>

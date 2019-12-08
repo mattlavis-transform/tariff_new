@@ -11,9 +11,10 @@ class business_rule_violation(object):
         self.message_id = message_id
         self.record_code = record_code
         self.sub_record_code = sub_record_code
-        self.pk = pk
+        self.pk = str(pk)
 
         self.message = "Business rule violation "
-        self.message += self.id + " " + self.msg
-        self.message += " on message " + self.message_id + " in transaction " + self.transaction_id
-        self.message += ". Affects primary key " + pk
+        self.message += self.id + " " + self.description
+        self.message += " Occurs on message " + self.message_id + " in transaction " + self.transaction_id
+        self.message += ". Affects primary key " + self.pk
+        self.message += " on record code " + self.record_code + " and sub record code " + self.sub_record_code

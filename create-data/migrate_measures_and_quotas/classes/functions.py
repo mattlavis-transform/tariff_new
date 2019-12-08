@@ -30,7 +30,7 @@ def mbool2(s):
 		return False
 
 def dq(s):
-	print (s)
+	print(s)
 	sys.exit()
 
 def quit():

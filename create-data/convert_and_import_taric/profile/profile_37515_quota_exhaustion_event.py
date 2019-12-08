@@ -12,6 +12,11 @@ class profile_37515_quota_exhaustion_event(object):
         # Set operation types and print load message to screen
         operation = g.app.get_loading_message(update_type, "quota exhaustion event for quota definition", quota_definition_sid)
 
+        # Perform business rule validation
+        if g.app.perform_taric_validation is True:
+            if quota_definition_sid not in g.app.quota_definitions:
+                g.app.record_business_rule_violation("QEE1", "The quota definition SID must exist.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
+
         # Load data
         cur = app.conn.cursor()
         try:

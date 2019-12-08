@@ -18,7 +18,7 @@ class profile_37500_quota_balance_event(object):
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
             if quota_definition_sid not in g.app.quota_definitions:
-                g.app.record_business_rule_violation("DBFK", "Quota definition must exist.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
+                g.app.record_business_rule_violation("QBAE1", "The quota definition SID must exist.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
         # Load data
         cur = app.conn.cursor()

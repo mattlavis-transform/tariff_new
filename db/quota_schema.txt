@@ -1,0 +1,62 @@
+CREATE TABLE public.quota_associations (
+    main_quota_definition_sid integer,
+    sub_quota_definition_sid integer,
+    relation_type character varying(255),
+    coefficient numeric(16,5),
+    created_at timestamp without time zone
+);
+
+CREATE TABLE public.quota_blocking_periods (
+    quota_blocking_period_sid integer,
+    quota_definition_sid integer,
+    blocking_start_date date,
+    blocking_end_date date,
+    blocking_period_type integer,
+    description text
+);
+
+
+CREATE TABLE public.quota_definitions (
+    quota_definition_sid integer,
+    quota_order_number_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    quota_order_number_sid integer,
+    volume numeric(12,2),
+    initial_volume numeric(12,2),
+    measurement_unit_code character varying(3),
+    maximum_precision integer,
+    critical_state character varying(255),
+    critical_threshold integer,
+    monetary_unit_code character varying(255),
+    measurement_unit_qualifier_code character varying(1),
+    description text
+);
+
+
+CREATE TABLE public.quota_order_number_origin_exclusions (
+    quota_order_number_origin_sid integer,
+    excluded_geographical_area_sid integer
+);
+CREATE TABLE public.quota_order_number_origins (
+    quota_order_number_origin_sid integer,
+    quota_order_number_sid integer,
+    geographical_area_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    geographical_area_sid integer
+);
+CREATE TABLE public.quota_order_numbers (
+    quota_order_number_sid integer,
+    quota_order_number_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone
+);
+
+CREATE TABLE public.quota_suspension_periods (
+    quota_suspension_period_sid integer,
+    quota_definition_sid integer,
+    suspension_start_date date,
+    suspension_end_date date,
+    description text
+);

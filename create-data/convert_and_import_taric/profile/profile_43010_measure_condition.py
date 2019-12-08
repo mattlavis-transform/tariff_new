@@ -16,6 +16,10 @@ class profile_43010_measure_condition(object):
         action_code = app.get_value(omsg, ".//oub:action.code", True)
         certificate_type_code = app.get_value(omsg, ".//oub:certificate.type.code", True)
         certificate_code = app.get_value(omsg, ".//oub:certificate.code", True)
+        if certificate_type_code is not None:
+            code = certificate_type_code + certificate_code
+        else:
+            code = None
 
         # Set operation types and print load message to screen
         operation = g.app.get_loading_message(update_type, "measure condition on measure_sid", measure_sid)
@@ -23,7 +27,6 @@ class profile_43010_measure_condition(object):
         # Perform business rule validation
         # A measure must exist for a measure condition to be inserted or updated (not deleted, as this may have happened in the same transaction)
         if g.app.perform_taric_validation is True:
-            update_string = g.app.get_update_string(operation)
             if update_type in ("1", "3"):
                 sql = "select count(measure_sid) from measures where measure_sid = %s"
                 params = [
@@ -32,11 +35,10 @@ class profile_43010_measure_condition(object):
                 cur = g.app.conn.cursor()
                 cur.execute(sql, params)
                 row = cur.fetchone()
-                if row[0] == 1:
+                if row[0] == 0:
                     g.app.record_business_rule_violation("DBFK", "Measure must exist (measure condition).", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
 
-        # You must not be able to insert a new measure condition if that measure condition already exists
-        if g.app.perform_taric_validation is True:
+            # You must not be able to insert a new measure condition if that measure condition already exists
             if update_type == "3":
                 sql = "select count(measure_sid) from measure_conditions where measure_condition_sid = %s"
                 params = [
@@ -46,7 +48,31 @@ class profile_43010_measure_condition(object):
                 cur.execute(sql, params)
                 row = cur.fetchone()
                 if row[0] == 1:
-                    g.app.record_business_rule_violation("DBFK", "Measure must exist (measure condition).", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
+                    g.app.record_business_rule_violation("DBFK", "Measure condition already exists: cannot overwrite.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
+
+                # Business rule CE4	If a certificate is used in a measure condition then the validity period of the certificate must span the validity period of the measure.
+                if code is not None:
+                    sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date, 1 as idx
+                    from measures where measure_sid = %s union
+                    select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date, 2 as idx
+                    from certificates where certificate_type_code = %s and certificate_code = %s
+                    order by 3;"""
+                    params = [
+                        str(measure_sid),
+                        certificate_type_code,
+                        certificate_code
+                    ]
+                    cur = g.app.conn.cursor()
+                    cur.execute(sql, params)
+                    rows = cur.fetchall()
+                    if len(rows) == 2:
+                        measure_start_date = rows[0][0]
+                        measure_end_date = rows[0][1]
+                        certificate_start_date = rows[1][0]
+                        certificate_end_date = rows[1][1]
+                        if (certificate_start_date > measure_start_date) or (measure_end_date > certificate_end_date):
+                            g.app.record_business_rule_violation("CE4", "If a certificate is used in a measure condition then the validity period of the "
+                            "certificate must span the validity period of the measure.", operation, transaction_id, message_id, record_code, sub_record_code, code)
 
         # Load data
         cur = app.conn.cursor()

@@ -25,9 +25,11 @@ class profile_37000_quota_definition(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
+            # Business rule QD2	The start date must be less than or equal to the end date
             if validity_end_date is None:
                 g.app.record_business_rule_violation("QDx", "The quota definition must have an end date.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
+            # Business rule QD2	The start date must be less than or equal to the end date
             if validity_end_date is not None:
                 if validity_end_date < validity_start_date:
                     g.app.record_business_rule_violation("QD2", "The start date of the quota definition must be less than or equal to the end date.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
@@ -59,22 +61,23 @@ class profile_37000_quota_definition(object):
                                 break
                             else:
                                 if update_type == "3":
-                                    g.app.record_business_rule_violation("QDx", "Quota definition is a duplicate.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
+                                    g.app.record_business_rule_violation("DBFK", "Quota definition is a duplicate.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
+                # Business rule QD1	Quota order number id + start date must be unique.
                 if found is True:
                     g.app.record_business_rule_violation("QD1", "Quota order number id + start date must be unique.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
             if update_type == "3":  # INSERT
-                if g.app.perform_taric_validation is True:
-                    if found is True:
-                        if validity_end_date2 is not None:
-                            if (validity_end_date > validity_end_date2) or (validity_start_date < validity_start_date2):
-                                g.app.record_business_rule_violation("ON8(a)", "The validity period of the quota order number must span the validity "
-                                "period of the referencing quota definition.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
-                        else:
-                            if validity_start_date < validity_start_date2:
-                                g.app.record_business_rule_violation("ON8(b)", "The validity period of the quota order number must span the validity "
-                                "period of the referencing quota definition.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
+                if found is True:
+                    # Business rule ON8
+                    if validity_end_date2 is not None:
+                        if (validity_end_date > validity_end_date2) or (validity_start_date < validity_start_date2):
+                            g.app.record_business_rule_violation("ON8(a)", "The validity period of the quota order number must span the validity "
+                            "period of the referencing quota definition.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
+                    else:
+                        if validity_start_date < validity_start_date2:
+                            g.app.record_business_rule_violation("ON8(b)", "The validity period of the quota order number must span the validity "
+                            "period of the referencing quota definition.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
         # Load data
         cur = app.conn.cursor()

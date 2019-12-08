@@ -1,4 +1,5 @@
 	<env:transaction id="[TRANSACTION_ID]">
+		<!-- Begin updated base regulation -->
 		<env:app.message id="{MESSAGE_ID}">
 			<oub:transmission xmlns:oub="urn:publicid:-:DGTAXUD:TARIC:MESSAGE:1.0" xmlns:env="urn:publicid:-:DGTAXUD:GENERAL:ENVELOPE:1.0">
 				<oub:record>
@@ -26,4 +27,5 @@
 				</oub:record>
 			</oub:transmission>
 		</env:app.message>
+		<!-- End updated base regulation -->
 	</env:transaction>

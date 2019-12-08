@@ -8,11 +8,11 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
 
-import common.objects as o
+import common.globals as g
 from common.goods_nomenclature import goods_nomenclature
 from common.application import application
 
-app = o.app
+app = g.app
 app.get_templates()
 app.get_current_commodities()
 app.write_commodities()

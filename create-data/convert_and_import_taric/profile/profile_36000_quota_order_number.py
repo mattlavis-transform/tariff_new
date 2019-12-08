@@ -16,11 +16,12 @@ class profile_36000_quota_order_number(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
+            quota_order_numbers = g.app.get_quota_order_numbers()
+
+            # Business rule ON3 The start date must be less than or equal to the end date.
             if validity_end_date is not None:
                 if validity_end_date < validity_start_date:
                     g.app.record_business_rule_violation("ON3", "The start date must be less than or equal to the end date.", operation, transaction_id, message_id, record_code, sub_record_code, quota_order_number_id)
-
-            quota_order_numbers = g.app.get_quota_order_numbers()
 
             if update_type == "3":  # INSERT
                 for qon in g.app.quota_order_numbers:
@@ -29,10 +30,12 @@ class profile_36000_quota_order_number(object):
                     validity_start_date2 = qon[2]
                     validity_end_date2 = qon[3]
 
+                    # Business rule ON1 Quota order number id + start date must be unique.
                     if quota_order_number_id == quota_order_number_id2 and validity_start_date == validity_start_date2:
                         g.app.record_business_rule_violation("ON1", "Quota order number id + start date must be unique.", operation, transaction_id, message_id, record_code, sub_record_code, quota_order_number_id)
                         break
 
+                    # Business rule DBFK
                     if quota_order_number_sid == quota_order_number_sid2:
                         g.app.record_business_rule_violation("DBFK", "Quota order number sid already exists.", operation, transaction_id, message_id, record_code, sub_record_code, quota_order_number_id)
                         break

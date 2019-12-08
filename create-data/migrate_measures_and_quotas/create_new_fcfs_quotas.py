@@ -4,6 +4,7 @@ import sys
 
 from classes.application import application
 
+
 app = g.app
 app.get_templates()
 app.get_envelope()

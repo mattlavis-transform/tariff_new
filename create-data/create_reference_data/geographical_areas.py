@@ -1,81 +1,62 @@
-import psycopg2
-import sys
-import os
-import xmlschema
-from xml.sax.saxutils import escape
-
-from openpyxl import Workbook
-from openpyxl import load_workbook
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
-
-import common.objects as o
+# Import libraries
+from openpyxl import Workbook, load_workbook
+import common.globals as g
 from common.geographical_area import geographical_area
 from common.application import application
 
-app = o.app
-app.get_templates()
 
-try:
-	profile = sys.argv[1]
-except:
-	profile = "geographical_areas"
+# Determine file paths
+g.app.d("Creating geographical areas XML", False)
+g.app.d("Reading geographical areas source", True)
+g.app.get_templates()
+g.app.get_profile_paths(sub_folder="geographical_areas", default_filename="geographical_areas")
 
-fname = os.path.join(app.SOURCE_DIR, profile + ".xlsx")
-wb = load_workbook(filename=fname, read_only=True)
+# Open the Excel workbook
+wb = load_workbook(filename=g.app.input_filepath, read_only=True)
+
+# Updated geographical areas
 ws = wb['Updated']
-
 row_count = ws.max_row
-col_count = ws.max_column
-
 for i in range(2, row_count + 1):
-	GEOGRAPHICAL_AREA_SID   = ws.cell(row = i, column = 1).value
-	GEOGRAPHICAL_AREA_ID    = ws.cell(row = i, column = 2).value
-	DESCRIPTION             = ws.cell(row = i, column = 3).value
+    GEOGRAPHICAL_AREA_SID = ws.cell(row=i, column=1).value
+    GEOGRAPHICAL_AREA_ID = ws.cell(row=i, column=2).value
+    DESCRIPTION = ws.cell(row=i, column=3).value
+    obj = geographical_area(GEOGRAPHICAL_AREA_SID, GEOGRAPHICAL_AREA_ID, "", DESCRIPTION, "update")
+    g.app.geographical_area_list.append(obj)
 
-	obj = geographical_area(GEOGRAPHICAL_AREA_SID, GEOGRAPHICAL_AREA_ID, "", DESCRIPTION, "update")
-	app.geographical_area_list.append(obj)
-
+# New geographical areas
 ws = wb['New']
-
 row_count = ws.max_row
-col_count = ws.max_column
-
 for i in range(2, row_count + 1):
-	GEOGRAPHICAL_AREA_SID   = ws.cell(row = i, column = 1).value
-	GEOGRAPHICAL_AREA_ID    = ws.cell(row = i, column = 2).value
-	DESCRIPTION             = ws.cell(row = i, column = 3).value
-	GEOGRAPHICAL_AREA_CODE  = ws.cell(row = i, column = 4).value
+    GEOGRAPHICAL_AREA_SID = ws.cell(row=i, column=1).value
+    GEOGRAPHICAL_AREA_ID = ws.cell(row=i, column=2).value
+    DESCRIPTION = ws.cell(row=i, column=3).value
+    GEOGRAPHICAL_AREA_CODE = ws.cell(row=i, column=4).value
 
-	""" AREA CODES
-	0 Country
-	1 Geographical area group
-	2 Region
-	"""
+    """ AREA CODES
+    0 Country
+    1 Geographical area group
+    2 Region
+    """
 
-	obj = geographical_area(GEOGRAPHICAL_AREA_SID, GEOGRAPHICAL_AREA_ID, GEOGRAPHICAL_AREA_CODE, DESCRIPTION, "insert")
-	app.geographical_area_list.append(obj)
+    obj = geographical_area(GEOGRAPHICAL_AREA_SID, GEOGRAPHICAL_AREA_ID, GEOGRAPHICAL_AREA_CODE, DESCRIPTION, "insert")
+    g.app.geographical_area_list.append(obj)
 
-env = app.envelope_XML
-env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
+env = g.app.envelope_XML
+env = env.replace("[ENVELOPE_ID]", str(g.app.base_envelope_id))
 out = ""
-for obj in app.geographical_area_list:
-	obj.writeXML(app)
-	out += obj.xml
+for obj in g.app.geographical_area_list:
+    obj.writeXML(g.app)
+    out += obj.xml
 
+# Write the XML
 out = env.replace("[BODY]", out)
-filename = os.path.join(app.XML_DIR, profile + ".xml")
-f = open(filename, "w", encoding="utf-8")
+f = open(g.app.output_filepath, "w", encoding="utf-8")
 f.write(out)
 f.close()
 
-schema_path = os.path.join(app.SCHEMA_DIR, "envelope.xsd")
-my_schema = xmlschema.XMLSchema(schema_path)
+# Validate the XML
+g.app.validate()
 
-try:
-	if my_schema.is_valid(filename):
-		print ("The file validated successfully.")
-	else:
-		print ("The file did not validate.")
-except:
-	print ("The file did not validate and crashed the validator.")
-app.set_config()
+# Update the configuration file, as required
+g.app.set_config()

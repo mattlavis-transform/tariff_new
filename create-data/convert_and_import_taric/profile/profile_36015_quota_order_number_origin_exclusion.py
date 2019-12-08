@@ -14,7 +14,18 @@ class profile_36015_quota_order_number_origin_exclusion(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
-            # Check the origin exists
+            if update_type == "1":
+                # Business rule ON13	An exclusion can only be entered if the order number origin is a geographical area group (area code = 1).
+                geographical_area = g.app.get_geographical_area_from_origin(quota_order_number_origin_sid)
+                if len(geographical_area) > 0:
+                    geo_validity_start_date = geographical_area[0]
+                    geo_validity_end_date = geographical_area[1]
+                    geo_area_code = geographical_area[3]
+                    if geo_area_code != "1":
+                        g.app.record_business_rule_violation("ON13", "An exclusion can only be entered if the order number origin is a "
+                        "geographical area group (area code = 1).", operation, transaction_id, message_id, record_code, sub_record_code, quota_order_number_origin_sid)
+
+            # DBFK Check the origin exists
             sql = "select quota_order_number_origin_sid from quota_order_number_origins where quota_order_number_origin_sid = %s"
             params = [
                 str(quota_order_number_origin_sid)

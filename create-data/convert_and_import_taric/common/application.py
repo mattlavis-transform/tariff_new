@@ -59,10 +59,13 @@ from profile.profile_24000_additional_code_type_measure_type import profile_2400
 from profile.profile_24500_additional_code import profile_24500_additional_code
 from profile.profile_24505_additional_code_description_period import profile_24505_additional_code_description_period
 from profile.profile_24510_additional_code_description import profile_24510_additional_code_description
+from profile.profile_24515_footnote_association_additional_code import profile_24515_footnote_association_additional_code
 from profile.profile_25000_geographical_area import profile_25000_geographical_area
 from profile.profile_25005_geographical_area_description_period import profile_25005_geographical_area_description_period
 from profile.profile_25010_geographical_area_description import profile_25010_geographical_area_description
 from profile.profile_25015_geographical_area_membership import profile_25015_geographical_area_membership
+from profile.profile_27000_goods_nomenclature_group import profile_27000_goods_nomenclature_group
+from profile.profile_27005_goods_nomenclature_group_description import profile_27005_goods_nomenclature_group_description
 from profile.profile_27500_complete_abrogation_regulation import profile_27500_complete_abrogation_regulation
 from profile.profile_28000_explicit_abrogation_regulation import profile_28000_explicit_abrogation_regulation
 from profile.profile_28500_base_regulation import profile_28500_base_regulation
@@ -105,6 +108,13 @@ from profile.profile_40020_footnote_association_goods_nomenclature import profil
 from profile.profile_40025_nomenclature_group_membership import profile_40025_nomenclature_group_membership
 from profile.profile_40035_goods_nomenclature_origin import profile_40035_goods_nomenclature_origin
 from profile.profile_40040_goods_nomenclature_successor import profile_40040_goods_nomenclature_successor
+
+from profile.profile_41000_export_refund_nomenclature import profile_41000_export_refund_nomenclature
+from profile.profile_41005_export_refund_nomenclature_indent import profile_41005_export_refund_nomenclature_indent
+from profile.profile_41010_export_refund_nomenclature_description_period import profile_41010_export_refund_nomenclature_description_period
+from profile.profile_41015_export_refund_nomenclature_description import profile_41015_export_refund_nomenclature_description
+from profile.profile_41020_footnote_association_ern import profile_41020_footnote_association_ern
+
 from profile.profile_43000_measure import profile_43000_measure
 from profile.profile_43005_measure_component import profile_43005_measure_component
 from profile.profile_43010_measure_condition import profile_43010_measure_condition
@@ -243,7 +253,7 @@ class application(object):
         self.connect()
         self.get_minimum_sids()
 
-        if self.DBASE in ("tariff_eu"):
+        if self.DBASE in ("tariff_eu", "xtariff_load"):
             self.IMPORT_DIR = self.XML_IN_DIR
         else:
             self.IMPORT_DIR = self.IMPORT_DIR
@@ -1843,6 +1853,11 @@ class application(object):
                     o = profile_24510_additional_code_description()
                     o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
 
+                # 24515	FOOTNOTE ASSOCIATION - ADDITIONAL CODE
+                if record_code == "245" and sub_record_code == "15":
+                    o = profile_24515_footnote_association_additional_code()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
                 # 25000	GEOGRAPHICAL AREA
                 if record_code == "250" and sub_record_code == "00":
                     o = profile_25000_geographical_area()
@@ -1861,6 +1876,16 @@ class application(object):
                 # 25015	GEOGRAPHICAL AREA MEMBERSHIP
                 if record_code == "250" and sub_record_code == "15":
                     o = profile_25015_geographical_area_membership()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 27000	GOODS NOMENCLATURE GROUP
+                if record_code == "270" and sub_record_code == "00":
+                    o = profile_27000_goods_nomenclature_group()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 27000	GOODS NOMENCLATURE GROUP DESCRIPTION
+                if record_code == "270" and sub_record_code == "05":
+                    o = profile_27005_goods_nomenclature_group_description()
                     o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
 
                 # 27500	COMPLETE ABROGATION REGULATION
@@ -2073,6 +2098,31 @@ class application(object):
                     o = profile_40040_goods_nomenclature_successor()
                     o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
 
+                # 41000	EXPORT REFUND NOMENCLATURE
+                if record_code == "410" and sub_record_code == "00":
+                    o = profile_41000_export_refund_nomenclature()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 41000	EXPORT REFUND NOMENCLATURE INDENT
+                if record_code == "410" and sub_record_code == "05":
+                    o = profile_41005_export_refund_nomenclature_indent()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 41000	EXPORT REFUND NOMENCLATURE DESCRIPTION PERIOD
+                if record_code == "410" and sub_record_code == "10":
+                    o = profile_41010_export_refund_nomenclature_description_period()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 41000	EXPORT REFUND NOMENCLATURE DESCRIPTION
+                if record_code == "410" and sub_record_code == "15":
+                    o = profile_41015_export_refund_nomenclature_description()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
+                # 41000	FOOTNOTE ASSOCIATION - ERN
+                if record_code == "410" and sub_record_code == "20":
+                    o = profile_41020_footnote_association_ern()
+                    o.import_node(self, update_type, omsg, transaction_id, message_id, record_code, sub_record_code)
+
                 # 43000	MEASURE
                 if record_code == "430" and sub_record_code == "00":
                     o = profile_43000_measure()
@@ -2123,14 +2173,16 @@ class application(object):
         if self.perform_taric_validation is True:
             # Post load checks
             self.rule_FO04()
+            self.rule_ACN5()
             self.rule_CE06()
             self.rule_GA3()
             self.rule_ME40()
+            self.rule_ME43()
 
         # Register the load
         self.register_import_complete(xml_file)
         print(bcolors.ENDC)
-        if len(self.load_errors) > 0:
+        if len(self.business_rule_violations) > 0:
             print("File failed to load - rolling back")
             self.rollback()
             self.create_error_report()
@@ -2167,7 +2219,11 @@ class application(object):
 
             if len(my_list) > 0:
                 for measure_sid in my_list:
-                    self.add_load_error("ME40 error on measures - No components on . " + str(measure_sid))
+                    self.record_business_rule_violation("ME40", "'If the flag 'duty expression' on measure type is 'mandatory' then at least "
+                    "one measure component or measure condition component record must be specified. If the flag is set 'not permitted' then "
+                    "no measure component or measure condition component must exist. Measure components and measure condition components are "
+                    "mutually exclusive. A measure can have either components or condition components (if the ‘duty expression’ flag "
+                    "is ‘mandatory' or 'optional') but not both.'", "", "", "", "430", "00", measure_sid)
 
     def create_error_report(self):
         fname = self.import_file + "_error.txt"
@@ -2182,12 +2238,12 @@ class application(object):
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         out += "Load date / time: " + dt_string + "\n\n"
 
-        out += "There are " + str(len(self.load_errors)) + " conformance errors, as follows:\n\n"
+        out += "There are " + str(len(self.business_rule_violations)) + " conformance / db errors, as follows:\n\n"
 
         cnt = 0
-        for err in self.load_errors:
+        for bvr in self.business_rule_violations:
             cnt += 1
-            out += err + "\n"
+            out += bvr.message + "\n"
 
         f = open(path, "w+")
         f.write(out)
@@ -2368,16 +2424,11 @@ class application(object):
             if count > 0:
                 self.counts[">  " + node + " - deleted records"] = count
 
-    def add_load_error(self, msg):
-        print(bcolors.OKGREEN)
-        print("Rule violation -", msg)
-        self.load_errors.append(msg)
-
     def record_business_rule_violation(self, id, msg, operation, transaction_id, message_id, record_code, sub_record_code, pk):
-        business_rule_violation = business_rule_violation(id, msg, operation, transaction_id, message_id, record_code, sub_record_code, pk)
-        self.business_rule_violations.append(business_rule_violation)
+        bvr = business_rule_violation(id, msg, operation, transaction_id, message_id, record_code, sub_record_code, pk)
+        self.business_rule_violations.append(bvr)
         print(bcolors.OKGREEN)
-        print(business_rule_violation.message)
+        print(bvr.message)
 
     def to_nice_time(self, dt):
         r = dt[0:4] + "-" + dt[4:6] + "-" + dt[6:8] + " " + dt[9:11] + ":" + dt[11:13] + ":" + dt[13:15]
@@ -2435,6 +2486,81 @@ class application(object):
             my_list.append(row[0])
         return (my_list)
 
+    def get_meursing_table_plans(self):
+        sql = "select meursing_table_plan_id from meursing_table_plans where validity_end_date is null order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_used_non_meursing_additional_codes(self):
+        sql = "select distinct additional_code_type_id from additional_codes order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_used_additional_codes(self):
+        sql = "select distinct additional_code_sid from measures where additional_code_sid is not null order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_used_footnote_codes(self):
+        sql = """select distinct (footnote_type_id || footnote_id) as code from footnote_association_measures
+        union select distinct (footnote_type || footnote_id) as code from footnote_association_goods_nomenclatures
+        union select distinct (footnote_type || footnote_id) as code from footnote_association_erns
+        union select distinct (footnote_type_id || footnote_id) as code from footnote_association_additional_codes
+        union select distinct (footnote_type || footnote_id) as code from footnote_association_meursing_headings
+        order by 1;"""
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_additional_code_types_used_in_erns(self):
+        sql = "select distinct additional_code_type from export_refund_nomenclatures order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_additional_code_types_mapped_to_measure_types(self):
+        sql = "select distinct additional_code_type_id from additional_code_type_measure_types where validity_end_date is null order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_languages(self):
+        sql = "select distinct language_id from languages where validity_end_date is null order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
     def get_additional_code_type_descriptions(self):
         sql = """select actp.additional_code_type_id
         from additional_code_type_descriptions actp, additional_code_types act
@@ -2442,6 +2568,26 @@ class application(object):
         and act.validity_end_date is null
         order by 1
         ;"""
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_certificates(self):
+        sql = "select distinct certificate_type_code || certificate_code as code from certificates order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_used_certificates(self):
+        sql = "select distinct certificate_type_code || certificate_code as code from measure_conditions order by 1;"
         cur = self.conn.cursor()
         cur.execute(sql)
         rows = cur.fetchall()
@@ -2480,6 +2626,110 @@ class application(object):
             my_list.append(row[0])
         return (my_list)
 
+    def get_all_regulation_groups(self):
+        sql = """select regulation_group_id, validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD'))
+        as validity_end_date from regulation_groups order by 1;"""
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_related_modification_regulations(self, base_regulation_id):
+        sql = """select modification_regulation_id, modification_regulation_role, validity_start_date, validity_end_date
+        from modification_regulations where base_regulation_id = %s
+        order by validity_start_date;"""
+        params = [
+            base_regulation_id
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_existing_related_origins(self, quota_order_number_sid, geographical_area_id):
+        sql = """select quota_order_number_origin_sid, validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date
+        from quota_order_number_origins
+        where quota_order_number_sid = %s
+        and geographical_area_id = %s
+        order by validity_start_date desc;"""
+        params = [
+            quota_order_number_sid,
+            geographical_area_id
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_quota_order_number(self, quota_order_number_sid):
+        sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date,
+        quota_order_number_id from quota_order_numbers where quota_order_number_sid = %s limit 1;"""
+        params = [
+            quota_order_number_sid
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        row = cur.fetchone()
+        my_list = list(row)
+        return (my_list)
+
+    def get_geographical_area(self, geographical_area_sid):
+        sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date,
+        geographical_area_id, geographical_code from geographical_areas where geographical_area_sid = %s limit 1;"""
+        params = [
+            geographical_area_sid
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchone()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_geographical_area_from_origin(self, quota_order_number_origin_sid):
+        sql = """select ga.validity_start_date, coalesce(ga.validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date,
+        ga.geographical_area_id, geographical_code
+        from quota_order_number_origins qono, geographical_areas ga
+        where qono.geographical_area_sid = ga.geographical_area_sid
+        and qono.quota_order_number_origin_sid = %s
+        limit 1;"""
+        params = [
+            quota_order_number_origin_sid
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchone()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_used_regulation_groups(self):
+        sql = "select distinct regulation_group_id from base_regulations order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
+    def get_used_regulation_roles(self):
+        sql = """select distinct base_regulation_role from base_regulations
+        union select distinct modification_regulation_role from modification_regulations
+        union select distinct prorogation_regulation_role from prorogation_regulations
+        union select distinct complete_abrogation_regulation_role from complete_abrogation_regulations
+        union select distinct explicit_abrogation_regulation_role from explicit_abrogation_regulations
+        union select distinct full_temporary_stop_regulation_role from full_temporary_stop_regulations
+        order by 1;"""
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
     def get_geographical_area_groups(self):
         sql = "select geographical_area_sid from geographical_areas where geographical_code = '1' and validity_end_date is null order by 1;"
         cur = self.conn.cursor()
@@ -2498,6 +2748,42 @@ class application(object):
         my_list = []
         for row in rows:
             my_list.append(row[0])
+        return (my_list)
+
+    def get_geographical_areas_with_dates(self):
+        sql = "select geographical_area_id, validity_start_date from geographical_areas order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0] + "_" + row[1].strftime('%Y-%m-%d'))
+        return (my_list)
+
+    def get_similar_geographical_areas_with_dates(self, geographical_area_id):
+        sql = """select geographical_area_sid, validity_start_date, coalesce(validity_end_date,
+        TO_DATE('2999-12-31', 'YYYY-MM-DD')) from geographical_areas where geographical_area_id = %s order by 1;"""
+        params = [
+            geographical_area_id
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+        my_list = list(rows)
+        return (my_list)
+
+    def get_similar_geographical_area_memberships_with_dates(self, geographical_area_group_sid, geographical_area_sid):
+        sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date
+        from geographical_area_memberships where geographical_area_group_sid = %s and geographical_area_sid = %s
+        order by validity_end_date desc;"""
+        params = [
+            geographical_area_group_sid,
+            geographical_area_sid,
+        ]
+        cur = self.conn.cursor()
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+        my_list = list(rows)
         return (my_list)
 
     def get_all_goods_nomenclatures(self):
@@ -2535,6 +2821,15 @@ class application(object):
             my_list.append(row[0])
         return (my_list)
 
+    def get_measurements(self):
+        sql = """select measurement_unit_code, measurement_unit_qualifier_code
+        from measurements where validity_end_date is null order by 1, 2;"""
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = list(rows)
+        return (my_list)
+
     def get_base_regulations(self):
         sql = "select distinct base_regulation_role || base_regulation_id as code from base_regulations order by 1;"
         sql = "select distinct base_regulation_id as code from base_regulations order by 1;"
@@ -2558,9 +2853,9 @@ class application(object):
         return (my_list)
 
     def get_all_regulations(self):
-        sql = "select distinct modification_regulation_id as code, validity_start_date, " \
+        sql = "select distinct modification_regulation_id as regulation_id, modification_regulation_role as regulation_role, validity_start_date, " \
             "validity_end_date from modification_regulations " \
-            "union select distinct base_regulation_id as code, validity_start_date, validity_end_date from base_regulations " \
+            "union select distinct base_regulation_id as regulation_id, base_regulation_role as regulation_role, validity_start_date, validity_end_date from base_regulations " \
             "order by 1;"
 
         cur = self.conn.cursor()
@@ -2572,8 +2867,9 @@ class application(object):
             my_list.append(row[0])
             obj = []
             obj.append(row[0])
-            obj.append(row[1])
+            obj.append(str(row[1]))
             obj.append(row[2])
+            obj.append(row[3])
             self.all_regulations_with_dates.append(obj)
         return (my_list)
 
@@ -2648,6 +2944,16 @@ class application(object):
             my_list.append(row[0])
         return (my_list)
 
+    def get_used_measure_type_series(self):
+        sql = "select distinct measure_type_series_id from measure_types order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        my_list = []
+        for row in rows:
+            my_list.append(row[0])
+        return (my_list)
+
     def get_duty_expressions(self):
         sql = """select duty_expression_id, validity_start_date, validity_end_date, duty_amount_applicability_code,
         measurement_unit_applicability_code, monetary_unit_applicability_code
@@ -2670,6 +2976,7 @@ class application(object):
         return (my_list)
 
     def rule_FO04(self):
+        print("Running business rule FO4 - Footnote description period must exist at the start of the footnote.")
         # Footnote description period must exist at the start of the footnote
         sql = "select footnote_type_id || footnote_id as code, validity_start_date from footnotes f order by 1, 2;"
         cur = self.conn.cursor()
@@ -2692,11 +2999,44 @@ class application(object):
                     matched = True
                     break
             if matched is False:
-                self.add_load_error("Rule FO4 - At least one description record is mandatory. The start date of the first description "
-                "period must be equal to the start date of the footnote. No two associated description periods may have the same start date. "
-                "The start date of the footnote must be less than or equal to the end date of the footnote. Issue occurred on footnote """ + code + """.""")
+                # Business rule FO4
+                self.record_business_rule_violation("FO4", "At least one description record is mandatory. The start date of the first "
+                "description period must be equal to the start date of the footnote. No two associated description periods may have the "
+                "same start date. The start date must be less than or equal to the end date of the footnote.", "", "", "", "200", "05", code)
+
+    def rule_ACN5(self):
+        print("Running business rule ACN5 - At least one additional code description is mandatory.")
+        # At least one description is mandatory. The start date of the first description period must be equal to the start
+        # date of the additional code. No two associated description periods may have the same start date.
+        # The start date must be less than or equal to the end date of the additional code.
+        sql = "select additional_code_sid, validity_start_date from additional_codes ac order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        ac_list = cur.fetchall()
+
+        sql = "select additional_code_sid, validity_start_date from additional_code_description_periods acdp order by 1;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        acdp_list = cur.fetchall()
+
+        for item in ac_list:
+            sid = item[0]
+            validity_start_date = item[1]
+            matched = False
+            for item2 in acdp_list:
+                sid2 = item2[0]
+                validity_start_date2 = item2[1]
+                if sid == sid2 and validity_start_date == validity_start_date2:
+                    matched = True
+                    break
+            if matched is False:
+                # Business rule FO4
+                self.record_business_rule_violation("ACN5", "At least one description record is mandatory. The start date of the first "
+                "description period must be equal to the start date of the additional code. No two associated description periods may have the "
+                "same start date. The start date must be less than or equal to the end date of the additional code.", "", "", "", "200", "05", sid)
 
     def rule_CE06(self):
+        print("Running business rule CE6 - Certificate description period must exist at the start of the certificate.")
         # Certificate description period must exist at the start of the certificate
         sql = "select certificate_type_code || certificate_code as code, validity_start_date from certificates c order by 1, 2;"
         cur = self.conn.cursor()
@@ -2719,12 +3059,13 @@ class application(object):
                     matched = True
                     break
             if matched is False:
-                self.add_load_error("At least one description record is mandatory. The start date of the first description period must "
-                "be equal to the start date of the certificate. No two associated description periods for the same certificate and language "
-                "may have the same start date. The validity period of the certificate must span the validity period of the certificate "
-                "description. Issue occurred on certificate """ + code + """.""")
+                self.record_business_rule_violation("CE6", "At least one description record is mandatory. The start date of the first "
+                "description period must be equal to the start date of the certificate. No two associated description periods for the "
+                "same certificate and language may have the same start date. The validity period of the certificate must span the validity "
+                "period of the certificate description.", "", "", "", "250", "10", code)
 
     def rule_GA3(self):
+        print("Running business rule GA3 - Geographical area description period must exist at the start of the Geographical area.")
         # Geographical area description period must exist at the start of the Geographical area
         sql = "select geographical_area_id, validity_start_date from geographical_areas order by 1, 2;"
         cur = self.conn.cursor()
@@ -2747,10 +3088,22 @@ class application(object):
                     matched = True
                     break
             if matched is False:
-                self.add_load_error("At least one description record is mandatory. The start date of the first description period must "
+                # Business rule GA3
+                self.record_business_rule_violation("GA3", "At least one description record is mandatory. The start date of the first description period must "
                 "be equal to the start date of the geographical area. No two associated description periods for the same geographical area and language "
                 "may have the same start date. The validity period of the geographical area must span the validity period of the geographical area "
-                "description. Issue occurred on geographical area """ + code + """.""")
+                "description.", "", "", "", "250", "10", code)
+
+    def rule_ME43(self):
+        print("Running business rule ME43 - The same duty expression can only be used once with the same measure.")
+        # Business rule ME43 The same duty expression can only be used once with the same measure.
+        sql = "select * from components_per_measure_sid_and_duty_expression where component_count > 1 order by measure_sid;"
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        my_list = cur.fetchall()
+        for item in my_list:
+            measure_sid = item[0]
+            self.record_business_rule_violation("ME43", "The same duty expression can only be used once with the same measure.", "", "", "", "430", "05", measure_sid)
 
     def copy_xml_to_import_folder(self):
         self.d("Copying file to import directory", False)

@@ -1,0 +1,1025 @@
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.footnote_association_goods_nomenclatures_oplog (
+    goods_nomenclature_sid integer,
+    footnote_type character varying(2),
+    footnote_id character varying(5),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone
+);
+CREATE TABLE public.footnote_association_measures_oplog (
+    measure_sid integer,
+    footnote_type_id character varying(2),
+    footnote_id character varying(5),
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.footnote_association_meursing_headings_oplog (
+    meursing_table_plan_id character varying(2),
+    meursing_heading_number character varying(255),
+    row_column_code integer,
+    footnote_type character varying(2),
+    footnote_id character varying(5),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.footnote_description_periods_oplog (
+    footnote_description_period_sid integer,
+    footnote_type_id character varying(2),
+    footnote_id character varying(5),
+    validity_start_date timestamp without time zone,
+    created_at timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.footnote_type_descriptions_oplog (
+    footnote_type_id character varying(2),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.footnote_types_oplog (
+    footnote_type_id character varying(2),
+    application_code integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.fts_regulation_actions_oplog (
+    fts_regulation_role integer,
+    fts_regulation_id character varying(8),
+    stopped_regulation_role integer,
+    stopped_regulation_id character varying(8),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.full_temporary_stop_regulations_oplog (
+    full_temporary_stop_regulation_role integer,
+    full_temporary_stop_regulation_id character varying(8),
+    published_date date,
+    officialjournal_number character varying(255),
+    officialjournal_page integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    effective_enddate date,
+    explicit_abrogation_regulation_role integer,
+    explicit_abrogation_regulation_id character varying(8),
+    replacement_indicator integer,
+    information_text text,
+    approved_flag boolean,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    complete_abrogation_regulation_role integer,
+    complete_abrogation_regulation_id text
+);
+CREATE TABLE public.geographical_area_description_periods_oplog (
+    geographical_area_description_period_sid integer,
+    geographical_area_sid integer,
+    validity_start_date timestamp without time zone,
+    geographical_area_id character varying(255),
+    created_at timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone
+);
+CREATE TABLE public.goods_nomenclature_description_periods_oplog (
+    goods_nomenclature_description_period_sid integer,
+    goods_nomenclature_sid integer,
+    validity_start_date timestamp without time zone,
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean
+);
+CREATE TABLE public.goods_nomenclature_group_descriptions_oplog (
+    goods_nomenclature_group_type character varying(1),
+    goods_nomenclature_group_id character varying(6),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.goods_nomenclature_groups_oplog (
+    goods_nomenclature_group_type character varying(1),
+    goods_nomenclature_group_id character varying(6),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    nomenclature_group_facility_code integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.goods_nomenclature_indents_oplog (
+    goods_nomenclature_indent_sid integer,
+    goods_nomenclature_sid integer,
+    validity_start_date timestamp without time zone,
+    number_indents integer,
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.goods_nomenclature_origins_oplog (
+    goods_nomenclature_sid integer,
+    derived_goods_nomenclature_item_id character varying(10),
+    derived_productline_suffix character varying(2),
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.goods_nomenclature_successors_oplog (
+    goods_nomenclature_sid integer,
+    absorbed_goods_nomenclature_item_id character varying(10),
+    absorbed_productline_suffix character varying(2),
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.hidden_goods_nomenclatures (
+    goods_nomenclature_item_id text,
+    created_at timestamp without time zone
+);
+CREATE TABLE public.language_descriptions_oplog (
+    language_code_id character varying(255),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.languages_oplog (
+    language_id character varying(5),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measure_condition_components_oplog (
+    measure_condition_sid integer,
+    duty_expression_id character varying(255),
+    duty_amount double precision,
+    monetary_unit_code character varying(255),
+    measurement_unit_code character varying(3),
+    measurement_unit_qualifier_code character varying(1),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    original_duty_expression_id text
+);
+CREATE TABLE public.measure_excluded_geographical_areas_oplog (
+    measure_sid integer,
+    excluded_geographical_area character varying(255),
+    geographical_area_sid integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measure_partial_temporary_stops_oplog (
+    measure_sid integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    partial_temporary_stop_regulation_id character varying(255),
+    partial_temporary_stop_regulation_officialjournal_number character varying(255),
+    partial_temporary_stop_regulation_officialjournal_page integer,
+    abrogation_regulation_id character varying(255),
+    abrogation_regulation_officialjournal_number character varying(255),
+    abrogation_regulation_officialjournal_page integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measure_type_series_oplog (
+    measure_type_series_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    measure_type_combination integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measure_type_series_descriptions_oplog (
+    measure_type_series_id character varying(255),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measurement_unit_abbreviations (
+    id integer NOT NULL,
+    abbreviation text,
+    measurement_unit_code text,
+    measurement_unit_qualifier text
+);
+CREATE TABLE public.measurement_unit_descriptions_oplog (
+    measurement_unit_code character varying(3),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measurement_unit_qualifier_descriptions_oplog (
+    measurement_unit_qualifier_code character varying(1),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measurement_unit_qualifiers_oplog (
+    measurement_unit_qualifier_code character varying(1),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measurement_units_oplog (
+    measurement_unit_code character varying(3),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.measurements_oplog (
+    measurement_unit_code character varying(3),
+    measurement_unit_qualifier_code character varying(1),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.meursing_heading_texts_oplog (
+    meursing_table_plan_id character varying(2),
+    meursing_heading_number integer,
+    row_column_code integer,
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.meursing_headings_oplog (
+    meursing_table_plan_id character varying(2),
+    meursing_heading_number text,
+    row_column_code integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.meursing_subheadings_oplog (
+    meursing_table_plan_id character varying(2),
+    meursing_heading_number integer,
+    row_column_code integer,
+    subheading_sequence_number integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.meursing_table_cell_components_oplog (
+    meursing_additional_code_sid integer,
+    meursing_table_plan_id character varying(2),
+    heading_number integer,
+    row_column_code integer,
+    subheading_sequence_number integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    additional_code character varying(3),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.meursing_table_plans_oplog (
+    meursing_table_plan_id character varying(2),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.monetary_exchange_periods_oplog (
+    monetary_exchange_period_sid integer,
+    parent_monetary_unit_code character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.monetary_exchange_rates_oplog (
+    monetary_exchange_period_sid integer,
+    child_monetary_unit_code character varying(255),
+    exchange_rate numeric(16,8),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.monetary_unit_descriptions_oplog (
+    monetary_unit_code character varying(255),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.monetary_units_oplog (
+    monetary_unit_code character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.nomenclature_group_memberships_oplog (
+    goods_nomenclature_sid integer,
+    goods_nomenclature_group_type character varying(1),
+    goods_nomenclature_group_id character varying(6),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    goods_nomenclature_item_id character varying(10),
+    productline_suffix character varying(2),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.prorogation_regulation_actions_oplog (
+    prorogation_regulation_role integer,
+    prorogation_regulation_id character varying(8),
+    prorogated_regulation_role integer,
+    prorogated_regulation_id character varying(8),
+    prorogated_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.prorogation_regulations_oplog (
+    prorogation_regulation_role integer,
+    prorogation_regulation_id character varying(255),
+    published_date date,
+    officialjournal_number character varying(255),
+    officialjournal_page integer,
+    replacement_indicator integer,
+    information_text text,
+    approved_flag boolean,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.publication_sigles_oplog (
+    oid integer NOT NULL,
+    code_type_id character varying(4),
+    code character varying(10),
+    publication_code character varying(1),
+    publication_sigle character varying(20),
+    validity_end_date timestamp without time zone,
+    validity_start_date timestamp without time zone,
+    created_at timestamp without time zone,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_associations_oplog (
+    main_quota_definition_sid integer,
+    sub_quota_definition_sid integer,
+    relation_type character varying(255),
+    coefficient numeric(16,5),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean
+);
+CREATE TABLE public.quota_balance_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    last_import_date_in_allocation date,
+    old_balance numeric(15,3),
+    new_balance numeric(15,3),
+    imported_amount numeric(15,3),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_blocking_periods_oplog (
+    quota_blocking_period_sid integer,
+    quota_definition_sid integer,
+    blocking_start_date date,
+    blocking_end_date date,
+    blocking_period_type integer,
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_critical_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    critical_state character varying(255),
+    critical_state_change_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_definitions_oplog (
+    quota_definition_sid integer,
+    quota_order_number_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    quota_order_number_sid integer,
+    volume numeric(12,2),
+    initial_volume numeric(12,2),
+    measurement_unit_code character varying(3),
+    maximum_precision integer,
+    critical_state character varying(255),
+    critical_threshold integer,
+    monetary_unit_code character varying(255),
+    measurement_unit_qualifier_code character varying(1),
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    workbasket_type_of_quota text
+);
+CREATE TABLE public.quota_exhaustion_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    exhaustion_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_order_number_origin_exclusions_oplog (
+    quota_order_number_origin_sid integer,
+    excluded_geographical_area_sid integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_order_number_origins_oplog (
+    quota_order_number_origin_sid integer,
+    quota_order_number_sid integer,
+    geographical_area_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    geographical_area_sid integer,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_order_numbers_oplog (
+    quota_order_number_sid integer,
+    quota_order_number_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    origin_quota boolean,
+    description character varying(500),
+    quota_scope character varying(100),
+    quota_staging character varying(100)
+);
+CREATE TABLE public.quota_reopening_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    reopening_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_suspension_periods_oplog (
+    quota_suspension_period_sid integer,
+    quota_definition_sid integer,
+    suspension_start_date date,
+    suspension_end_date date,
+    description text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean
+);
+CREATE TABLE public.quota_unblocking_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    unblocking_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.quota_unsuspension_events_oplog (
+    quota_definition_sid integer,
+    occurrence_timestamp timestamp without time zone,
+    unsuspension_date date,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer,
+    added_by_id integer,
+    added_at timestamp without time zone,
+    "national" boolean
+);
+CREATE TABLE public.regulation_documents (
+    id integer NOT NULL,
+    regulation_id text,
+    regulation_role text,
+    regulation_id_key text,
+    regulation_role_key text,
+    pdf_data text,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    "national" boolean
+);
+CREATE TABLE public.regulation_group_descriptions_oplog (
+    regulation_group_id character varying(255),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.regulation_groups_oplog (
+    regulation_group_id character varying(255),
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.regulation_replacements_oplog (
+    geographical_area_id character varying(255),
+    chapter_heading character varying(255),
+    replacing_regulation_role integer,
+    replacing_regulation_id character varying(255),
+    replaced_regulation_role integer,
+    replaced_regulation_id character varying(255),
+    measure_type_id character varying(3),
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.regulation_role_type_descriptions_oplog (
+    regulation_role_type_id character varying(255),
+    language_id character varying(5),
+    description text,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.regulation_role_types_oplog (
+    regulation_role_type_id integer,
+    validity_start_date timestamp without time zone,
+    validity_end_date timestamp without time zone,
+    created_at timestamp without time zone,
+    "national" boolean,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.rollbacks (
+    id integer NOT NULL,
+    user_id integer,
+    date date,
+    enqueued_at timestamp without time zone,
+    reason text,
+    keep boolean
+);
+CREATE TABLE public.schema_migrations (
+    filename text NOT NULL
+);
+CREATE TABLE public.search_references (
+    id integer NOT NULL,
+    title text,
+    referenced_id character varying(10),
+    referenced_class character varying(10)
+);
+CREATE TABLE public.section_notes (
+    id integer NOT NULL,
+    section_id integer,
+    content text
+);
+CREATE TABLE public.sections (
+    id integer NOT NULL,
+    "position" integer,
+    numeral character varying(255),
+    title character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone
+);
+CREATE TABLE public.tariff_update_conformance_errors (
+    id integer NOT NULL,
+    tariff_update_filename text NOT NULL,
+    model_name text NOT NULL,
+    model_primary_key text NOT NULL,
+    model_values text,
+    model_conformance_errors text
+);
+CREATE TABLE public.tariff_updates (
+    filename character varying(30) NOT NULL,
+    update_type character varying(50),
+    state character varying(1),
+    issue_date date,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    filesize integer,
+    applied_at timestamp without time zone,
+    last_error text,
+    last_error_at timestamp without time zone,
+    exception_backtrace text,
+    exception_queries text,
+    exception_class text
+);
+CREATE TABLE public.transmission_comments_oplog (
+    comment_sid integer,
+    language_id character varying(5),
+    comment_text text,
+    created_at timestamp without time zone,
+    oid integer NOT NULL,
+    operation character varying(1) DEFAULT 'C'::character varying,
+    operation_date timestamp without time zone,
+    status text,
+    workbasket_id integer,
+    workbasket_sequence_number integer
+);
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    uid text,
+    name text,
+    email text,
+    version integer,
+    permissions text,
+    remotely_signed_out boolean,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    organisation_slug text,
+    disabled boolean DEFAULT false,
+    organisation_content_id text,
+    approver_user boolean DEFAULT false
+);
+CREATE TABLE public.workbasket_items (
+    id integer NOT NULL,
+    workbasket_id integer,
+    record_id integer,
+    record_type text,
+    status text,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    original_data jsonb DEFAULT '{}'::jsonb,
+    record_key text,
+    new_data jsonb DEFAULT '{}'::jsonb,
+    changed_values jsonb DEFAULT '{}'::jsonb,
+    validation_errors jsonb DEFAULT '{}'::jsonb,
+    row_id text
+);
+CREATE TABLE public.workbaskets (
+    id integer NOT NULL,
+    title text,
+    type text,
+    status text,
+    user_id integer,
+    last_update_by_id integer,
+    last_status_change_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    operation_date timestamp without time zone,
+    cross_checker_id integer,
+    approver_id integer
+);
+CREATE TABLE public.workbaskets_events (
+    id integer NOT NULL,
+    workbasket_id integer,
+    user_id integer,
+    event_type text,
+    description text,
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone
+);
+CREATE TABLE public.xml_export_files (
+    id integer NOT NULL,
+    state character varying(1),
+    updated_at timestamp without time zone,
+    created_at timestamp without time zone,
+    xml_data text,
+    issue_date timestamp without time zone,
+    date_filters text,
+    base_64_data text,
+    zip_data text,
+    meta_data text,
+    workbasket boolean DEFAULT true,
+    validation_errors jsonb DEFAULT '{}'::jsonb,
+    envelope_id integer
+);
+ldntranml012452-Matt-Lavis:db matt.admin$

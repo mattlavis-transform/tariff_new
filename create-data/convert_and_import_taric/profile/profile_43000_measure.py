@@ -30,6 +30,10 @@ class profile_43000_measure(object):
         goods_nomenclature_sid = app.get_number_value(omsg, ".//oub:goods.nomenclature.sid", True)
         additional_code_sid = app.get_number_value(omsg, ".//oub:additional.code.sid", True)
         export_refund_nomenclature_sid = app.get_number_value(omsg, ".//oub:export.refund.nomenclature.sid", True)
+        if validity_end_date is None:
+            validity_end_date2 = datetime.strptime("2999-12-31", "%Y-%m-%d")
+        else:
+            validity_end_date2 = validity_end_date
 
         # Add to a global list of measures, so that this can be validated at the end that there are
         # components associated with it
@@ -41,9 +45,72 @@ class profile_43000_measure(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
+            if update_type in ("1", "3"):  # UPDATE OR INSERT
+                # Business rule NIG30 When a goods nomenclature is used in a goods measure then the validity
+                # period of the goods nomenclature  must span the validity period of the goods measure.
+                sql = """select goods_nomenclature_item_id, producline_suffix, validity_start_date,
+                coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) from goods_nomenclatures
+                where goods_nomenclature_sid = %s;"""
+                params = [
+                    str(goods_nomenclature_sid),
+                ]
+                cur = g.app.conn.cursor()
+                cur.execute(sql, params)
+                rows = cur.fetchall()
+                if len(rows) == 1:
+                    goods_nomenclature_start_date = rows[0][2]
+                    goods_nomenclature_end_date = rows[0][3]
+                    # print(type(validity_start_date), type(validity_end_date2), type(goods_nomenclature_start_date), type(goods_nomenclature_end_date))
+                    if (validity_start_date < goods_nomenclature_start_date) or (validity_end_date2 > goods_nomenclature_end_date):
+                        g.app.record_business_rule_violation("NIG30", "When a goods nomenclature is used in a goods measure then the validity "
+                        "period of the goods nomenclature must span the validity period of the goods measure.", operation,
+                        transaction_id, message_id, record_code, sub_record_code, measure_sid)
+
+                # Business rule GA10
+                # When a geographical area is referenced in a measure then the validity period of
+                # the geographical area must span the validity period of the measure.
+                sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date
+                from geographical_areas where geographical_area_id = %s order by validity_start_date desc limit 1;"""
+                params = [
+                    str(geographical_area),
+                ]
+                cur = g.app.conn.cursor()
+                cur.execute(sql, params)
+                rows = cur.fetchall()
+                if len(rows) == 1:
+                    geographical_area_start_date = rows[0][0]
+                    geographical_area_end_date = rows[0][1]
+                    if (validity_start_date < geographical_area_start_date) or (validity_end_date2 > geographical_area_end_date):
+                        g.app.record_business_rule_violation("GA10", "When a geographical area is referenced in a measure then the validity period of "
+                        "the geographical area must span the validity period of the measure", operation, transaction_id, message_id, record_code, sub_record_code, measure_sid)
+
+                # Business rule ACN13
+                # When an additional code is used in an additional code nomenclature measure then the validity
+                # period of the additional code must span the validity period of the measure.
+                if additional_code_sid is not None:
+                    if validity_end_date is None:
+                        validity_end_date2 = datetime.strptime("2999-12-31", "%Y-%m-%d")
+                    else:
+                        validity_end_date2 = validity_end_date
+                    sql = """select validity_start_date, coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) as validity_end_date
+                    from additional_codes where additional_code_sid = %s;"""
+                    params = [
+                        str(additional_code_sid),
+                    ]
+                    cur = g.app.conn.cursor()
+                    cur.execute(sql, params)
+                    rows = cur.fetchall()
+                    if len(rows) == 1:
+                        additional_code_start_date = rows[0][0]
+                        additional_code_end_date = rows[0][1]
+                        if (additional_code_start_date > validity_start_date) or (validity_end_date2 > additional_code_end_date):
+                            g.app.record_business_rule_violation("ACN13", "When an additional code is used in an additional code nomenclature measure "
+                            "then the validity period of the additional code must span the validity period of the measure.", operation,
+                            transaction_id, message_id, record_code, sub_record_code, measure_sid)
+
             # Not a Taric error, but just simple referential integrity
             # Check if a delete is being made, and if so, check that the measure exists before actually deleting
-            if int(update_type) == 2:
+            if int(update_type) == 2:  # Delete
                 sql = "select measure_sid from measures where measure_sid = %s"
                 params = [
                     str(measure_sid)
@@ -134,6 +201,7 @@ class profile_43000_measure(object):
                             g.app.record_business_rule_violation("ME116", "When a quota order number is used in a measure then the "
                             "validity period of the quota order number must span the validity period of the measure.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
                     else:
+                        # Business rule ON9
                         ON9_error = False
                         if validity_end_date2 is None:
                             if validity_start_date < validity_start_date2:
@@ -198,80 +266,81 @@ class profile_43000_measure(object):
             if check_me32 is True:
                 # run ME32 check - get relations of this commodity code up and down the tree
                 if int(update_type) == 3:
-                    my_node = g.app.find_node(goods_nomenclature_item_id)
-                    relation_string = "'" + goods_nomenclature_item_id + "', "
-                    for relation in my_node.relations:
-                        relation_string += "'" + relation + "', "
-                    relation_string = relation_string.strip(", ")
+                    if goods_nomenclature_sid is not None:
+                        my_node = g.app.find_node(goods_nomenclature_item_id)
+                        relation_string = "'" + goods_nomenclature_item_id + "', "
+                        for relation in my_node.relations:
+                            relation_string += "'" + relation + "', "
+                        relation_string = relation_string.strip(", ")
 
-                    sql = "select measure_sid from ml.measures_real_end_dates m \n" \
-                        "where \n" \
-                        "(\n" \
-                        "	measure_type_id = '" + measure_type + "' \n"  \
-                        "	and goods_nomenclature_item_id in (" + relation_string + ") \n"
+                        sql = "select measure_sid from ml.measures_real_end_dates m \n" \
+                            "where \n" \
+                            "(\n" \
+                            "	measure_type_id = '" + measure_type + "' \n"  \
+                            "	and goods_nomenclature_item_id in (" + relation_string + ") \n"
 
-                    if geographical_area is None:
-                        sql += "	and geographical_area_id is Null \n"
-                    else:
-                        sql += "	and geographical_area_id = '" + geographical_area + "' \n"
+                        if geographical_area is None:
+                            sql += "	and geographical_area_id is Null \n"
+                        else:
+                            sql += "	and geographical_area_id = '" + geographical_area + "' \n"
 
-                    if ordernumber is None:
-                        sql += "	and ordernumber is Null \n"
-                    else:
-                        sql += "	and ordernumber = '" + ordernumber + "' \n"
+                        if ordernumber is None:
+                            sql += "	and ordernumber is Null \n"
+                        else:
+                            sql += "	and ordernumber = '" + ordernumber + "' \n"
 
-                    if reduction_indicator is None:
-                        sql += "	and reduction_indicator is Null \n"
-                    else:
-                        sql += "	and reduction_indicator = '" + str(reduction_indicator) + "' \n"
+                        if reduction_indicator is None:
+                            sql += "	and reduction_indicator is Null \n"
+                        else:
+                            sql += "	and reduction_indicator = '" + str(reduction_indicator) + "' \n"
 
-                    if additional_code_type is None:
-                        sql += "	and additional_code_type_id is Null \n"
-                    else:
-                        sql += "	and additional_code_type_id = '" + additional_code_type + "' \n"
+                        if additional_code_type is None:
+                            sql += "	and additional_code_type_id is Null \n"
+                        else:
+                            sql += "	and additional_code_type_id = '" + additional_code_type + "' \n"
 
-                    if additional_code is None:
-                        sql += "	and additional_code_id is Null \n"
-                    else:
-                        sql += "	and additional_code_id = '" + additional_code + "' \n"
+                        if additional_code is None:
+                            sql += "	and additional_code_id is Null \n"
+                        else:
+                            sql += "	and additional_code_id = '" + additional_code + "' \n"
 
-                    sql += ")\nand\n(\n"
+                        sql += ")\nand\n(\n"
 
-                    if validity_end_date is None:
-                        # The new measure does not have an end date
-                        sql += """  (validity_end_date is null or (validity_start_date <= '""" + validity_start_date_string + """'
-                        and validity_end_date >= '""" + validity_start_date_string + """')))"""
-                    else:
-                        # The new measure has an end date
-                        sql += """
-        (
-            validity_end_date is not Null and
+                        if validity_end_date is None:
+                            # The new measure does not have an end date
+                            sql += """  (validity_end_date is null or (validity_start_date <= '""" + validity_start_date_string + """'
+                            and validity_end_date >= '""" + validity_start_date_string + """')))"""
+                        else:
+                            # The new measure has an end date
+                            sql += """
             (
-                ('""" + validity_start_date_string + """' <= validity_start_date and '""" + validity_end_date_string + """' >= validity_start_date)
-                or
-                ('""" + validity_start_date_string + """' <= validity_end_date and '""" + validity_end_date_string + """' >= validity_end_date)
+                validity_end_date is not Null and
+                (
+                    ('""" + validity_start_date_string + """' <= validity_start_date and '""" + validity_end_date_string + """' >= validity_start_date)
+                    or
+                    ('""" + validity_start_date_string + """' <= validity_end_date and '""" + validity_end_date_string + """' >= validity_end_date)
+                )
             )
-        )
-        or
-        (
-            validity_end_date is Null and
+            or
             (
-                '""" + validity_start_date_string + """' >= validity_start_date or '""" + validity_end_date_string + """' >= validity_start_date
+                validity_end_date is Null and
+                (
+                    '""" + validity_start_date_string + """' >= validity_start_date or '""" + validity_end_date_string + """' >= validity_start_date
+                )
             )
-        )
-    """
+        """
 
-                        sql += ")\n"
+                            sql += ")\n"
 
-                    cur = g.app.conn.cursor()
-                    cur.execute(sql)
-                    rows = cur.fetchall()
-                    if len(rows) > 0:
-                        rw = rows[0]
-                        offended_measure_sid = rw[0]
-                        g.app.record_business_rule_violation("ME32", "There may be no overlap in time with other measure occurrences with a goods code "
-                        "in the same nomenclature hierarchy which references the same measure type, geo area, order number, additional code and reduction "
-                        "indicator. This rule is not applicable for Meursing additional codes.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
+                        cur = g.app.conn.cursor()
+                        cur.execute(sql)
+                        rows = cur.fetchall()
+                        if len(rows) > 0:
+                            rw = rows[0]
+                            offended_measure_sid = rw[0]
+                            g.app.record_business_rule_violation("ME32", "There may be no overlap in time with other measure occurrences with a goods code "
+                            "in the same nomenclature hierarchy which references the same measure type, geo area, order number, additional code and reduction "
+                            "indicator. This rule is not applicable for Meursing additional codes.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
 
         tariff_measure_number = goods_nomenclature_item_id
         if goods_nomenclature_item_id is not None:

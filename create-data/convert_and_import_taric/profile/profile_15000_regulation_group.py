@@ -17,15 +17,29 @@ class profile_15000_regulation_group(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
+            if update_type in ("1", "3"):  # UPDATE or INSERT
+                # Business rule RG3
+                if validity_end_date is not None:
+                    if validity_end_date < validity_start_date:
+                        g.app.record_business_rule_violation("RG3", "The start date must be less than or equal to the end date.", operation, transaction_id, message_id, record_code, sub_record_code, regulation_group_id)
+
             if update_type == "1":  # UPDATE
+                # Business rule DBFK
                 if regulation_group_id not in regulation_groups:
                     g.app.record_business_rule_violation("DBFK", "The regulation group must exist.", operation, transaction_id, message_id, record_code, sub_record_code, regulation_group_id)
 
             elif update_type == "2":  # DELETE
+                used_regulation_groups = g.app.get_used_regulation_groups()
+                # Business rule DBFK
                 if regulation_group_id not in regulation_groups:
                     g.app.record_business_rule_violation("DBFK", "The regulation group must exist.", operation, transaction_id, message_id, record_code, sub_record_code, regulation_group_id)
 
+                # Business rule RG2
+                if regulation_group_id not in used_regulation_groups:
+                    g.app.record_business_rule_violation("RG2", "The Regulation group cannot be deleted if it is used in a base regulation.", operation, transaction_id, message_id, record_code, sub_record_code, regulation_group_id)
+
             elif update_type == "3":  # INSERT
+                # Business rule RG1
                 if regulation_group_id in regulation_groups:
                     g.app.record_business_rule_violation("RG1", "The Regulation group id must be unique.", operation, transaction_id, message_id, record_code, sub_record_code, regulation_group_id)
 

@@ -1,22 +1,17 @@
-import psycopg2
-import sys
-import os
-import xmlschema
-from xml.sax.saxutils import escape
-
-from openpyxl import Workbook
-from openpyxl import load_workbook
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
-
-import common.objects as o
+# Import libraries
+from openpyxl import Workbook, load_workbook
+import common.globals as g
 from common.certificate_type import certificate_type
 from common.application import application
 
-app = o.app
-app.get_templates()
+# Determine file paths
+g.app.d("Creating certificate types XML", False)
+g.app.d("Reading certificate types source", True)
+g.app.get_templates()
+g.app.get_profile_paths(sub_folder="certificate_types", default_filename="certificate_types")
 
-fname = os.path.join(app.SOURCE_DIR, "certificate_types.xlsx")
-wb = load_workbook(filename=fname, read_only=True)
+# Open the Excel workbook
+wb = load_workbook(filename=g.app.input_filepath, read_only=True)
 
 ws = wb['New']
 
@@ -24,34 +19,29 @@ row_count = ws.max_row
 col_count = ws.max_column
 
 for i in range(2, row_count + 1):
-	CERTIFICATE_TYPE_ID	= ws.cell(row = i, column = 1).value
-	DESCRIPTION			= ws.cell(row = i, column = 2).value
-	VALIDITY_START_DATE	= ws.cell(row = i, column = 3).value
-	print (VALIDITY_START_DATE)
+    CERTIFICATE_TYPE_ID = ws.cell(row=i, column=1).value
+    DESCRIPTION = ws.cell(row=i, column=2).value
+    VALIDITY_START_DATE = ws.cell(row=i, column=3).value
 
-	f = certificate_type(CERTIFICATE_TYPE_ID, DESCRIPTION, VALIDITY_START_DATE, "insert")
-	app.certificate_type_list.append(f)
+    f = certificate_type(CERTIFICATE_TYPE_ID, DESCRIPTION, VALIDITY_START_DATE, "insert")
+    g.app.certificate_type_list.append(f)
 
-env = app.envelope_XML
-env = env.replace("[ENVELOPE_ID]", str(app.base_envelope_id))
+env = g.app.envelope_XML
+env = env.replace("[ENVELOPE_ID]", str(g.app.base_envelope_id))
 out = ""
-for obj in app.certificate_type_list:
-	obj.writeXML(app)
-	out += obj.xml
+for obj in g.app.certificate_type_list:
+    obj.writeXML(g.app)
+    out += obj.xml
 
+# Write the XML
 out = env.replace("[BODY]", out)
-filename = os.path.join(app.XML_DIR, "certificate_types.xml")
-f = open(filename, "w", encoding="utf-8") 
+f = open(g.app.output_filepath, "w", encoding="utf-8")
 f.write(out)
 f.close()
 
-schema_path = os.path.join(app.SCHEMA_DIR, "envelope.xsd")
-my_schema = xmlschema.XMLSchema(schema_path)
-try:
-	if my_schema.is_valid(filename):
-		print ("The file validated successfully.")
-	else:
-		print ("The file did not validate.")
-except:
-	print ("The file did not validate and crashed the validator.")
-app.set_config()
+
+# Validate the XML
+g.app.validate()
+
+# Update the configuration file, as required
+g.app.set_config()

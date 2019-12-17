@@ -50,21 +50,27 @@ class profile_43000_measure(object):
                 # period of the goods nomenclature  must span the validity period of the goods measure.
                 sql = """select goods_nomenclature_item_id, producline_suffix, validity_start_date,
                 coalesce(validity_end_date, TO_DATE('2999-12-31', 'YYYY-MM-DD')) from goods_nomenclatures
-                where goods_nomenclature_sid = %s;"""
+                where goods_nomenclature_sid = %s order by validity_start_date desc;"""
                 params = [
-                    str(goods_nomenclature_sid),
+                    goods_nomenclature_sid,
                 ]
                 cur = g.app.conn.cursor()
                 cur.execute(sql, params)
                 rows = cur.fetchall()
-                if len(rows) == 1:
-                    goods_nomenclature_start_date = rows[0][2]
-                    goods_nomenclature_end_date = rows[0][3]
-                    # print(type(validity_start_date), type(validity_end_date2), type(goods_nomenclature_start_date), type(goods_nomenclature_end_date))
+                for row in rows:
+                    goods_nomenclature_start_date = row[2]
+                    goods_nomenclature_end_date = row[3]
                     if (validity_start_date < goods_nomenclature_start_date) or (validity_end_date2 > goods_nomenclature_end_date):
-                        g.app.record_business_rule_violation("NIG30", "When a goods nomenclature is used in a goods measure then the validity "
-                        "period of the goods nomenclature must span the validity period of the goods measure.", operation,
-                        transaction_id, message_id, record_code, sub_record_code, measure_sid)
+                        match = False
+                    else:
+                        match = True
+                        break
+
+                if match is False:
+                    g.app.record_business_rule_violation("NIG30", "When a goods nomenclature is used in a goods measure then the validity "
+                    "period of the goods nomenclature must span the validity period of the goods measure.", operation,
+                    transaction_id, message_id, record_code, sub_record_code, measure_sid)
+                    sys.exit()
 
                 # Business rule GA10
                 # When a geographical area is referenced in a measure then the validity period of
@@ -225,11 +231,12 @@ class profile_43000_measure(object):
             # Run ROIMB8 check - that dates of measures fall within dates of regulation
             my_regulation = g.app.get_my_regulation(regulation_code)
             if my_regulation is not None:
-                regulation_start_date = my_regulation[1]
-                regulation_end_date = my_regulation[2]
+                regulation_start_date = my_regulation[2]
+                regulation_end_date = my_regulation[3]
 
                 if validity_end_date is None:
                     # Step 1 - check for when the measure end date is not specified
+                    # print("Measure start date", validity_start_date, "Regulation start date", regulation_start_date)
                     if validity_start_date < regulation_start_date:
                         g.app.record_business_rule_violation("ROIMB8(a)", "Explicit dates of related measures must be within the "
                         "validity period of the base regulation.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
@@ -341,6 +348,7 @@ class profile_43000_measure(object):
                             g.app.record_business_rule_violation("ME32", "There may be no overlap in time with other measure occurrences with a goods code "
                             "in the same nomenclature hierarchy which references the same measure type, geo area, order number, additional code and reduction "
                             "indicator. This rule is not applicable for Meursing additional codes.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
+                            sys.exit()
 
         tariff_measure_number = goods_nomenclature_item_id
         if goods_nomenclature_item_id is not None:

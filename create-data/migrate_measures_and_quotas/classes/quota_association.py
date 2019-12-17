@@ -45,6 +45,7 @@ class quota_association(object):
         s = s.replace("\t\t\t\t\t\t<oub:coefficient></oub:coefficient>\n", "")
 
         app.sequence_id += 1
+        app.transaction_id += 1
 
         if self.action == "insert":
             app.transaction_id += 1

@@ -34,6 +34,7 @@ class profile_37000_quota_definition(object):
                 if validity_end_date < validity_start_date:
                     g.app.record_business_rule_violation("QD2", "The start date of the quota definition must be less than or equal to the end date.", operation, transaction_id, message_id, record_code, sub_record_code, str(quota_definition_sid))
 
+            # Business rule QD3	The quota order number must exist
             found = False
             for item in g.app.all_quota_order_numbers:
                 quota_order_number_id2 = item[0]

@@ -912,13 +912,23 @@ class application(object):
         measurement_unit_qualifier_code, description, action)
             self.quota_definition_list.append(q)
 
+    def kill_future_associations(self):
+        self.content += "<!-- START kill_future_associations //-->\n"
+        for obj in self.quota_association_list:
+            self.content += obj.xml()
+        self.content += "<!-- END kill_future_associations //-->\n"
+
     def kill_future_quota_definitions(self):
+        self.content += "<!-- START kill_future_quota_definitions //-->\n"
         for obj in self.quota_definition_list:
             self.content += obj.xml()
+        self.content += "<!-- END kill_future_quota_definitions //-->\n"
 
     def truncate_straddling_quota_definitions(self):
+        self.content += "<!-- START truncate_straddling_quota_definitions //-->\n"
         for obj in self.quota_definition_list:
             self.content += obj.xml()
+        self.content += "<!-- END truncate_straddling_quota_definitions //-->\n"
 
     def insert_straddling_quota_definitions(self):
         for obj in self.quota_definition_list:
@@ -1201,6 +1211,7 @@ class application(object):
             stopped_flag, geographical_area_sid, goods_nomenclature_sid,
             additional_code_sid, export_refund_nomenclature_sid, 999 as extent
             FROM ml.measures_real_end_dates m WHERE ordernumber IS NOT NULL
+            and (validity_end_date is null or validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """')
             ORDER BY measure_sid
             """
             cur = self.conn.cursor()
@@ -1238,9 +1249,9 @@ class application(object):
                 FROM ml.measures_real_end_dates m, goods_nomenclatures g
                 WHERE measure_type_id IN (""" + self.list_to_string(self.measure_type_list) + """)
                 """ + country_clause + """
-                and m.goods_nomenclature_item_id = g.goods_nomenclature_item_id
-                and g.producline_suffix = '80' and
-                (g.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """' or g.validity_end_date is null)
+                and m.goods_nomenclature_sid = g.goods_nomenclature_sid
+                and g.producline_suffix = '80'
+                and (g.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """' or g.validity_end_date is null)
                 AND (m.validity_end_date is null or m.validity_end_date > '""" + self.critical_date.strftime("%Y-%m-%d") + """')
                 ORDER BY measure_sid
                 """

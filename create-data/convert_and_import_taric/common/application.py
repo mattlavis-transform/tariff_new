@@ -532,7 +532,6 @@ class application(object):
                         oTransaction.remove(omsg)
                         self.register_update("370", "00", "delete", update_type_string, quota_definition_sid, xml_file, "Delete instruction to delete quota order definition " + quota_definition_sid)
 
-                """
                 # 40000 GOODS NOMENCLATURE - Inserts
                 if record_code == "400" and sub_record_code == "00" and update_type == "3":
                     goods_nomenclature_sid = self.get_number_value(omsg, ".//oub:goods.nomenclature.sid")
@@ -545,7 +544,7 @@ class application(object):
                             if item[0] == goods_nomenclature_sid:
                                 found = True
                                 break
-                        if found == False:
+                        if found is False:
                             obj = [goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix]
                             self.deleted_goods_nomenclatures.append(obj)
                         oTransaction.remove(omsg)
@@ -566,7 +565,7 @@ class application(object):
                                 if item[0] == goods_nomenclature_sid:
                                     found = True
                                     break
-                            if found == False:
+                            if found is False:
                                 obj = [goods_nomenclature_sid, goods_nomenclature_item_id, productline_suffix]
                                 self.deleted_goods_nomenclatures.append(obj)
                             oTransaction.remove(omsg)
@@ -576,6 +575,7 @@ class application(object):
                 # Barbaric but necessary - this removes all goods nomenclature items
                 if record_code == "400":
                     oTransaction.remove(omsg)
+                """
 
                 # 43000	MEASURE
                 if record_code == "430" and sub_record_code == "00":
@@ -587,60 +587,82 @@ class application(object):
                     measure_type_id = self.get_value(omsg, ".//oub:measure.type")
                     measure_sid = self.get_value(omsg, ".//oub:measure.sid")
 
-                    if measure_type_id not in ("488", "489", "490"):
-                        # Don't put end dates on 490s (Standard Import Value) measures
-                        self.regulation_list.append(measure_generating_regulation_id)
+                    self.regulation_list.append(measure_generating_regulation_id)
 
-                        # Action - remove the message node if the measure does not start until after the critical date
-                        if update_type in ("2"):
-                            if validity_start_date > self.critical_date:
-                                if transaction_id not in self.transactions_to_kill:
-                                    self.transactions_to_kill.append(transaction_id)
+                    # Action - remove the message node if the measure does not start until after the critical date
+                    if update_type in ("2"):
+                        if validity_start_date > self.critical_date:
+                            if transaction_id not in self.transactions_to_kill:
+                                self.transactions_to_kill.append(transaction_id)
 
-                        if update_type in ("1", "3"):
-                            sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = %s"
+                    if update_type in ("1", "3"):
+                        sql = "select * from goods_nomenclatures where goods_nomenclature_item_id = %s"
+                        params = [
+                            goods_nomenclature_item_id
+                        ]
+                        cur = self.conn.cursor()
+                        cur.execute(sql, params)
+                        rows = cur.fetchall()
+                        if len(rows) == 0:
+                            oTransaction.remove(omsg)
+                            measure_list.append(measure_sid)
+                            self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure on commodity that does not exist with measure.sid of " + measure_sid)
+                            break
+
+                        if validity_start_date > self.critical_date:
+                            oTransaction.remove(omsg)
+                            measure_list.append(measure_sid)
+                            self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
+
+                        # Action - if the measure begins before EU Exit, but the end date is empty,
+                        # then insert an end date (i.e the critical date - to be determined)
+                        # This also requires a justification regulation ID and role to be added
+                        elif validity_end_date == "":
+                            oElement = self.get_node(omsg, ".//oub:measure")
+
+                            self.add_edit_node(oElement, "oub:justification.regulation.id", "oub:measure.generating.regulation.id", measure_generating_regulation_id)
+                            self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:measure.generating.regulation.id", measure_generating_regulation_role)
+                            self.add_edit_node(oElement, "oub:validity.end.date", "oub:measure.generating.regulation.id", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+
+                            self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure with no end date to end on the critical date - measure_sid " + measure_sid)
+
+                        # Action - if the measure begins before EU Exit, but the end date is after EU Exit and is fixed,
+                        # then alter the end date to be the critical date - to be determined)
+                        elif validity_end_date > self.critical_date:
+                            oElement = self.get_node(omsg, ".//oub:measure")
+                            # Check if the justification regulation that is already in place can still be used: must start before the new end date
+                            justification_regulation_id = self.get_value(omsg, ".//oub:justification.regulation.id")
+                            justification_regulation_role = self.get_value(omsg, ".//oub:justification.regulation.role")
+                            sql = """
+                            select base_regulation_id as id, base_regulation_role as role, validity_start_date from base_regulations br
+                            where base_regulation_id = 'R1917760' and base_regulation_role = '4'
+                            union
+                            select modification_regulation_id as id, modification_regulation_role as role, validity_start_date from modification_regulations mr
+                            where modification_regulation_id = 'R1917760' and modification_regulation_role = '4'"""
                             params = [
-                                goods_nomenclature_item_id
+                                justification_regulation_id,
+                                justification_regulation_role
                             ]
                             cur = self.conn.cursor()
                             cur.execute(sql, params)
                             rows = cur.fetchall()
-                            if len(rows) == 0:
-                                oTransaction.remove(omsg)
-                                measure_list.append(measure_sid)
-                                self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure on commodity that does not exist with measure.sid of " + measure_sid)
-                                break
+                            if len(rows) > 0:
+                                regulation_validity_start_date = rows[0][2]
+                            else:
+                                regulation_validity_start_date = None
+                            use_generating_regulation = False
+                            if regulation_validity_start_date is None:
+                                use_generating_regulation = True
+                            else:
+                                if regulation_validity_start_date > self.critical_date:
+                                    use_generating_regulation = True
 
-                            if validity_start_date > self.critical_date:
-                                oTransaction.remove(omsg)
-                                measure_list.append(measure_sid)
-                                self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
-
-                            # Action - if the measure begins before EU Exit, but the end date is empty,
-                            # then insert an end date (i.e the critical date - to be determined)
-                            # This also requires a justification regulation ID and role to be added
-                            elif validity_end_date == "":
-                                oElement = self.get_node(omsg, ".//oub:measure")
-
-                                self.add_edit_node(oElement, "oub:justification.regulation.id", "oub:measure.generating.regulation.id", measure_generating_regulation_id)
-                                self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:measure.generating.regulation.id", measure_generating_regulation_role)
-                                self.add_edit_node(oElement, "oub:validity.end.date", "oub:measure.generating.regulation.id", datetime.strftime(self.critical_date, "%Y-%m-%d"))
-
-                                self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure with no end date to end on the critical date - measure_sid " + measure_sid)
-
-                            # Action - if the measure begins before EU Exit, but the end date is after EU Exit and is fixed,
-                            # then alter the end date to be the critical date - to be determined)
-                            elif validity_end_date >= self.critical_date:
-                                oElement = self.get_node(omsg, ".//oub:measure")
-                                self.set_node(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+                            self.set_node(oElement, "oub:validity.end.date", datetime.strftime(self.critical_date, "%Y-%m-%d"))
+                            if use_generating_regulation is True:
                                 self.add_edit_node(oElement, "oub:justification.regulation.id", "oub:validity.end.date", measure_generating_regulation_id)
                                 self.add_edit_node(oElement, "oub:justification.regulation.role", "oub:validity.end.date", measure_generating_regulation_role)
 
-                                self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure that starts before EU Exit and ends after EU Exit to end on the critical date - measure_sid: " + measure_sid)
-                    else:
-                        oTransaction.remove(omsg)
-                        measure_list.append(measure_sid)
-                        self.register_update("430", "00", "delete", update_type_string, measure_sid, xml_file, "Delete instruction for measure that would have started after EU Exit with measure.sid of " + measure_sid)
+                            self.register_update("430", "00", "update", update_type_string, measure_sid, xml_file, "Update a measure that starts before EU Exit and ends after EU Exit to end on the critical date - measure_sid: " + measure_sid)
 
         # ######################################### PHASE 2 ########################################
         # Second loop through the transactions = needed once the list variables have been populated
@@ -1147,7 +1169,7 @@ class application(object):
 
             # Now check to see if any prepend files need to be added, as signified by the ue of a plus at the start
             prepend_file_count = len(self.files_prepend)
-            print("There are", str(prepend_file_count), " prepend files to insert")
+            print("There are", str(prepend_file_count), "files to prepend")
             if prepend_file_count > 0:
                 print("Found a prepend file")
                 prepend_temp = "<!-- Begin prepend files //-->"
@@ -1573,7 +1595,7 @@ class application(object):
             chapter = str(i).zfill(2)
             filename = os.path.join(self.CSV_DIR, chapter + ".csv")
             sql = """select goods_nomenclature_item_id, producline_suffix, number_indents, leaf, significant_digits
-            from ml.goods_nomenclature_export_generic(%s, %s) order by goods_nomenclature_item_id, producline_suffix"""
+            from ml.goods_nomenclature_export_new(%s, %s) order by goods_nomenclature_item_id, producline_suffix"""
             params = [
                 chapter + "%",
                 self.critical_date_plus_one_string
@@ -2875,6 +2897,10 @@ class application(object):
 
     def get_quota_order_numbers(self):
         sql = """select distinct on (quota_order_number_id)
+        quota_order_number_id, quota_order_number_sid, validity_start_date, validity_end_date
+        from quota_order_numbers qon
+        order by 1, 3 desc"""
+        sql = """select 
         quota_order_number_id, quota_order_number_sid, validity_start_date, validity_end_date
         from quota_order_numbers qon
         order by 1, 3 desc"""

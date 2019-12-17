@@ -8,6 +8,7 @@ for i in range(1, len(sys.argv)):
     files.append(my_arg)
 
 app = g.app
+app.get_config()
 app.end_date_EU_measures(files)
 app.generate_metadata()
 app.copy_xml_to_import_folder()

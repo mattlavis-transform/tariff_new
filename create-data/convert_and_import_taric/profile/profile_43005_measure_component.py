@@ -58,10 +58,10 @@ class profile_43005_measure_component(object):
                         # ME46
                         if monetary_unit_applicability_code == 1:  # Mandatory
                             if monetary_unit_code is None:
-                                g.app.record_business_rule_violation("ME45(b)", "If the flag 'monetary unit' on duty expression is 'mandatory' then a monetary unit "
+                                g.app.record_business_rule_violation("ME46(a)", "If the flag 'monetary unit' on duty expression is 'mandatory' then a monetary unit "
                                 "must be specified. If the flag is set 'not permitted' then no monetary unit may be entered.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
                         elif monetary_unit_applicability_code == 2:  # Not permitted
-                            if monetary_unit_code is None:
+                            if monetary_unit_code is not None:
                                 g.app.record_business_rule_violation("ME46(b)", "If the flag 'monetary unit' on duty expression is 'mandatory' then a monetary unit "
                                 "must be specified. If the flag is set 'not permitted' then no monetary unit may be entered.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
 

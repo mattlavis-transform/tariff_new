@@ -24,8 +24,8 @@ app.write_measure_count()
 app.get_nomenclature_sids()
 
 perform_me32_check = False
-if perform_me32_check == True:
-	app.perform_me32_checks()
+if perform_me32_check is True:
+    app.perform_me32_checks()
 
 app.write_xml()
 app.set_config()

@@ -16,9 +16,12 @@ class profile_10005_footnote_type_description(object):
 
         # Perform business rule validation
         if g.app.perform_taric_validation is True:
+            pass
+            """
             if update_type in ("1", "3"):  # UPDATE / INSERT
                 if footnote_type_id not in footnote_type_descriptions:
                     g.app.record_business_rule_violation("DBFK", "The footnote type must be unique.", operation, transaction_id, message_id, record_code, sub_record_code, footnote_type_id)
+            """
 
         # Load data
         cur = app.conn.cursor()

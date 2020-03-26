@@ -16,6 +16,8 @@ if len(sys.argv) > 2:
 else:
     sys.exit()
 
+# print (dbase)
+# sys.exit()
 app = g.app
 app.DBASE = dbase
 app.get_config()

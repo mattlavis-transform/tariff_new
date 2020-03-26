@@ -2451,6 +2451,7 @@ class application(object):
         self.business_rule_violations.append(bvr)
         print(bcolors.OKGREEN)
         print(bvr.message)
+        sys.exit()
 
     def to_nice_time(self, dt):
         r = dt[0:4] + "-" + dt[4:6] + "-" + dt[6:8] + " " + dt[9:11] + ":" + dt[11:13] + ":" + dt[13:15]

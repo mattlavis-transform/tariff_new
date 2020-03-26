@@ -138,8 +138,10 @@ class profile_43000_measure(object):
                 "a Provisional AntiDumping, a Definitive Anti-Dumping.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
 
             # Check for ME6 / ME7 error
+            """
             if (goods_nomenclature_item_id not in g.app.goods_nomenclatures) and (goods_nomenclature_item_id is not None):
                 g.app.record_business_rule_violation("ME6", "The goods code must exist.", operation, transaction_id, message_id, record_code, sub_record_code, str(measure_sid))
+            """
 
             # Check for ME4 error
             geographical_areas = g.app.get_all_geographical_areas()
@@ -381,5 +383,4 @@ class profile_43000_measure(object):
             app.conn.commit()
         except:
             g.app.record_business_rule_violation("DB", "DB failure", operation, transaction_id, message_id, record_code, sub_record_code, measure_sid)
-
         cur.close()
